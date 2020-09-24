@@ -139,6 +139,8 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameSprite.cpp" />
     <ClCompile Include="GameTexture.cpp" />
+    <ClCompile Include="Scence.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +151,8 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameSprite.h" />
     <ClInclude Include="GameTexture.h" />
+    <ClInclude Include="Scence.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="TextureManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

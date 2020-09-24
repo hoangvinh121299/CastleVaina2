@@ -6,7 +6,7 @@
 
 
 #include "define.h"
-//#include "SceneManager.h"
+#include "SceneManager.h"
 
  
 #define KEYBOARD_BUFFER_SIZE 1024

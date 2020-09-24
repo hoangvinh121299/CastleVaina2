@@ -87,6 +87,12 @@
     <ClInclude Include="TextureManager.h">
       <Filter>Framework\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="Scence.h">
+      <Filter>Framework\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Framework\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSprite.cpp">
@@ -112,6 +118,12 @@
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Scence.cpp">
+      <Filter>Framework\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Framework\Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
