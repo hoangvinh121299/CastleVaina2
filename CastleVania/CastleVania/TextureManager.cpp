@@ -109,3 +109,11 @@ void TextureManager::LoadResource()
 	AddTexture(eType::PHANTOMBAT, new GameTexture("Resources/boss/0.png", 3, 1, 3));
 
 }
+TextureManager::TextureManager()
+{
+	LoadResource();
+}
+TextureManager::~TextureManager()
+{
+	SAFE_DELETE(__Instance);
+}

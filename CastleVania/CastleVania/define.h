@@ -126,19 +126,19 @@ typedef D3DXVECTOR2 GVector2;
 #define GAMEOVER_SELECT_CONTINUE 0
 #define GAMEOVER_SELECT_END 1
 
-//#ifndef CHECK_OBJECT_IN_CAMERA // Kiểm tra GameObject có nằm trong camera ko?
-//#define CHECK_OBJECT_IN_CAMERA(obj) \
-//checkObjectInCamera(obj->GetX(), obj->GetY(), (float)obj->GetWidth(),  (float)obj->GetHeight())
-//#endif
-//
-//
-//#ifndef SAFE_DEL	ETE
-//#define SAFE_DELETE(ptr) \
-//if(ptr) \
-//{\
-//	delete (ptr); \
-//	ptr = nullptr; \
-//} \
-//
-//#endif
+#ifndef CHECK_OBJECT_IN_CAMERA // Kiểm tra GameObject có nằm trong camera ko?
+#define CHECK_OBJECT_IN_CAMERA(obj) \
+checkObjectInCamera(obj->GetX(), obj->GetY(), (float)obj->GetWidth(),  (float)obj->GetHeight())
+#endif
+
+
+#ifndef SAFE_DEL	ETE
+#define SAFE_DELETE(ptr) \
+if(ptr) \
+{\
+	delete (ptr); \
+	ptr = nullptr; \
+} \
+
+#endif
 #endif // !__DEFINE_H__
