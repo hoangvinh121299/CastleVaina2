@@ -1,17 +1,117 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{e1467ad8-08e3-4ab1-847c-a3575d8184c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
+    <Filter Include="Object">
+      <UniqueIdentifier>{04be4d82-f794-4425-a1ea-093ecd93da31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Boss">
+      <UniqueIdentifier>{53a398db-768f-456c-a4dd-5c4fff3e672b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Effect">
+      <UniqueIdentifier>{838950a6-ecde-47b8-b505-6517d96b77f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Weapon">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
+    <Filter Include="Object\Ground">
+      <UniqueIdentifier>{afdc1a81-ac66-4a94-9391-a0658a0b034d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Enenmy">
+      <UniqueIdentifier>{b0384b0a-2129-439a-ade5-cab9849def03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Item">
+      <UniqueIdentifier>{3c8e46f9-2deb-4b47-b3d8-ea937132cdd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{20df09b2-29d8-4723-bd9b-067296d8b946}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Board">
+      <UniqueIdentifier>{9396756d-d16c-491a-bb02-2da16fed9adc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Camera">
+      <UniqueIdentifier>{1428888d-f283-4de1-a4f4-55b003679f10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Debug">
+      <UniqueIdentifier>{07bb2b8a-0c80-414b-9a9c-3b3e7a3b7d50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Define">
+      <UniqueIdentifier>{7aa76956-dc50-4cfb-ba71-af2e39138a20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameTime">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Framework\Grid">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Framework\Sound">
+      <UniqueIdentifier>{bdf28a17-0264-4fa7-bfce-2cacc380e3a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Scene">
+      <UniqueIdentifier>{84b02301-46e6-455f-b6b8-867266fdf656}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Animation">
+      <UniqueIdentifier>{9b77e8ab-1b04-4781-99a9-6ee03389874b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Map">
+      <UniqueIdentifier>{e3344aee-c8bf-4598-9ffa-75e507ebac8b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameSprite.h">
+      <Filter>Framework\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTexture.h">
+      <Filter>Framework\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="define.h">
+      <Filter>Framework\Define</Filter>
+    </ClInclude>
+    <ClInclude Include="debug.h">
+      <Filter>Framework\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Framework\Board</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Framework\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Framework\Animation</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameSprite.cpp">
+      <Filter>Framework\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTexture.cpp">
+      <Filter>Framework\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="define.cpp">
+      <Filter>Framework\Define</Filter>
+    </ClCompile>
+    <ClCompile Include="debug.cpp">
+      <Filter>Framework\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Framework\Board</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Framework\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Framework\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
