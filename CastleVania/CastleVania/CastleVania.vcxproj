@@ -139,9 +139,12 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameSprite.cpp" />
     <ClCompile Include="GameTexture.cpp" />
+    <ClCompile Include="Gametime.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="TODO_LIST.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
@@ -151,6 +154,8 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameSprite.h" />
     <ClInclude Include="GameTexture.h" />
+    <ClInclude Include="Gametime.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="Scence.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="TextureManager.h" />

@@ -40,7 +40,7 @@ GameTexture::GameTexture(const char* filePath,
 	}
 	this->frameWidth = info.Width / Column;
 	this->frameHeight = info.Height / Row;
-	LPDIRECT3DDEVICE9 d3dvv = Game::GetInstance()->GetDirect3DDevice;
+	LPDIRECT3DDEVICE9 d3dvv = Game::GetInstance()->GetDirect3DDevice();
 	result = D3DXCreateTextureFromFileExA(
 		d3dvv,
 		filePath,

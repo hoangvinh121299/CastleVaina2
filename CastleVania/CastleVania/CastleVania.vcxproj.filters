@@ -93,6 +93,12 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Framework\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Gametime.h">
+      <Filter>Framework\GameTime</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Framework\Grid</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSprite.cpp">
@@ -124,6 +130,15 @@
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Framework\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Gametime.cpp">
+      <Filter>Framework\GameTime</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Framework\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="TODO_LIST.cpp">
+      <Filter>Framework</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

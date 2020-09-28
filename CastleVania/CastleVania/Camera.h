@@ -32,15 +32,15 @@ public:
 	Camera(int w, int h);
 	~Camera();
 
-	void Update(DWORD dt);
+		void Update(DWORD dt);
 
-	D3DXVECTOR2 TransForm(float, float);
+		D3DXVECTOR2 TransForm(float, float);
 
-	void SetPosition(float x, float y);
-	float GetXCam();
-	float GetYCam();
-	int GetWidth();
-	int GetHeight() :
+		void SetPosition(float x, float y);
+		float GetXCam();
+		float GetYCam();
+		int GetWidth();
+		int GetHeight();
 
 		bool checkObjectInCamera(float x, float y, float w, float h);
 		
@@ -49,13 +49,13 @@ public:
 
 		void setAutoGoX(float Distance, float Speed);//Tiết lập các thông số auto
 		void stopAutoGoX();
-		void getIsAutoX();
+		bool getIsAutoX();
 
 		void SetBoundary(float left, float right);//Set giới hạn biên cho Camera
 		float getBoundaryRight();
 		float getBoundaryLeft();
 
-		void setPositionBackup(float x, float y);
+		void setPositionCamBackup(float x, float y);
 		void RestorePosition();
 
 		void setBoundaryBackup(float l, float r);

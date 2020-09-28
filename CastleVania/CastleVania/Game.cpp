@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "debug.h"
 
+#include "SceneManager.h"
 Game * Game::__instance = NULL;
 
 /*
@@ -178,7 +179,7 @@ void Game::ProcessKeyboard()
 		}
 	}
 
-	SceneManager::GetInstance()->KeyState((BYTE *)&keyStates);
+	SceneManager::getInstance()->KeyState((BYTE *)&keyStates);
 
 
 	// Collect all buffered events
@@ -196,9 +197,9 @@ void Game::ProcessKeyboard()
 		int KeyCode = keyEvents[i].dwOfs;
 		int KeyState = keyEvents[i].dwData;
 		if ((KeyState & 0x80) > 0)
-			SceneManager::GetInstance()->OnKeyDown(KeyCode);
+			SceneManager::getInstance()->OnKeyDown(KeyCode);
 		else
-			SceneManager::GetInstance()->OnKeyUp(KeyCode);
+			SceneManager::getInstance()->OnKeyUp(KeyCode);
 	}
 }
 
