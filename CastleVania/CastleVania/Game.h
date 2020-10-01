@@ -1,6 +1,6 @@
-#ifndef __GAME_H__
+﻿#ifndef __GAME_H__
 #define __GAME_H__
-
+//Quản lý các thành phần cơ bản của game như cửa sổ , fps, các input truyền vào
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h> 
 
