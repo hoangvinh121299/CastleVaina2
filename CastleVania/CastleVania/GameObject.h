@@ -82,7 +82,7 @@ public:
 	void setY(float y);
 	float getVx();
 	void setVx(float vx);
-	float geVy();
+	float getVy();
 	void setVy(float vy);
 	int getWidth();
 	int getHeight();
@@ -103,8 +103,8 @@ public:
 		float&nx,
 		float&ny);
 	//Kiểm tra xem có va chạm hay không bằng AABB va SwpeptAABB
-	bool isColision(GameObject *obj);
-	bool checkAABBB(GameObject *obj);
+	bool isColisionObjectwithObject(GameObject *obj);
+	bool checkAABB(GameObject *obj);
 
 	//Lấy ra thời điểm bị tấn công cuối
 	DWORD getLastTimeAttacked();

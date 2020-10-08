@@ -196,4 +196,66 @@ void GameObject::filterCollisionEvents(vector<LPCollisionEvent>& coEvents,
 
 	nx = 0.0f;
 	ny = 0.0f;
+	coEventsResult.clear();
+	//Chạy vòng lặp lọc các object có va chạm
+	for (UINT i = 0; i < coEvents.size(); i++)
+	{
+		LPCollisionEvent c = coEvents[i];
+		if (c->t <= min_tx && c->nx != 0)
+		{
+			min_tx = c->t;
+			nx = c->nx;
+			min_ix = i;
+		}
+		if (c->t <= min_ty && c->ny != 0)
+		{
+			min_ty = c->t;
+			ny = c->ny;
+			min_iy = i;
+		}
+	}
+	if (min_ix >= 0)
+		coEventsResult.push_back(coEvents[min_ix]);
+	if (min_iy >= 0)
+		coEventsResult.push_back(coEvents[min_iy]);
+}
+bool GameObject::isColisionObjectwithObject(GameObject *obj)
+{
+	if(checkAABB(obj))// Kiểm tra có va chạm bằng AABB trước
+		return true;
+	LPCollisionEvent e = sweptAABBEx(obj); //KIểm tra va chạm bằng AABBEX
+	bool res = e->t > 0 && e->t <= 1.0f; // Điều kiện có va chạm
+	SAFE_DELETE(e);
+	return res;
+
+}
+bool GameObject::checkAABB(GameObject *obj)
+{
+	float left, top, right, bottom;
+	float left1, top1, right1, bottom1;
+	this->getBoundingBox(left, top, right, bottom);
+	obj->getBoundingBox(left1, top1, right1, bottom1);
+	if (Game::GetInstance()->checkAABB(left, top, right, bottom, left1, top1, right1, bottom1))
+		return true;
+
+	return false;
+}
+//Trả về thời gian tấn công cuối cùng
+DWORD GameObject::getLastTimeAttacked()
+{
+	return lastTimeAttacked;
+}
+//Phương thức set thời gian tấn công cuối
+void GameObject::setTexture(GameTexture *texture)
+{
+	objectTexture = texture;
+	objectSprite->texture = texture;
+}
+GameSprite * GameObject::getSprite()
+{
+	return objectSprite;
+}
+GameObject::~GameObject()
+{
+	SAFE_DELETE(objectSprite);
 }
