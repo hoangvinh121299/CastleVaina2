@@ -197,6 +197,7 @@ void GameObject::filterCollisionEvents(vector<LPCollisionEvent>& coEvents,
 	nx = 0.0f;
 	ny = 0.0f;
 	coEventsResult.clear();
+	
 	//Chạy vòng lặp lọc các object có va chạm
 	for (UINT i = 0; i < coEvents.size(); i++)
 	{
