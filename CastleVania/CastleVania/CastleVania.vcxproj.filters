@@ -105,6 +105,9 @@
     <ClInclude Include="GameObject.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="Simon.h">
+      <Filter>Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSprite.cpp">
@@ -151,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Simon.cpp">
+      <Filter>Player</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

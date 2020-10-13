@@ -3,6 +3,8 @@
 //Cái đặt lớp Gameobject
 //Load một số object cơ bản như brick, simon cơ bản 
 //Xử lý loadmap, load simon
+//13/10/2020
+//Tiếp tục cài đặt các hàm trong lớp update simon
 /*Thacmac:
 LỚp GameTIME
 LỚp GameSprtie

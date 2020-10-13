@@ -145,6 +145,7 @@
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Simon.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="TODO_LIST.cpp" />
   </ItemGroup>
@@ -162,6 +163,7 @@
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Scence.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Simon.h" />
     <ClInclude Include="TextureManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
