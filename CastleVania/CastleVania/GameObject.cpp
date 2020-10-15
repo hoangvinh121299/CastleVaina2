@@ -6,7 +6,7 @@ GameObject::GameObject()
 {
 	x = y = 0;
 	vx = vy = 0;
-	directtion = 1;
+	direction = 1;
 	lastTimeAttacked = 0;
 }
 void GameObject::getBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -40,11 +40,11 @@ void GameObject::subHealth(int subhealth)
 }
 void GameObject::setDirection(int direction)
 {
-	this->directtion = direction;
+	this->direction = direction;
 }
 int GameObject::getDirection()
 {
-	return this->directtion;
+	return this->direction;
 }
 void GameObject::setID(int id)
 {

@@ -158,5 +158,8 @@
     <ClCompile Include="Simon.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

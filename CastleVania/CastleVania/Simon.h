@@ -38,8 +38,8 @@
 #define SIMON_ANI_SITTING_ATTACKING_END 17
 
 //ANI SIMON ĐỨNG ĐÁNH
-#define SIMON_ANI_ATTACKING_BEGIN 5
-#define SIMON_ANI_ATTACKING_END 7
+#define SIMON_ANI_STANDING_ATTACKING_BEGIN 5
+#define SIMON_ANI_STANDING_ATTACKING_END 7
 
 //ANI SIMON ĐI XUỐNG CẦU THANG ĐÁNH
 #define SIMON_ANI_DOWNSTAIR_ATTACKING_BEGIN 18
@@ -125,7 +125,7 @@ public:
 	DWORD utouchable_Start; // Thời điểm bất tử bắt đầu
 	bool isCollisionWithGround= false; // Đang va chạm với đất theo trục Y 
 	DWORD timewWaitAfterDeath; // Thời gian chờ hồi sinh sau khi chết
-
+	
 	Simon(Camera *camera);
 	~Simon();
 
@@ -146,7 +146,7 @@ public:
 	void left();
 
 	void colissionWithBrick(const vector<LPGAMEOBJECT> *coObjects=NULL);
-	void Attack(eType typeWeapon);
+	/*void Attack(eType typeWeapon);*/
 
 	void Init(); // Khởi tạo lại các trạng thái, Heartcollect, health, lives, score
 	void Reset();//Khởi tạo lại các trạng thái

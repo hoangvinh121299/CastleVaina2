@@ -72,7 +72,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						objectSprite->timeAccumulated -= SIMON_TIME_COOLDOWN_ATTACKING;
 						objectSprite->SelectFrame(objectSprite->getCurrentFrame() + 1);
 					}
-					if (objectSprite->getCurrentFrame() > SIMON_ANI_ATTACKING_END)// ĐÃ đi vượt qua frame cuối của ani đánh cầu thang
+					if (objectSprite->getCurrentFrame() > SIMON_ANI_UPSTAIR_ATTACKING_END)// ĐÃ đi vượt qua frame cuối của ani đánh cầu thang
 					{
 						isAttacking = false;
 						objectSprite->SelectFrame(SIMON_STAIR_STANDING_UP);
@@ -98,7 +98,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						objectSprite->timeAccumulated -= SIMON_TIME_COOLDOWN_ATTACKING;
 						objectSprite->SelectFrame(objectSprite->getCurrentFrame() + 1);
 					}
-					if (objectSprite->getCurrentFrame() > SIMON_ANI_ATTACKING_END)// ĐÃ đi vượt qua frame cuối của ani đánh cầu thang
+					if (objectSprite->getCurrentFrame() > SIMON_ANI_DOWNSTAIR_ATTACKING_END)// ĐÃ đi vượt qua frame cuối của ani đánh cầu thang
 					{
 						isAttacking = false;
 						objectSprite->SelectFrame(SIMON_STAIR_STANDING_DOWN);
@@ -163,12 +163,282 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							objectSprite->SelectFrame(SIMON_ANI_SITTING);
 						}
 					}
-					
+
 				}
+				else
+					objectSprite->SelectFrame(SIMON_ANI_SITTING);
 #pragma endregion
 			}
+			else 
+				if (isAttacking == true)
+				{
+#pragma region Đứng đánh
+					if (index < SIMON_ANI_STANDING_ATTACKING_BEGIN)
+					{
+						objectSprite->SelectFrame(SIMON_ANI_DOWNSTAIR_ATTACKING_BEGIN);
+						objectSprite->timeAccumulated = dt;
+					}
+					else
+					{
+						objectSprite->timeAccumulated += dt;
+						if (objectSprite->timeAccumulated >= SIMON_TIME_COOLDOWN_ATTACKING)
+						{
+							objectSprite->timeAccumulated = SIMON_TIME_COOLDOWN_ATTACKING;
+							objectSprite->SelectFrame(objectSprite->getCurrentFrame() + 1);
+						}
+
+						if (objectSprite->getCurrentFrame() > SIMON_ANI_STANDING_ATTACKING_END)
+						{
+							isAttacking = false;
+							objectSprite->SelectFrame(SIMON_ANI_IDLE);
+						}
+					}
+#pragma endregion
+				}
+				else
+					if (isWalking == true)
+					{
+						if (isJumping == false)
+						{
+							if (index < SIMON_ANI_WALKING_BEGIN || index >= SIMON_ANI_DOWNSTAIR_ATTACKING_END)
+							{
+								objectSprite->SelectFrame(SIMON_ANI_WALKING_BEGIN);
+								objectSprite->Update(dt);
+							}
+							else
+							{
+								objectSprite->SelectFrame(SIMON_ANI_JUMPING);
+							}
+						}
+						else
+						{
+							if (isJumping == true)
+							{
+								objectSprite->SelectFrame(SIMON_ANI_JUMPING);
+							}
+							else
+							{
+								objectSprite->SelectFrame(SIMON_ANI_IDLE);
+							}
+						}
+					}
 		}
 	}
 #pragma endregion 
 #pragma endregion
+	GameObject::Update(dt);
+	if (isOnStair == false)
+	{
+		if (isJumping == true)
+		{
+			dx = vx * dt;
+			dy = vy * dt;
+			vy += SIMON_GRAVITY_JUMPING * dt;
+		}
+		else
+		{
+			if (isHurting == true)
+			{
+				vy += SIMON_GRAVITY_HURTING * dt;
+			}
+			else
+				vy += SIMON_GRAVITY * dt;
+		}
+	}
+
+	if (isOnStair == false)
+	{
+		colissionWithBrick(coObjects);
+	}
+	else
+	{
+		x += dx;
+	}
+	if (isOnStair == true)
+	{
+		
+	}
+	if (isProccessingOnStair == 3)
+	{
+		isProccessingOnStair = 0;
+		vx = 0;
+		vy = 0;
+		isWalking = false;
+	}
+}
+void Simon::Render(Camera*camera)
+{
+	if (IS_DEBUG_RENDER_BBOX)
+		renderBoundingBox(camera);
+	D3DXVECTOR2 pos = camera->TransForm(x, y);
+	int alpha = 255;
+	if (untouchable == true)
+	{
+		alpha = 128;
+	}
+	if (isDead&&isCollisionWithGround)
+	{
+		if (direction == -1)
+		{
+			_sprite_death->Draw(pos.x, pos.y, 255);
+		}
+		else
+			_sprite_death->DrawFlipX(pos.x, pos.y, 255);
+	}
+	else
+	{
+		if (direction == -1)
+		{
+			objectSprite->Draw(pos.x, pos.y, alpha);
+		}
+		else
+			objectSprite->DrawFlipX(pos.x, pos.y, alpha);
+	}
+}
+void Simon::left()
+{
+	if (isOnStair == true)
+		return;
+	direction = 1;
+}
+void Simon::walking()
+{
+	if (isOnStair == true)
+	{
+		return;
+	}
+	if (isAttacking == true)
+		return;
+	vx = SIMON_WALKING_SPEED * direction;
+	isWalking = 1;
+}
+void Simon::sit()
+{
+	if (isOnStair == true)
+		return;
+	vx = 0;
+	isWalking=0;
+	if (isSitting == false)
+		y = y + PULL_UP_SIMON_AFTER_SITTING;
+	isSitting = 1;
+}
+void Simon::resetSit()
+{
+	if (isSitting == true)
+	{
+		isSitting = 0;
+		y = y - PULL_UP_SIMON_AFTER_SITTING;
+	}
+}
+void Simon::jump()
+{
+	if (isJumping == true) //Nếu đang nhảy rồi thì không nhảy nữa
+		return;
+	if (isOnStair == true)
+		return;
+	if (isSitting == true)
+		return;
+	if (isAttacking == true)
+		return;
+	if (isHurting == true)
+		return;
+	vy = -SIMON_VJUMP;
+	isJumping = true;
+}
+void Simon::stop()
+{
+	if (isAttacking == true)
+		return;
+	if (isOnStair == true)
+		return;
+	if (isHurting == true)
+		return;
+	vx = 0;
+	isWalking = 0;
+	if (isSitting == true)
+	{
+		isSitting = 0;
+		y = y - PULL_UP_SIMON_AFTER_SITTING;
+	}
+}
+void Simon::Init()
+{
+	health = SIMON_DEFAULT_HEALTH;
+	lives = SIMON_DEFAULT_LIVES;
+	Reset();
+}
+void Simon::Reset()
+{
+	direction = 1;
+	isSitting = 0;
+	isProccessingOnStair = 0;
+	isOnStair = 0;
+	isJumping = 0;
+	isWalking = 0;
+	isAttacking = 0;
+	isHurting = 0;
+	vx = 0;
+	vy = 0;
+	isDead = false;
+
+}
+void Simon::right()
+{
+	if (isOnStair == true)
+		return;
+	direction = 1;
+}
+void Simon::colissionWithBrick(const vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCollisionEvent> coEvents;
+	vector<LPCollisionEvent> coEventResult;
+	coEvents.clear();
+
+	vector<LPGAMEOBJECT> listBrick;
+	listBrick.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+		listBrick.push_back(coObjects->at(i));
+	//Tính toán các va chạm có thể xảy ra
+	calcPotentialCollisions(&listBrick, coEvents);
+	if (coEvents.size() == 0)
+	{
+		x += dx;
+		y += dy;
+		isCollisionWithGround = false;
+	}
+	else
+	{
+		float min_tx, min_ty, nx = 0 , ny;
+		filterCollisionEvents(coEvents, coEventResult, min_tx, min_ty, nx, ny);
+		x += min_tx * dx + nx * 0.4f;
+		if (ny == -1)
+			y += min_ty * dy + ny * 0.4f;
+		else
+			y += dy;
+		if (ny == -1)
+		{
+			vy = 0.1f;
+			dy = vy * dt;
+			if (isJumping)
+			{
+				isJumping = false;
+				y = y - PULL_UP_SIMON_AFTER_JUMPING;
+			}
+		}
+		if (ny!= 0)
+		{
+			isCollisionWithGround = true;
+
+		}
+		else
+		{
+			isCollisionWithGround = false;
+		}
+		if (nx != 0 || ny != 0)
+		{
+			isHurting = 0;
+		}
+	}
+	for (UINT i = 0; i < coEvents.size(); i++)
+		delete coEvents[i];
 }

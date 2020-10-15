@@ -38,7 +38,7 @@ protected:
 	int health;
 	int id;
 
-	int directtion; //Hướng của Object -1: trái, 1: phải
+	int direction; //Hướng của Object -1: trái, 1: phải
 	eType objectType; // Loại object
 
 	float x;
@@ -60,7 +60,7 @@ public:
 	// Phương thức lấy khung va chạm
 	virtual void getBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *CoObject=NULL);
-	virtual void Render(Camera *camera);
+	/*virtual void Render(Camera *camera);*/
 	
 	//Phương thức thao tác trên tình trạng object
 	int getHealth();

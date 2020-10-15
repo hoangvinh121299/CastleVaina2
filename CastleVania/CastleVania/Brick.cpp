@@ -52,8 +52,8 @@ void Brick::getBoundingBox(float &l, float &t, float &r, float &b)
 {
 	l = x;
 	t = y;
-	r = x + (float)ceil(width / objectTexture->GetFrameWidth())*objectTexture->GetFrameWidth;
-	b = y + (float)ceil(height / objectTexture->GetFrameHeight())*objectTexture->GetFrameHeight;
+	r = x + (float)ceil(width / objectTexture->GetFrameWidth())*objectTexture->GetFrameWidth();
+	b = y + (float)ceil(height / objectTexture->GetFrameHeight())*objectTexture->GetFrameHeight();
 }
 int Brick::getModel()
 {

@@ -143,6 +143,7 @@
     <ClCompile Include="GameTexture.cpp" />
     <ClCompile Include="Gametime.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Simon.cpp" />
