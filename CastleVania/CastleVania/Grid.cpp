@@ -39,11 +39,11 @@ void Grid::reloadMapGrid()
 		}
 	fileInfo.close();
 }
-GameObject *Grid::createNewGridObject(int objectType, float x, float y, int objectWidth, int objectHeight, int brickModel)
+GameObject * createNewGridObject(int objectType, float x, float y, float objectWidth, int objectHeight, int brickModel)
 {
 	switch (objectType)
 	{
-	case objectType::BRICK:
+	case eType::BRICK:
 
 	}
 }

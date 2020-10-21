@@ -5,6 +5,7 @@
 //Xử lý loadmap, load simon
 //13/10/2020
 //Tiếp tục cài đặt các hàm trong lớp update simon
+//cài đặt lớp GRID
 /*Thacmac:
 LỚp GameTIME
 LỚp GameSprtie
