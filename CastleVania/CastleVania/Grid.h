@@ -27,7 +27,7 @@ public:
 
 	GameObject * createNewGridObject(int objectType, float x, float y, float objectWidth, int objectHeight, int brickModel);
 	void insertObjectToGrid(int objectID, int ObjectTye, int objectDirection, float x, float y, int objectWidth, int objectHeight, int brickModel);
-	void getListObjectFromMapGrid(vector<GameObject*> objectsList, Camera *camera);
+	void getListObjectFromMapGrid(vector<GameObject*> &objectsList, Camera *camera);
 };
 
 #endif
