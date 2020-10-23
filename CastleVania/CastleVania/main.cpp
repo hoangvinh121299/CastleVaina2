@@ -2,7 +2,7 @@
 #include "Game.h"
 
 #include "Scence.h"
-
+#include "SceneGame.h"
 #define WINDOW_CLASS_NAME L"CastleVania"
 #define MAIN_WINDOW_TITLE L"CastleVania"
 
@@ -140,9 +140,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	sceneManager = SceneManager::getInstance();
 
-
+	sceneManager->SetScene(new SceneGame());
 	
-
 
 	game->InitKeyboard();
 

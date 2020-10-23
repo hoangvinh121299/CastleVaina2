@@ -33,6 +33,7 @@ Brick::Brick(float X, float Y, int W, int H, int Model)
 	this->width = W;
 	this->height = H;
 }
+
 void Brick::Render(Camera * camera)
 {
 	if (IS_DEBUG_RENDER_BBOX)
@@ -48,6 +49,7 @@ void Brick::Render(Camera * camera)
 			objectSprite->Draw(pos.x + i * objectTexture->GetFrameWidth(), pos.y + j * objectTexture->GetFrameHeight());
 	}
 }
+
 void Brick::getBoundingBox(float &l, float &t, float &r, float &b)
 {
 	l = x;
@@ -55,7 +57,12 @@ void Brick::getBoundingBox(float &l, float &t, float &r, float &b)
 	r = x + (float)ceil(width / objectTexture->GetFrameWidth())*objectTexture->GetFrameWidth();
 	b = y + (float)ceil(height / objectTexture->GetFrameHeight())*objectTexture->GetFrameHeight();
 }
+
 int Brick::getModel()
 {
 	return model;
+}
+Brick::~Brick()
+{
+
 }

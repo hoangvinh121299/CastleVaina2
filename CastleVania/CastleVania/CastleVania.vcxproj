@@ -145,6 +145,7 @@
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scence.cpp" />
+    <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="TextureManager.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Gametime.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Scence.h" />
+    <ClInclude Include="SceneGame.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="TextureManager.h" />

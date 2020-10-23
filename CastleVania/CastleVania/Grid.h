@@ -16,7 +16,7 @@ using namespace std;
 class Grid
 {
 private:
-	vector<GameObject*> mapCells[GRID_MAP_CELL_MAX_ROW][GRID_MAP_CELL_MAX_COLLUM]; // Ma trận chứa các cell trong map
+	vector<LPGAMEOBJECT> mapCells[GRID_MAP_CELL_MAX_ROW][GRID_MAP_CELL_MAX_COLLUM]; // Ma trận chứa các cell trong map
 	char *objectFilePath;
 public:
 	Grid();

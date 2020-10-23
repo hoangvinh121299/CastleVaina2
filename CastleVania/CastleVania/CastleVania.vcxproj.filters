@@ -26,9 +26,6 @@
     <Filter Include="Object\Item">
       <UniqueIdentifier>{3c8e46f9-2deb-4b47-b3d8-ea937132cdd4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Player">
-      <UniqueIdentifier>{20df09b2-29d8-4723-bd9b-067296d8b946}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework\Board">
       <UniqueIdentifier>{9396756d-d16c-491a-bb02-2da16fed9adc}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,9 @@
     </Filter>
     <Filter Include="Framework\Map">
       <UniqueIdentifier>{e3344aee-c8bf-4598-9ffa-75e507ebac8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Player">
+      <UniqueIdentifier>{20df09b2-29d8-4723-bd9b-067296d8b946}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -106,7 +106,10 @@
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="Simon.h">
-      <Filter>Player</Filter>
+      <Filter>Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGame.h">
+      <Filter>Framework\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -156,10 +159,13 @@
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="Simon.cpp">
-      <Filter>Player</Filter>
+      <Filter>Object\Player</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGame.cpp">
+      <Filter>Framework\Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -11,7 +11,7 @@ public:
 	virtual void KeyState(BYTE *state) = 0;
 	virtual void OnKeyDown(int Keycode) = 0;
 	virtual void OnKeyUp(int Keycode) = 0;
-	virtual void Loadresources() = 0;
+	virtual void LoadResources() = 0;
 	virtual void Update(DWORD dt) = 0;
 	virtual void Render() = 0;
 

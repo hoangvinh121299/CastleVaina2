@@ -60,7 +60,7 @@ public:
 	// Phương thức lấy khung va chạm
 	virtual void getBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *CoObject=NULL);
-	/*virtual void Render(Camera *camera);*/
+	virtual void Render(Camera *camera)=0;
 	
 	//Phương thức thao tác trên tình trạng object
 	int getHealth();
@@ -108,7 +108,7 @@ public:
 
 	//Lấy ra thời điểm bị tấn công cuối
 	DWORD getLastTimeAttacked();
-	void setLastTimeAttacked(DWORD dt);
+	/*void setLastTimeAttacked(DWORD dt);*/
 
 	void setTexture(GameTexture *texture);
 	GameSprite *getSprite();

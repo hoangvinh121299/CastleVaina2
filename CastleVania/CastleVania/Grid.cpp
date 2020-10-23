@@ -48,10 +48,10 @@ GameObject * Grid::createNewGridObject(int objectType, float x, float y, float o
 	}
 	return NULL;
 }
-void Grid::getListObjectFromMapGrid(vector <GameObject*> & listObject, Camera*camera)
+void Grid::getListObjectFromMapGrid(vector <GameObject*>  &listObject, Camera*camera)
 {
 	listObject.clear();
-	unordered_map<int, GameObject*> mapObject;
+	unordered_map<int, LPGAMEOBJECT> mapObject;
 	int bottom = (int)((camera->GetYCam() + camera->GetHeight() - 1) / GRID_CELL_HEIGHT);
 	int top = (int)((camera->GetYCam() + 1) / GRID_CELL_HEIGHT);
 	
@@ -64,7 +64,7 @@ void Grid::getListObjectFromMapGrid(vector <GameObject*> & listObject, Camera*ca
 		{
 			for (UINT k = 0; k < mapCells[i][j].size(); k++)
 			{
-				if (mapCells[i][j].at(k)->getHealth() > 0) // Còn tồn tại trên bản đồ 
+				if (mapCells[i][j].at(k)->getHealth() > 0) // còn tồn tại trên bản đồ 
 				{
 					if (mapObject.find(mapCells[i][j].at(k)->getID()) == mapObject.end())
 						mapObject[mapCells[i][j].at(k)->getID()] = mapCells[i][j].at(k);

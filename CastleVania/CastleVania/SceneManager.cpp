@@ -35,7 +35,7 @@ void SceneManager::OnKeyUp(int Keycode)
 }
 void SceneManager::LoadResources()
 {
-	_scene->Loadresources();
+	_scene->LoadResources();
 }
 void SceneManager::Update(DWORD dt)
 {
