@@ -12,7 +12,7 @@ void TextureManager::AddTexture(eType type, GameTexture *texture)
 {
 	_ArrTextures[type] = texture;
 }
-//Phương tức nạp textures
+
 GameTexture* TextureManager::GetTexture(eType type)
 {
 	return _ArrTextures[type];
@@ -20,20 +20,20 @@ GameTexture* TextureManager::GetTexture(eType type)
 //Phương thức nạp tất cả các textures
 void TextureManager::LoadResource()
 {
-	// Intro
-	AddTexture(eType::MAINMENU, new GameTexture("Resources/mainmenu.png"));
-	AddTexture(eType::INTRO_BAT, new GameTexture("Resources/intro_bat.png", 2, 1, 2));
-	AddTexture(eType::INTRO_BAT_MENU, new GameTexture("Resources/IntroBatMenu.png", 5, 3, 15));
-	AddTexture(eType::INTRO_GO_SCENE1, new GameTexture("Resources/intro_go_scene_1.png"));
-	AddTexture(eType::HELICOPTER, new GameTexture("Resourc	es/helicopter.png"));
+	//// Intro
+	//AddTexture(eType::MAINMENU, new GameTexture("Resources/mainmenu.png"));
+	//AddTexture(eType::INTRO_BAT, new GameTexture("Resources/intro_bat.png", 2, 1, 2));
+	//AddTexture(eType::INTRO_BAT_MENU, new GameTexture("Resources/IntroBatMenu.png", 5, 3, 15));
+	//AddTexture(eType::INTRO_GO_SCENE1, new GameTexture("Resources/intro_go_scene_1.png"));
+	//AddTexture(eType::HELICOPTER, new GameTexture("Resourc	es/helicopter.png"));
 
 	//board
-	AddTexture(eType::FONT, new GameTexture("Resources/font/1.png", 13, 3, 37));
+	//AddTexture(eType::FONT, new GameTexture("Resources/font/1.png", 13, 3, 37));
 
-	AddTexture(eType::BOARD, new GameTexture("Resources/blackboard.png", 1, 1, 1));
-	AddTexture(eType::BOARD_TRANS, new GameTexture("Resources/blackboard.png", 1, 1, 1, 0, 0, 0));
+	//AddTexture(eType::BOARD, new GameTexture("Resources/blackboard.png", 1, 1, 1));
+	//AddTexture(eType::BOARD_TRANS, new GameTexture("Resources/blackboard.png", 1, 1, 1, 0, 0, 0));
 
-	AddTexture(eType::BOARDHEALTH, new GameTexture("Resources/heal.png", 3, 1, 3));
+	//AddTexture(eType::BOARDHEALTH, new GameTexture("Resources/heal.png", 3, 1, 3));
 	AddTexture(eType::RENDERBBOX, new GameTexture("Resources/bbox.png")); // dùng để vẽ BBOX
 
 	//MAP
@@ -83,7 +83,7 @@ void TextureManager::LoadResource()
 	AddTexture(eType::THROWINGAXE, new GameTexture("Resources/weapon/3.png", 4, 1, 4));
 	AddTexture(eType::BOOMERANG, new GameTexture("Resources/weapon/4.png", 3, 1, 3));
 
-	//player
+	//SIMON
 	AddTexture(eType::SIMON, new GameTexture("Resources/simon.png", 8, 3, 24));
 	AddTexture(eType::SIMON_TRANS, new GameTexture("Resources/simon_trans.png", 8, 3, 24));
 	AddTexture(eType::SIMON_DEATH, new GameTexture("Resources/simondeath.png"));

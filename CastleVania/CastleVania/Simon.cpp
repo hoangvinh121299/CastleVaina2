@@ -41,6 +41,7 @@ void Simon::getBoundingBox(float &left, float &top, float &right, float &bottom)
 //PHƯƠNG THỨC UPDATE CHO SIMON
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	
 	//Các phương thức giới hạn camera trong tầm nhân vật
 	if (x < camera->getBoundaryLeft() - 16)
 		x = camera->getBoundaryLeft() - 16;
@@ -224,6 +225,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 		}
 	}
+	DebugOut(L"Simon đã được update về Sprite\n");
 #pragma endregion 
 #pragma endregion
 	GameObject::Update(dt);
@@ -281,18 +283,27 @@ void Simon::Render(Camera*camera)
 		if (direction == -1)
 		{
 			_sprite_death->Draw(pos.x, pos.y, 255);
+			
+
 		}
 		else
+		{
 			_sprite_death->DrawFlipX(pos.x, pos.y, 255);
+			
+		}
 	}
 	else
 	{
 		if (direction == -1)
 		{
 			objectSprite->Draw(pos.x, pos.y, alpha);
+			
 		}
 		else
+		{
 			objectSprite->DrawFlipX(pos.x, pos.y, alpha);
+			
+		}
 	}
 }
 void Simon::left()

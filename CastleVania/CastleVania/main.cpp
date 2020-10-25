@@ -1,13 +1,17 @@
 #include "debug.h"
 #include "Game.h"
 
-#include "Scence.h"
+#include "SceneManager.h"
 #include "SceneGame.h"
 #define WINDOW_CLASS_NAME L"CastleVania"
 #define MAIN_WINDOW_TITLE L"CastleVania"
-
 Game *game;
 SceneManager *sceneManager;
+#include "Simon.h"
+#include "define.h"
+#include "Camera.h"
+//Simon* simon;
+//Camera* camera;
 LRESULT CALLBACK WinProc(HWND hwnd, UINT message,WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -38,6 +42,7 @@ void Render()
 			d3dvv->ColorFill(backBuffer,NULL, D3DCOLOR_BACKGROUND);
 			spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 			sceneManager->Render();
+			/*simon->Render(camera);*/
 			spriteHandler->End();
 			d3dvv->EndScene();
 		}
@@ -96,7 +101,10 @@ int Run()
 	int done = 0;
 	DWORD frameStart = GetTickCount();
 	DWORD tickPerFrame = 1000 / MAX_FRAME_RATE;
-
+	/*camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
+	camera->SetPosition(0, 0);
+	simon = new Simon(camera);
+	simon->setPostion(SIMON_POSITION_DEFAULT);*/
 	while (!done)
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -108,7 +116,7 @@ int Run()
 		}
 
 		DWORD now = GetTickCount();
-
+		
 		// dt: the time between (beginning of last frame) and now
 		// this frame: the frame we are about to render
 		DWORD dt = now - frameStart;
@@ -125,7 +133,7 @@ int Run()
 			Render();
 		}
 		else
-			Sleep(tickPerFrame - dt);
+		Sleep(tickPerFrame - dt);
 	}
 
 	return 1;
@@ -142,9 +150,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	sceneManager->SetScene(new SceneGame());
 	
-
 	game->InitKeyboard();
-
 
 
 	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);

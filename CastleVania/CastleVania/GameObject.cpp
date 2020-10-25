@@ -140,6 +140,7 @@ void GameObject::renderBoundingBox(Camera *camera)
 		rect.bottom,
 		100
 	);
+	DebugOut(L"Render thành công boundingbox\n");
 }
 //AABB nâng cao
 LPCollisionEvent GameObject::sweptAABBEx(GameObject *coO)

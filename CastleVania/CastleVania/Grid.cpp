@@ -28,7 +28,7 @@ void Grid::reloadMapGrid()
 	
 	float x, y;
 	int objectID, objectType, objectDirection, objectHeight, objectWidth, brickModel, numberofObjects;
-	ifstream fileInfo(objectFilePath, ios::in);
+	/*ifstream fileInfo(objectFilePath, ios::in);
 	fileInfo >> numberofObjects;
 	for (int i=0;i<numberofObjects;i++)
 		for (int i = 0; i < numberofObjects; i++)
@@ -37,7 +37,7 @@ void Grid::reloadMapGrid()
 			fileInfo >> objectID >> objectType >> objectDirection >> x >> y >> objectWidth >> objectHeight >> brickModel;
 			insertObjectToGrid(objectID, objectType, objectDirection, x, y, objectWidth, objectHeight, brickModel);
 		}
-	fileInfo.close();
+	fileInfo.close();*/
 }
 GameObject * Grid::createNewGridObject(int objectType, float x, float y, float objectWidth, int objectHeight, int brickModel)
 {

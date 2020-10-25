@@ -6,6 +6,8 @@
 #include"GameSprite.h"
 #include "Grid.h"
 #include"Brick.h"
+#include "Simon.h"
+#include "debug.h"
 class SceneGame:public Scene
 {
 private:
@@ -13,6 +15,8 @@ private:
 	Grid *gridGame;
 	eType mapCurrent;
 	vector<GameObject*>listObject;
+	Simon *simon;
+
 public:
 	SceneGame();
 	~SceneGame();

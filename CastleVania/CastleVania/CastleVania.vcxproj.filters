@@ -149,9 +149,6 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Framework\Grid</Filter>
     </ClCompile>
-    <ClCompile Include="TODO_LIST.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
     <ClCompile Include="Brick.cpp">
       <Filter>Object\Ground</Filter>
     </ClCompile>
