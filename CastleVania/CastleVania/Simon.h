@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "debug.h"
 //CÁC THÔNG SỐ CƠ BẢN CỦA SIMON
-#define SIMON_POSITION_DEFAULT 0.0f,0.0f
+#define SIMON_POSITION_DEFAULT 50.0f,300.0f
 #define SIMON__BBOX_WIDTH 60
 #define SIMON_BBOX_HEIGHT 63
 #define SIMON_BBOX_SITTING_HEIGHT 45
@@ -51,7 +51,7 @@
 
 
 //ANI TIME ATTACK
-#define SIMON_TIME_COOLDOWN_ATTACKING 120 // THỜI GIAN HỒI LẠI  ĐÒN ĐÁNH CHO SIMON
+#define SIMON_TIME_ATTACK_COMPLETE 120 // THỜI GIAN CHẠY HẾT ANIMATION TẤN CÔNG CỦA SIMON
 
 #define SIMON_ANI_HURTING 8 //ANI KHI BỊ ĐÁNH
 #define SIMON_ANI_HIDE_FACE 9
@@ -145,6 +145,7 @@ public:
 	void right();
 	void left();
 
+	void attack();
 	void colissionWithBrick(const vector<LPGAMEOBJECT> *coObjects=NULL);
 	/*void Attack(eType typeWeapon);*/
 

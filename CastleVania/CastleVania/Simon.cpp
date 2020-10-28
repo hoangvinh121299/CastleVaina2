@@ -11,7 +11,7 @@ Simon::Simon(Camera *camera)
 //Khi Simon chết
 Simon::~Simon()
 {
-	SAFE_DELETE(_sprite_death);
+	/*SAFE_DELETE(_sprite_death);*/
 }
 void Simon::getBoundingBox(float &left, float &top, float &right, float &bottom)
 {
@@ -70,16 +70,16 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					{
 						objectSprite->SelectFrame(SIMON_ANI_SITTING_ATTACKING_BEGIN);
 						objectSprite->timeAccumulated = dt;
-						DebugOut(L"Simon is begin attacking/n ");
+						DebugOut(L"Simon is sitting attacking/n ");
 					}
 					
 					else
 					{
 						/* Update ani bình thường */
 						objectSprite->timeAccumulated += dt;
-						if (objectSprite->timeAccumulated >= SIMON_TIME_COOLDOWN_ATTACKING)
+						if (objectSprite->timeAccumulated >= SIMON_TIME_ATTACK_COMPLETE)
 						{
-							objectSprite->timeAccumulated -= SIMON_TIME_COOLDOWN_ATTACKING;
+							objectSprite->timeAccumulated -= SIMON_TIME_ATTACK_COMPLETE;
 							objectSprite->SelectFrame(objectSprite->getCurrentFrame() + 1);
 							DebugOut(L"Simon is cooldown/n");
 						}
@@ -87,9 +87,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						/* Update ani bình thường */
 						if (objectSprite->getCurrentFrame() > SIMON_ANI_SITTING_ATTACKING_END) // đã đi vượt qua frame cuối
 						{
+							
 							isAttacking = false;
 							objectSprite->SelectFrame(SIMON_ANI_SITTING);
-								DebugOut(L"Simon at sitting/n");
+								DebugOut(L"Simon at sitting\n");
 						}
 					}
 
@@ -97,8 +98,9 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				//Không đánh chỉ ngồi 
 				else
 				{
+					
 					objectSprite->SelectFrame(SIMON_ANI_SITTING);
-					DebugOut(L"Simon at sitting/n");
+					DebugOut(L"Simon at sitting\n");
 				}
 
 			}
@@ -117,9 +119,9 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					else
 					{
 						objectSprite->timeAccumulated += dt;
-						if (objectSprite->timeAccumulated >= SIMON_TIME_COOLDOWN_ATTACKING)
+						if (objectSprite->timeAccumulated >= SIMON_TIME_ATTACK_COMPLETE)
 						{
-							objectSprite->timeAccumulated -= SIMON_TIME_COOLDOWN_ATTACKING;
+							objectSprite->timeAccumulated -= SIMON_TIME_ATTACK_COMPLETE;
 							objectSprite->SelectFrame(objectSprite->getCurrentFrame() + 1);
 							DebugOut(L"Simon at cooldown\n");
 						}
@@ -162,7 +164,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							//Các trường hợp không làm gì cả 
 						else
 							{
-								objectSprite->SelectFrame(SIMON_ANI_IDLE);
+							objectSprite->SelectFrame(SIMON_ANI_IDLE);
 								DebugOut(L"Simon at SIMON_ANI_IDLE\n");
 							}
 					
@@ -171,14 +173,16 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		//Update toạ độ vị trí
 	GameObject::Update(dt);
 
-	//Update toạ độ đặc biệt chỉ dành cho Simon
-	/*if (isOnStair == false)
+//update toạ độ đặc biệt chỉ dành cho Simon
+	if (isOnStair == false)
 	{
 		if (isJumping == true)
 		{
-			dx = vx * dt;
-			dy = vy * dt;
-			vy += SIMON_GRAVITY_JUMPING * dt;
+			
+				dx = vx * dt;
+				dy = vy * dt;
+				vy += SIMON_GRAVITY_JUMPING * dt;
+			
 		}
 		else
 		{
@@ -189,9 +193,9 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else
 				vy += SIMON_GRAVITY * dt;
 		}
-	}*/
+	}
 
-	/*if (isOnStair == false)
+	if (isOnStair == false)
 	{
 		colissionWithBrick(coObjects);
 	}
@@ -199,17 +203,15 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 	}
-	if (isOnStair == true)
+
+	if (this->isAttacking)
 	{
-		
+		float vx, vy;
+		this->getSpeed(vx, vy);
+		this->setSpeed(0, vy);
+		return;
 	}
-	if (isProccessingOnStair == 3)
-	{
-		isProccessingOnStair = 0;
-		vx = 0;
-		vy = 0;
-		isWalking = false;
-	}*/
+
 }
 void Simon::Render(Camera*camera)
 {
@@ -226,13 +228,13 @@ void Simon::Render(Camera*camera)
 	if (direction == -1)
 	{
 		objectSprite->Draw(pos.x, pos.y, alpha);
-		/*objectSprite->DrawFrame(SIMON_ANI_IDLE, pos.x, pos.y, alpha);*/
-		DebugOut(L"Simon is render with current frame: %s\n", objectSprite->getCurrentFrame());
+		
+		
 	}
 	else
 	{
 		objectSprite->DrawFlipX(pos.x, pos.y, alpha);
-		DebugOut(L"Simon is render with current frame: %s\n", objectSprite->getCurrentFrame());
+		
 	}
 }
 void Simon::left()
@@ -243,19 +245,14 @@ void Simon::left()
 }
 void Simon::walking()
 {
-	if (isOnStair == true)
-	{
-		return;
-	}
 	if (isAttacking == true)
 		return;
-	vx = SIMON_WALKING_SPEED * direction;
 	isWalking = true;
+	vx = SIMON_WALKING_SPEED * direction;
+	
 }
 void Simon::sit()
 {
-	if (isOnStair == true)
-		return;
 	vx = 0;
 	isWalking=0;
 	if (isSitting == false)
@@ -383,4 +380,11 @@ void Simon::colissionWithBrick(const vector<LPGAMEOBJECT>* coObjects)
 	}
 	for (UINT i = 0; i < coEvents.size(); i++)
 		delete coEvents[i];
+}
+void Simon::attack()
+{
+	isAttacking = true;
+
+	objectSprite->SelectFrame(SIMON_ANI_IDLE);// Tấn công xong vào trạng thái nghỉ
+	objectSprite->ResetTime();
 }
