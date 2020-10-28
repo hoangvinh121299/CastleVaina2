@@ -16,7 +16,7 @@
 #define SIMON_VJUMP_HURT 0.2f // Vận tốc nhảy lên của SIMON nhảy lên khi chịu tổn thương
 #define PULL_UP_SIMON_AFTER_JUMPING 18.0f // KÉO SIMON LÊN 18PX SAU KHI NHẢY
 
-#define SIMON_GRAVITY 0.0f // Trọng lực kéo SIMON
+#define SIMON_GRAVITY 0.00000f // Trọng lực kéo SIMON
 #define SIMON_GRAVITY_JUMPING 0.001f // Trọng lực kéo SIMON lúc nhảy
 #define SIMON_GRAVITY_HURTING 0.001f // Trọng lực kéo simon xuống khi nhảy lên lúc chịu tổn thương
 
@@ -76,7 +76,7 @@
 #define SIMON_ANI_STAIR_GO_UP_END 13 // kẾT THỨC QUÁ TRÌNH ĐI LÊN
 
 #define SIMON_ANI_STAIR_GO_DOWN_BEGIN 10// Bắt đầu đi xuống
-#define SIMON_ANI_STAIR_GO_DOWN_UP 11//Kết thúc quá trình đi xuống
+#define SIMON_ANI_STAIR_GO_DOWN_END 11//Kết thúc quá trình đi xuống
 //Thông số mặc định của SIMON
 #define SIMON_DEFAULT_HEALTH 16
 #define SIMON_DEFAULT_HERTCOLLECT 5 //SỐ MÁU BAN ĐẦU CỦA SIMON

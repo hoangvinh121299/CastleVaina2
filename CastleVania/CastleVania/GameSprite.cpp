@@ -10,13 +10,14 @@ RECT GameSprite::getRectFrame(int idFrame)
 	res.left = (idFrame % texture->GetColumn())*texture->GetFrameWidth();
 	//Hiển thị vị trí biên trên của frame
 	//Số id của frame chia lấy số dư cho số cột của texture sau đó nhân cho chiều cao frame 
-	res.top = (idFrame %texture->GetColumn())*texture->GetFrameHeight();
+	res.top = (idFrame /texture->GetColumn())*texture->GetFrameHeight();
 	//Hiển thị bên phải
 	res.right = res.left + texture->GetFrameWidth();
 	//Hiển thị bên dưới
 	res.bottom = res.top + texture->GetFrameHeight();
 	return res;
-}GameSprite::GameSprite(GameTexture * Texture, DWORD timeAnimation)
+}
+GameSprite::GameSprite(GameTexture * Texture, DWORD timeAnimation)
 {
 	texture = Texture;
 	currentFrame = 0;
@@ -79,7 +80,7 @@ void GameSprite::DrawFrameFlipX(int idFrame, float X, float Y, int alpha, int R,
 	D3DXMATRIX AA, BB; //Khởi tạo 2 ma trận AA và BB
 	spriteHandler->GetTransform(&AA);// Chuyển sprite thành ma trận AA
 	//Khởi tạo ma trận -1 và truyền vào cho BB
-	D3DXMatrixTransformation2D(&BB, &D3DXVECTOR2(X, X), 0.0f, &D3DXVECTOR2(-1.0f, -1.0f), NULL, 0.0f, NULL);
+	D3DXMatrixTransformation2D(&BB, &D3DXVECTOR2(X, X), 0.0f, &D3DXVECTOR2(-1.0f, 1.0f), NULL, 0.0f, NULL);
 	D3DXMATRIX CC = AA * BB; //Đảo ngược ma trận AA bằng cách nhân AA cho ma trận -1
 	spriteHandler->SetTransform(&CC); //Chuyển ma trận CC về lại thành sprite
 	X -= texture->GetFrameWidth(); // Set lại tạo độ của X sau khi lật hình 

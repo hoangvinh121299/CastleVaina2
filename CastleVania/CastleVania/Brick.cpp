@@ -6,27 +6,27 @@ Brick::Brick(float X, float Y, int W, int H, int Model)
 	switch (Model)
 	{
 	case BRICK_MODEL_1:
-		objectTexture = TextureManager::GetInstance()->GetTexture(eType::TEX_BRICK_MODEL_1);
+		objectTexture = TextureManager::GetInstance()->GetTexture(objectType::TEX_BRICK_MODEL_1);
 		break;
 	case BRICK_MODEL_2:
-		objectTexture = TextureManager::GetInstance()->GetTexture(eType::TEX_BRICK_MODEL_2);
+		objectTexture = TextureManager::GetInstance()->GetTexture(objectType::TEX_BRICK_MODEL_2);
 		break;
 	case BRICK_MODEL_3:
-		objectTexture = TextureManager::GetInstance()->GetTexture(eType::TEX_BRICK_MODEL_3);
+		objectTexture = TextureManager::GetInstance()->GetTexture(objectType::TEX_BRICK_MODEL_3);
 		break;
 	case BRICK_MODEL_TRANSPARENT:
-		objectTexture = TextureManager::GetInstance()->GetTexture(eType::TEX_BRICK_TRANSPARENT);
+		objectTexture = TextureManager::GetInstance()->GetTexture(objectType::TEX_BRICK_TRANSPARENT);
 		break;
 	case BRICK_MODEL_3_3_32:
-		objectTexture = TextureManager::GetInstance()->GetTexture(eType::TEX_BRICK_MODEL_3_3_32);
+		objectTexture = TextureManager::GetInstance()->GetTexture(objectType::TEX_BRICK_MODEL_3_3_32);
 		break;
 	case BRICK_MODEL_3_4_32:
-		objectTexture = TextureManager::GetInstance()->GetTexture(eType::TEX_BRICK_MODEL_3_4_32);
+		objectTexture = TextureManager::GetInstance()->GetTexture(objectType::TEX_BRICK_MODEL_3_4_32);
 		break;
 	default:
 		DebugOut(L"[BRICK]: Get Texture failed\n");
 	}
-	objectType = eType::BRICK;
+	ObjectType = objectType::BRICK;
 	objectSprite = new GameSprite(objectTexture, 1000);
 	this->x = X;
 	this->y = Y;

@@ -13,10 +13,10 @@ class SceneGame:public Scene
 private:
 	Camera *camera;
 	Grid *gridGame;
-	eType mapCurrent;
+	objectType mapCurrent;
 	vector<GameObject*>listObject;
 	Simon *simon;
-
+	Brick* birck;
 public:
 	SceneGame();
 	~SceneGame();

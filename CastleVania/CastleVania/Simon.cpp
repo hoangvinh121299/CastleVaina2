@@ -2,10 +2,9 @@
 //Khởi tạo đối tuọng simon
 Simon::Simon(Camera *camera)
 {
-	objectTexture = TextureManager::GetInstance()->GetTexture(eType::SIMON);
+	objectTexture = TextureManager::GetInstance()->GetTexture(objectType::SIMON);
 	objectSprite = new GameSprite(objectTexture, 250);
-	_sprite_death = new GameSprite(TextureManager::GetInstance()->GetTexture(eType::SIMON_DEATH),250);
-	objectType = eType::SIMON;
+	ObjectType = objectType::SIMON;
 	this->camera = camera;
 	Init();
 }
@@ -46,107 +45,34 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (x < camera->getBoundaryLeft() - 16)
 		x = camera->getBoundaryLeft() - 16;
 	if (x + SIMON__BBOX_WIDTH > camera->getBoundaryRight() + SCREEN_WIDTH)
-		x += (float)(camera->getBoundaryRight() + SCREEN_WIDTH - SIMON__BBOX_WIDTH);
+		x = (float)(camera->getBoundaryRight() + SCREEN_WIDTH - SIMON__BBOX_WIDTH);
 
 #pragma region Update về Sprite
 	int index = objectSprite->getCurrentFrame();
-#pragma region Trên cầu thang
-	if (isOnStair)
-	{
-#pragma region Tấn công
-		if (isAttacking == true)
-		{
-#pragma region Xử lý ANI đánh trên cầu thang lúc đi lên
-			if (directionY == -1)
-			{
-				if (index < SIMON_ANI_UPSTAIR_BEGIN) //Nếu ANI sai
-				{
-					objectSprite->SelectFrame(SIMON_ANI_UPSTAIR_ATTACKING_BEGIN);
-					objectSprite->timeAccumulated = dt;
-				}
-				else
-				{
-					//ANI bình thường
-					objectSprite->timeAccumulated += dt;
-					if (objectSprite->timeAccumulated >= SIMON_TIME_COOLDOWN_ATTACKING)
-					{
-						objectSprite->timeAccumulated -= SIMON_TIME_COOLDOWN_ATTACKING;
-						objectSprite->SelectFrame(objectSprite->getCurrentFrame() + 1);
-					}
-					if (objectSprite->getCurrentFrame() > SIMON_ANI_UPSTAIR_ATTACKING_END)// ĐÃ đi vượt qua frame cuối của ani đánh cầu thang
-					{
-						isAttacking = false;
-						objectSprite->SelectFrame(SIMON_STAIR_STANDING_UP);
-					}
-				}
 
-			}
-#pragma endregion
-#pragma region ANI lúc đi xướng cầu thang đánh
-			else
-			{
-				if (index < SIMON_ANI_DOWNSTAIR_BEGIN) //Nếu ANI sai
-				{
-					objectSprite->SelectFrame(SIMON_ANI_DOWNSTAIR_ATTACKING_BEGIN);
-					objectSprite->timeAccumulated = dt;
-				}
-				else
-				{
-					//ANI bình thường
-					objectSprite->timeAccumulated += dt;
-					if (objectSprite->timeAccumulated >= SIMON_TIME_COOLDOWN_ATTACKING)
-					{
-						objectSprite->timeAccumulated -= SIMON_TIME_COOLDOWN_ATTACKING;
-						objectSprite->SelectFrame(objectSprite->getCurrentFrame() + 1);
-					}
-					if (objectSprite->getCurrentFrame() > SIMON_ANI_DOWNSTAIR_ATTACKING_END)// ĐÃ đi vượt qua frame cuối của ani đánh cầu thang
-					{
-						isAttacking = false;
-						objectSprite->SelectFrame(SIMON_STAIR_STANDING_DOWN);
-					}
-				}
-			}
-#pragma endregion
-		}
-
-#pragma endregion
-#pragma region Đi bình thường
-		else
-		{
-			if (isWalking == true)
-			{
-				if (isProccessingOnStair == 1) // Bước chân lên cầu thang set frame =12
-					if (vy < 0)//Đi lên
-						objectSprite->SelectFrame(SIMON_ANI_STAIR_GO_UP_BEGIN);
-					else
-						objectSprite->SelectFrame(SIMON_ANI_STAIR_GO_DOWN_BEGIN);
-			}
-		}
-	}
-#pragma endregion
-#pragma endregion
-#pragma region Các trường hợp khác
-	else
-	{
-#pragma region Bị tổn thương
-		if (isHurting == true)
+	//Bị thương
+		if (isHurting==true)
 		{
 			objectSprite->SelectFrame(SIMON_ANI_HURTING);
+			DebugOut(L"Simon at hurting");
 		}
-#pragma endregion
+
+		//Không bị thương
 		else
 		{
-#pragma region Ngồi
-			if (isSitting == true)
+			//Ngồi
+			if (isSitting==true)
 			{
-				//Ani ngồi đánh
-				if (isAttacking == true)
+				//Ngồi đánh 
+				if (isAttacking==true)
 				{
 					if (index < SIMON_ANI_SITTING_ATTACKING_BEGIN)//Sai ani
 					{
 						objectSprite->SelectFrame(SIMON_ANI_SITTING_ATTACKING_BEGIN);
-						objectSprite->timeAccumulated += dt;
+						objectSprite->timeAccumulated = dt;
+						DebugOut(L"Simon is begin attacking/n ");
 					}
+					
 					else
 					{
 						/* Update ani bình thường */
@@ -155,81 +81,98 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						{
 							objectSprite->timeAccumulated -= SIMON_TIME_COOLDOWN_ATTACKING;
 							objectSprite->SelectFrame(objectSprite->getCurrentFrame() + 1);
+							DebugOut(L"Simon is cooldown/n");
 						}
-						/* Update ani bình thường */
 
+						/* Update ani bình thường */
 						if (objectSprite->getCurrentFrame() > SIMON_ANI_SITTING_ATTACKING_END) // đã đi vượt qua frame cuối
 						{
 							isAttacking = false;
 							objectSprite->SelectFrame(SIMON_ANI_SITTING);
+								DebugOut(L"Simon at sitting/n");
 						}
 					}
 
 				}
+				//Không đánh chỉ ngồi 
 				else
-					objectSprite->SelectFrame(SIMON_ANI_SITTING);
-#pragma endregion
-			}
-			else 
-				if (isAttacking == true)
 				{
-#pragma region Đứng đánh
+					objectSprite->SelectFrame(SIMON_ANI_SITTING);
+					DebugOut(L"Simon at sitting/n");
+				}
+
+			}
+			//Không ngồi 
+			else 
+				//Đứng đánh 
+				if (isAttacking==true )
+				{
+
 					if (index < SIMON_ANI_STANDING_ATTACKING_BEGIN)
 					{
-						objectSprite->SelectFrame(SIMON_ANI_DOWNSTAIR_ATTACKING_BEGIN);
+						objectSprite->SelectFrame(SIMON_ANI_STANDING_ATTACKING_BEGIN);
 						objectSprite->timeAccumulated = dt;
+						DebugOut(L"Simon begin ani attacking standing\n");
 					}
 					else
 					{
 						objectSprite->timeAccumulated += dt;
 						if (objectSprite->timeAccumulated >= SIMON_TIME_COOLDOWN_ATTACKING)
 						{
-							objectSprite->timeAccumulated = SIMON_TIME_COOLDOWN_ATTACKING;
+							objectSprite->timeAccumulated -= SIMON_TIME_COOLDOWN_ATTACKING;
 							objectSprite->SelectFrame(objectSprite->getCurrentFrame() + 1);
+							DebugOut(L"Simon at cooldown\n");
 						}
 
 						if (objectSprite->getCurrentFrame() > SIMON_ANI_STANDING_ATTACKING_END)
 						{
 							isAttacking = false;
 							objectSprite->SelectFrame(SIMON_ANI_IDLE);
+							DebugOut(L"Simon at SIMON_ANI_IDLE\n");
 						}
 					}
-#pragma endregion
+
 				}
+			//Không đứng đánh 
 				else
-					if (isWalking == true)
+					//Đi bộ
+					if (isWalking==true)
 					{
+						//Không nhảy đi bộ
 						if (isJumping == false)
 						{
-							if (index < SIMON_ANI_WALKING_BEGIN || index >= SIMON_ANI_DOWNSTAIR_ATTACKING_END)
-							{
+							if (index < SIMON_ANI_WALKING_BEGIN || index >= SIMON_ANI_WALKING_END)
 								objectSprite->SelectFrame(SIMON_ANI_WALKING_BEGIN);
-								objectSprite->Update(dt);
-							}
-							else
-							{
-								objectSprite->SelectFrame(SIMON_ANI_JUMPING);
-							}
+
+							objectSprite->Update(dt);
 						}
 						else
 						{
-							if (isJumping == true)
-							{
-								objectSprite->SelectFrame(SIMON_ANI_JUMPING);
-							}
-							else
-							{
-								objectSprite->SelectFrame(SIMON_ANI_IDLE);
-							}
+							objectSprite->SelectFrame(SIMON_ANI_JUMPING);
 						}
 					}
+						//Các trường hợp khác 
+					else
+							//Nhảy
+						if (isJumping==true )
+							{
+								objectSprite->SelectFrame(SIMON_ANI_JUMPING);
+								DebugOut(L"Simon at SIMON_ANI_JUMPING\n");
+							}
+							//Các trường hợp không làm gì cả 
+						else
+							{
+								objectSprite->SelectFrame(SIMON_ANI_IDLE);
+								DebugOut(L"Simon at SIMON_ANI_IDLE\n");
+							}
+					
+			DebugOut(L"Simon đã được update về Sprite\n");
 		}
-	}
-	DebugOut(L"Simon đã được update về Sprite\n");
-#pragma endregion 
-#pragma endregion
+		//Update toạ độ vị trí
 	GameObject::Update(dt);
-	if (isOnStair == false)
+
+	//Update toạ độ đặc biệt chỉ dành cho Simon
+	/*if (isOnStair == false)
 	{
 		if (isJumping == true)
 		{
@@ -246,9 +189,9 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else
 				vy += SIMON_GRAVITY * dt;
 		}
-	}
+	}*/
 
-	if (isOnStair == false)
+	/*if (isOnStair == false)
 	{
 		colissionWithBrick(coObjects);
 	}
@@ -266,51 +209,37 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		vx = 0;
 		vy = 0;
 		isWalking = false;
-	}
+	}*/
 }
 void Simon::Render(Camera*camera)
 {
 	if (IS_DEBUG_RENDER_BBOX)
 		renderBoundingBox(camera);
-	D3DXVECTOR2 pos = camera->TransForm(x, y);
-	int alpha = 255;
-	if (untouchable == true)
-	{
-		alpha = 128;
-	}
-	if (isDead&&isCollisionWithGround)
-	{
-		if (direction == -1)
-		{
-			_sprite_death->Draw(pos.x, pos.y, 255);
-			
 
-		}
-		else
-		{
-			_sprite_death->DrawFlipX(pos.x, pos.y, 255);
-			
-		}
+	D3DXVECTOR2 pos = camera->TransForm(x, y);
+
+	int alpha = 255;
+
+	if (untouchable)
+		alpha = 128;
+
+	if (direction == -1)
+	{
+		objectSprite->Draw(pos.x, pos.y, alpha);
+		/*objectSprite->DrawFrame(SIMON_ANI_IDLE, pos.x, pos.y, alpha);*/
+		DebugOut(L"Simon is render with current frame: %s\n", objectSprite->getCurrentFrame());
 	}
 	else
 	{
-		if (direction == -1)
-		{
-			objectSprite->Draw(pos.x, pos.y, alpha);
-			
-		}
-		else
-		{
-			objectSprite->DrawFlipX(pos.x, pos.y, alpha);
-			
-		}
+		objectSprite->DrawFlipX(pos.x, pos.y, alpha);
+		DebugOut(L"Simon is render with current frame: %s\n", objectSprite->getCurrentFrame());
 	}
 }
 void Simon::left()
 {
 	if (isOnStair == true)
 		return;
-	direction = 1;
+	direction = -1;
 }
 void Simon::walking()
 {
@@ -321,7 +250,7 @@ void Simon::walking()
 	if (isAttacking == true)
 		return;
 	vx = SIMON_WALKING_SPEED * direction;
-	isWalking = 1;
+	isWalking = true;
 }
 void Simon::sit()
 {
@@ -331,13 +260,13 @@ void Simon::sit()
 	isWalking=0;
 	if (isSitting == false)
 		y = y + PULL_UP_SIMON_AFTER_SITTING;
-	isSitting = 1;
+	isSitting = true;
 }
 void Simon::resetSit()
 {
 	if (isSitting == true)
 	{
-		isSitting = 0;
+		isSitting = false;
 		y = y - PULL_UP_SIMON_AFTER_SITTING;
 	}
 }
@@ -365,33 +294,35 @@ void Simon::stop()
 	if (isHurting == true)
 		return;
 	vx = 0;
-	isWalking = 0;
+	isWalking = false;
 	if (isSitting == true)
 	{
-		isSitting = 0;
+		isSitting = false;
 		y = y - PULL_UP_SIMON_AFTER_SITTING;
 	}
 }
 void Simon::Init()
 {
+	
 	health = SIMON_DEFAULT_HEALTH;
 	lives = SIMON_DEFAULT_LIVES;
+	
 	Reset();
 }
 void Simon::Reset()
 {
 	direction = 1;
-	isSitting = 0;
-	isProccessingOnStair = 0;
-	isOnStair = 0;
-	isJumping = 0;
-	isWalking = 0;
-	isAttacking = 0;
-	isHurting = 0;
+	isSitting = false;
+	isProccessingOnStair = false;
+	isOnStair = false;
+	isJumping = false;
+	isWalking = false;
+	isAttacking = false;
+	isHurting = false;
 	vx = 0;
 	vy = 0;
 	isDead = false;
-
+	
 }
 void Simon::right()
 {

@@ -39,7 +39,7 @@ protected:
 	int id;
 
 	int direction; //Hướng của Object -1: trái, 1: phải
-	eType objectType; // Loại object
+	objectType ObjectType; // Loại object
 
 	float x;
 	float y;
@@ -87,7 +87,7 @@ public:
 	int getWidth();
 	int getHeight();
 
-	eType getType();
+	objectType getType();
 
 	//Render khung va chạm ra game
 	void renderBoundingBox(Camera *camera);

@@ -7,11 +7,7 @@
 #define MAIN_WINDOW_TITLE L"CastleVania"
 Game *game;
 SceneManager *sceneManager;
-#include "Simon.h"
-#include "define.h"
-#include "Camera.h"
-//Simon* simon;
-//Camera* camera;
+
 LRESULT CALLBACK WinProc(HWND hwnd, UINT message,WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -42,7 +38,6 @@ void Render()
 			d3dvv->ColorFill(backBuffer,NULL, D3DCOLOR_BACKGROUND);
 			spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 			sceneManager->Render();
-			/*simon->Render(camera);*/
 			spriteHandler->End();
 			d3dvv->EndScene();
 		}
@@ -126,9 +121,7 @@ int Run()
 			frameStart = now;
 
 			game->ProcessKeyboard();
-
-			//DebugOut(L"dt = %d , tickPerFrame = %d \n", dt, tickPerFrame);
-
+			//DebugOut(L"dt = %d , tickPerFrame = %d \n", dt, tickPerFrame)
 			Update(dt);
 			Render();
 		}

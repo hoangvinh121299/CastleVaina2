@@ -114,9 +114,9 @@ int GameObject::getWidth()
 {
 	return objectTexture->GetFrameWidth();
 }
-eType GameObject::getType()
+objectType GameObject::getType()
 {
-	return this->objectType;
+	return this->ObjectType;
 }
 
 void GameObject::renderBoundingBox(Camera *camera)
@@ -133,12 +133,12 @@ void GameObject::renderBoundingBox(Camera *camera)
 	Game::GetInstance()->Draw(
 		pos.x,
 		pos.y,
-		TextureManager::GetInstance()->GetTexture(eType::RENDERBBOX)->Texture,
+		TextureManager::GetInstance()->GetTexture(objectType::RENDERBBOX)->Texture,
 		rect.left,
 		rect.top,
 		rect.right,
 		rect.bottom,
-		100
+		255
 	);
 	DebugOut(L"Render thành công boundingbox\n");
 }

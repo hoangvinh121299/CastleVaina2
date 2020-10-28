@@ -9,14 +9,14 @@ private:
 	LPD3DXSPRITE spriteHandler;
 	int currentFrame;
 	int totalFrames;
+
 public:
 	GameSprite(GameTexture * Texture, DWORD timeAnimation);
-	virtual ~GameSprite(); //Phương thức thuần ảo
+	virtual ~GameSprite(); //Phương thức thuần ảod
 	GameTexture * texture;
 	//Quản lý thời gian chuyển giữa các sprite
 	DWORD timeAccumulated; // Thời gian chờ đã tích luỹ
 	DWORD timeAnimation; // Thời gian phải chời giữa các frame
-
 	RECT getRectFrame(int idFrame);
 	void Next();
 	void ResetTime();

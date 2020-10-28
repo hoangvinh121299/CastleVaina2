@@ -17,8 +17,8 @@ using namespace std;
 #define COLOR_BLACK D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 #define COLOR_KEY D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f)
 
-#define SCREEN_WIDTH 528
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH 600
+#define SCREEN_HEIGHT 500
 
 #define MAX_FRAME_RATE 90
 #define IS_DEBUG_RENDER_BBOX isDebug_RenderBBox
@@ -31,7 +31,7 @@ extern D3DCOLOR D3DCOLOR_BACKGROUND; // màu nền game
 extern int isDebug_Untouchable;
 extern int isDebug_RenderBBox;
 
-enum eType
+enum objectType
 {
 	// CÁC TRẠNG THÁI CỦA SIMON
 	SIMON = 01,

@@ -43,7 +43,7 @@ GameObject * Grid::createNewGridObject(int objectType, float x, float y, float o
 {
 	switch (objectType)
 	{
-	case eType::BRICK:
+	case objectType::BRICK:
 		return new Brick(x, y, objectWidth, objectHeight, brickModel);
 	}
 	return NULL;
