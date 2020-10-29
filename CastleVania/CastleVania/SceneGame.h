@@ -8,6 +8,8 @@
 #include"Brick.h"
 #include "Simon.h"
 #include "debug.h"
+#include "Ghost.h"
+#include "Panther.h"
 class SceneGame:public Scene
 {
 private:
@@ -17,6 +19,8 @@ private:
 	vector<GameObject*>listObject;
 	Simon *simon;
 	Brick* birck;
+
+	vector<GameObject*> listEnemy;
 public:
 	SceneGame();
 	~SceneGame();

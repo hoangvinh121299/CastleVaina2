@@ -142,13 +142,17 @@
     <ClCompile Include="GameSprite.cpp" />
     <ClCompile Include="GameTexture.cpp" />
     <ClCompile Include="Gametime.cpp" />
+    <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MorningStar.cpp" />
+    <ClCompile Include="Panther.cpp" />
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
@@ -161,12 +165,16 @@
     <ClInclude Include="GameSprite.h" />
     <ClInclude Include="GameTexture.h" />
     <ClInclude Include="Gametime.h" />
+    <ClInclude Include="Ghost.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="MorningStar.h" />
+    <ClInclude Include="Panther.h" />
     <ClInclude Include="Scence.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

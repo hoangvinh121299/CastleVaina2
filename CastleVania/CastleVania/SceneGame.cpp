@@ -9,6 +9,7 @@ SceneGame::~SceneGame()
 }
 void SceneGame::KeyState(BYTE *state)
 {
+	//Simon ngồi 
 	if (Game::GetInstance()->IsKeyDown(DIK_DOWN))
 	{
 		simon->sit();
@@ -17,6 +18,10 @@ void SceneGame::KeyState(BYTE *state)
 		if (Game::GetInstance()->IsKeyDown(DIK_LEFT))
 			simon->left();
 		return;
+	}
+	else
+	{
+		simon->stop();
 	}
 	//Đi qua phải
 	if (Game::GetInstance()->IsKeyDown(DIK_RIGHT))
@@ -38,8 +43,6 @@ void SceneGame::KeyState(BYTE *state)
 			simon->stop();
 		}
 	}
-	//Simon ngồi 
-	
 }
 
 void SceneGame::OnKeyDown(int keycode)
@@ -73,7 +76,7 @@ void SceneGame::OnKeyDown(int keycode)
 	}
 	//Simon tấn công bình thường
 	if (keycode == DIK_A)
-		simon->attack();
+		simon->attack(objectType::MORNINGSTAR);
 	
 }
 void SceneGame::OnKeyUp(int keycode)
@@ -83,6 +86,7 @@ void SceneGame::OnKeyUp(int keycode)
 void SceneGame::InitGame()
 {
 	camera->SetPosition(0, 0);
+	camera->SetBoundary(0, 2000);
 	camera->setAllowFollowSimon(true);
 	simon->setPostion(SIMON_POSITION_DEFAULT);
 	simon->Init();
@@ -91,30 +95,36 @@ void SceneGame::InitGame()
 void SceneGame::resetResources()
 {
 	gridGame->reloadMapGrid();
+	/*listEnemy.clear();*/
 }
 void SceneGame::Update(DWORD dt)
 {
 	gridGame->getListObjectFromMapGrid(listObject, camera);
 	simon->Update(dt, &listObject);
+	/*if (camera->AllowFollowSimon())
+		camera->SetPosition(simon->getX() - SCREEN_WIDTH / 2 + 30, camera->GetYCam());*/
 	camera->Update(dt);
-	//for (UINT i = 0; i < listObject.size(); i++)
-	//{
-	//	listObject[i]->Update(dt, &listObject);
-	//}
-	//DebugOut(L"Scenegame Update done\n");
+	for (UINT i = 0; i < listEnemy.size(); i++)
+	{
+		listEnemy[i]->Update(dt, &listObject);
+	}
+	DebugOut(L"Scenegame Update done\n");
 }
 void SceneGame::Render()
 {
 	simon->Render(camera);
-	/*for (UINT i = 0; i < listObject.size(); i++)
-		listObject[i]->Render(camera);*/
+	for (UINT i = 0; i < listEnemy.size(); i++)
+		listEnemy[i]->Render(camera);
 }
 void SceneGame::LoadResources()
 {
 	//TextureManager*_textureMangager = TextureManager::GetInstance();
+	
 	gridGame = new Grid();
 	camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 	simon = new Simon(camera);
+	listEnemy.push_back(new Ghost(50, 300, 1));
+	listEnemy.push_back(new Panther(500, 330, -1,simon));
 	InitGame();
 	DebugOut(L"SceneGame Loadresources done\n");
 }

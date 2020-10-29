@@ -99,11 +99,11 @@ void TextureManager::LoadResource()
 	AddTexture(objectType::EFFECT_MONEY_400, new GameTexture("Resources/other/effect400.png", 2, 1, 2));
 
 	//enemy
-	AddTexture(objectType::GHOST, new GameTexture("Resources/enemy/1.png", 2, 1, 2));
-	AddTexture(objectType::PANTHER, new GameTexture("Resources/enemy/2.png", 4, 1, 4));
+	AddTexture(objectType::GHOST, new GameTexture("Resources/Enemy/1.png", 2, 1, 2));
+	AddTexture(objectType::PANTHER, new GameTexture("Resources/Enemy/2.png", 4, 1, 4));
 
-	AddTexture(objectType::BAT, new GameTexture("Resources/enemy/0.png", 4, 1, 4));
-	AddTexture(objectType::FISHMEN, new GameTexture("Resources/enemy/3.png", 3, 1, 3));
+	AddTexture(objectType::BAT, new GameTexture("Resources/Enenmy/0.png", 4, 1, 4));
+	AddTexture(objectType::FISHMEN, new GameTexture("Resources/Enemy/3.png", 3, 1, 3));
 
 	//boss
 	AddTexture(objectType::PHANTOMBAT, new GameTexture("Resources/boss/0.png", 3, 1, 3));

@@ -3,6 +3,8 @@
 
 #include "GameObject.h"
 #include "debug.h"
+#include "Weapon.h"
+#include "MorningStar.h"
 //CÁC THÔNG SỐ CƠ BẢN CỦA SIMON
 #define SIMON_POSITION_DEFAULT 50.0f,300.0f
 #define SIMON__BBOX_WIDTH 60
@@ -126,6 +128,8 @@ public:
 	bool isCollisionWithGround= false; // Đang va chạm với đất theo trục Y 
 	DWORD timewWaitAfterDeath; // Thời gian chờ hồi sinh sau khi chết
 	
+	unordered_map<objectType, Weapon*> mapWeapon;
+
 	Simon(Camera *camera);
 	~Simon();
 
@@ -145,10 +149,9 @@ public:
 	void right();
 	void left();
 
-	void attack();
+	void attack(objectType typeWeapon);
 	void colissionWithBrick(const vector<LPGAMEOBJECT> *coObjects=NULL);
-	/*void Attack(eType typeWeapon);*/
-
+	bool isUsingWeapon(objectType typeWeapon);
 	void Init(); // Khởi tạo lại các trạng thái, Heartcollect, health, lives, score
 	void Reset();//Khởi tạo lại các trạng thái
 

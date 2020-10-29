@@ -5,6 +5,7 @@ Simon::Simon(Camera *camera)
 	objectTexture = TextureManager::GetInstance()->GetTexture(objectType::SIMON);
 	objectSprite = new GameSprite(objectTexture, 250);
 	ObjectType = objectType::SIMON;
+	mapWeapon[objectType::MORNINGSTAR] = new MorningStar();
 	this->camera = camera;
 	Init();
 }
@@ -170,10 +171,23 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					
 			DebugOut(L"Simon đã được update về Sprite\n");
 		}
-		//Update toạ độ vị trí
-	GameObject::Update(dt);
-
-//update toạ độ đặc biệt chỉ dành cho Simon
+		
+		//Update về vũ khí cho Simon
+		GameObject::Update(dt);
+		for (auto& objWeapon : mapWeapon)
+		{
+			if (objWeapon.second->getFinish() == false) // vũ khi này chưa kết thúc thì update
+			{
+				if (objWeapon.second->getType() == objectType::MORNINGSTAR)
+				{
+					objWeapon.second->setPostion(this->x, this->y);
+					objWeapon.second->setSpeed(vx, vy); // set vận tốc để kt va chạm
+					objWeapon.second->updatePositionWithSimon();
+				}
+				objWeapon.second->Update(dt, coObjects);
+			}
+		}
+//update trạng thái riêng của Simon
 	if (isOnStair == false)
 	{
 		if (isJumping == true)
@@ -202,8 +216,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	else
 	{
 		x += dx;
+		
 	}
 
+	//Trong trạng thái tấn công
 	if (this->isAttacking)
 	{
 		float vx, vy;
@@ -211,7 +227,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		this->setSpeed(0, vy);
 		return;
 	}
-
 }
 void Simon::Render(Camera*camera)
 {
@@ -236,10 +251,19 @@ void Simon::Render(Camera*camera)
 		objectSprite->DrawFlipX(pos.x, pos.y, alpha);
 		
 	}
+	for (auto& objWeapon : mapWeapon)
+	{
+		if (objWeapon.second->getFinish() == false) // vũ khi này chưa kết thúc thì render
+		{
+			objWeapon.second->Render(camera);
+		}
+	}
 }
 void Simon::left()
 {
 	if (isOnStair == true)
+		return;
+	if (isAttacking == true)
 		return;
 	direction = -1;
 }
@@ -247,14 +271,19 @@ void Simon::walking()
 {
 	if (isAttacking == true)
 		return;
+	if (isSitting == true)
+		return;
 	isWalking = true;
 	vx = SIMON_WALKING_SPEED * direction;
 	
 }
 void Simon::sit()
 {
+	
 	vx = 0;
 	isWalking=0;
+	if (isAttacking == true)
+		return;
 	if (isSitting == false)
 		y = y + PULL_UP_SIMON_AFTER_SITTING;
 	isSitting = true;
@@ -325,6 +354,8 @@ void Simon::right()
 {
 	if (isOnStair == true)
 		return;
+	if (isAttacking == true)
+		return;
 	direction = 1;
 }
 void Simon::colissionWithBrick(const vector<LPGAMEOBJECT>* coObjects)
@@ -381,10 +412,23 @@ void Simon::colissionWithBrick(const vector<LPGAMEOBJECT>* coObjects)
 	for (UINT i = 0; i < coEvents.size(); i++)
 		delete coEvents[i];
 }
-void Simon::attack()
+void Simon::attack(objectType typeWeapon)
 {
-	isAttacking = true;
+	if (mapWeapon[typeWeapon]->getFinish()) //Chờ đến khi render hết tất cả frame của vũ khí thì mới được tấn công tiếp 
+	{
+		isAttacking = true;
+		objectSprite->SelectFrame(SIMON_ANI_IDLE);
+		objectSprite->ResetTime();
 
-	objectSprite->SelectFrame(SIMON_ANI_IDLE);// Tấn công xong vào trạng thái nghỉ
-	objectSprite->ResetTime();
+		mapWeapon[typeWeapon]->attack(this->x, this->y, this->direction);
+	}
+}
+bool Simon::isUsingWeapon(objectType typeWeapon)
+{
+	if (this->mapWeapon.find(typeWeapon) != this->mapWeapon.end())
+	{
+		if (this->mapWeapon[typeWeapon]->getFinish() == false)
+			return true;
+	}
+	return false;
 }

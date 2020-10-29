@@ -49,9 +49,6 @@
     <Filter Include="Framework\Sound">
       <UniqueIdentifier>{bdf28a17-0264-4fa7-bfce-2cacc380e3a9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework\Scene">
-      <UniqueIdentifier>{84b02301-46e6-455f-b6b8-867266fdf656}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework\Animation">
       <UniqueIdentifier>{9b77e8ab-1b04-4781-99a9-6ee03389874b}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,9 @@
     </Filter>
     <Filter Include="Object\Player">
       <UniqueIdentifier>{20df09b2-29d8-4723-bd9b-067296d8b946}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Scene">
+      <UniqueIdentifier>{84b02301-46e6-455f-b6b8-867266fdf656}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -90,9 +90,6 @@
     <ClInclude Include="Scence.h">
       <Filter>Framework\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Framework\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Gametime.h">
       <Filter>Framework\GameTime</Filter>
     </ClInclude>
@@ -110,6 +107,21 @@
     </ClInclude>
     <ClInclude Include="SceneGame.h">
       <Filter>Framework\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="MorningStar.h">
+      <Filter>Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Framework\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Ghost.h">
+      <Filter>Object\Enenmy</Filter>
+    </ClInclude>
+    <ClInclude Include="Panther.h">
+      <Filter>Object\Enenmy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +175,18 @@
     </ClCompile>
     <ClCompile Include="SceneGame.cpp">
       <Filter>Framework\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="MorningStar.cpp">
+      <Filter>Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Ghost.cpp">
+      <Filter>Object\Enenmy</Filter>
+    </ClCompile>
+    <ClCompile Include="Panther.cpp">
+      <Filter>Object\Enenmy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

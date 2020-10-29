@@ -138,7 +138,7 @@ void GameObject::renderBoundingBox(Camera *camera)
 		rect.top,
 		rect.right,
 		rect.bottom,
-		255
+		100
 	);
 	DebugOut(L"Render thành công boundingbox\n");
 }
