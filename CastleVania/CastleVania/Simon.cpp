@@ -227,6 +227,16 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		this->setSpeed(0, vy);
 		return;
 	}
+	if (y > 300)
+	{
+		if (isSitting)
+			return;
+		y = 300;
+		vy = 0;
+		isJumping = false;
+		stop();
+
+	}
 }
 void Simon::Render(Camera*camera)
 {

@@ -86,6 +86,7 @@ void Ghost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void Ghost::Render(Camera* camera)
 {
 	D3DXVECTOR2 pos = camera->TransForm(x, y);
+
 	if (direction == -1)
 		objectSprite->Draw(pos.x, pos.y);
 	else

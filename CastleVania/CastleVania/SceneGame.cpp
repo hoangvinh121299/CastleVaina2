@@ -58,7 +58,7 @@ void SceneGame::OnKeyDown(int keycode)
 	}
 
 	//SIMON nhảy 
-	if (keycode == DIK_SPACE && simon->isOnStair==false)
+	if (keycode == DIK_SPACE && simon->isOnStair==false&&simon->isJumping==false)
 	{
 		//Nếu vừa nhảy vừa đi thì nhảy 1 đoạn nhỏ theo vx
 		if (Game::GetInstance()->IsKeyDown(DIK_LEFT) || Game::GetInstance()->IsKeyDown(DIK_RIGHT))
@@ -125,6 +125,7 @@ void SceneGame::LoadResources()
 	simon = new Simon(camera);
 	listEnemy.push_back(new Ghost(50, 300, 1));
 	listEnemy.push_back(new Panther(500, 330, -1,simon));
+	listEnemy.push_back(new Bat(200, 100, 1));
 	InitGame();
 	DebugOut(L"SceneGame Loadresources done\n");
 }

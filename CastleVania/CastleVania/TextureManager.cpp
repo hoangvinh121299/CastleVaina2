@@ -101,8 +101,7 @@ void TextureManager::LoadResource()
 	//enemy
 	AddTexture(objectType::GHOST, new GameTexture("Resources/Enemy/1.png", 2, 1, 2));
 	AddTexture(objectType::PANTHER, new GameTexture("Resources/Enemy/2.png", 4, 1, 4));
-
-	AddTexture(objectType::BAT, new GameTexture("Resources/Enenmy/0.png", 4, 1, 4));
+	AddTexture(objectType::BAT, new GameTexture("Resources/Enemy/0.png", 4, 1, 4));
 	AddTexture(objectType::FISHMEN, new GameTexture("Resources/Enemy/3.png", 3, 1, 3));
 
 	//boss

@@ -10,6 +10,7 @@
 #include "debug.h"
 #include "Ghost.h"
 #include "Panther.h"
+#include "Bat.h"
 class SceneGame:public Scene
 {
 private:

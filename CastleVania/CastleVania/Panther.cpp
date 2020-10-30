@@ -51,7 +51,14 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else
 		vy += PANTHER_GRAVITY;
+	if (y>330)
+	{
+		y = 330;
+		vy = 0;
+		isJumping = false;
+		run();
 
+	}
 	float distanceLimit; //Khoảng cách để panther bắt đầu tấn công simon
 	if (direction == 1)
 		distanceLimit = 85;

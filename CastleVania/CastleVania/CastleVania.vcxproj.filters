@@ -123,6 +123,9 @@
     <ClInclude Include="Panther.h">
       <Filter>Object\Enenmy</Filter>
     </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>Object\Enenmy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSprite.cpp">
@@ -186,6 +189,9 @@
       <Filter>Object\Enenmy</Filter>
     </ClCompile>
     <ClCompile Include="Panther.cpp">
+      <Filter>Object\Enenmy</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
       <Filter>Object\Enenmy</Filter>
     </ClCompile>
   </ItemGroup>

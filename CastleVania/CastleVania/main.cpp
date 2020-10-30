@@ -32,7 +32,7 @@ void Render()
 {
 	LPDIRECT3DDEVICE9 d3dvv = game->GetDirect3DDevice();
 	LPDIRECT3DSURFACE9 backBuffer = game->GetBackBuffer();
-	LPD3DXSPRITE spriteHandler = game->GetSpriteHandler();\
+	LPD3DXSPRITE spriteHandler = game->GetSpriteHandler();
 		if (d3dvv->BeginScene())
 		{
 			d3dvv->ColorFill(backBuffer,NULL, D3DCOLOR_BACKGROUND);
@@ -144,7 +144,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	sceneManager->SetScene(new SceneGame());
 	
 	game->InitKeyboard();
-
 
 	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
