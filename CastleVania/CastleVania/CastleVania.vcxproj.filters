@@ -126,6 +126,12 @@
     <ClInclude Include="Bat.h">
       <Filter>Object\Enenmy</Filter>
     </ClInclude>
+    <ClInclude Include="Fishmen.h">
+      <Filter>Object\Enenmy</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBall.h">
+      <Filter>Object\Weapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSprite.cpp">
@@ -193,6 +199,12 @@
     </ClCompile>
     <ClCompile Include="Bat.cpp">
       <Filter>Object\Enenmy</Filter>
+    </ClCompile>
+    <ClCompile Include="Fishmen.cpp">
+      <Filter>Object\Enenmy</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBall.cpp">
+      <Filter>Object\Weapon</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

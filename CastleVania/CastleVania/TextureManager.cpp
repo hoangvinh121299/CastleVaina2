@@ -76,10 +76,10 @@ void TextureManager::LoadResource()
 
 	// Weapon
 	AddTexture(objectType::DAGGER, new GameTexture("Resources/weapon/1.png"));
-	AddTexture(objectType::MORNINGSTAR, new GameTexture("Resources/weapon/morningstar.png", 4, 3, 12));
+	AddTexture(objectType::MORNINGSTAR, new GameTexture("Resources/Weapon/morningstar.png", 4, 3, 12));
 	AddTexture(objectType::HOLYWATER, new GameTexture("Resources/weapon/2.png", 4, 1, 4));
 	AddTexture(objectType::STOPWATCH, new GameTexture("Resources/item/5.png"));
-	AddTexture(objectType::FIREBALL, new GameTexture("Resources/weapon/fireball.png"));
+	AddTexture(objectType::FIREBALL, new GameTexture("Resources/Weapon/fireball.png",1,1,1));
 	AddTexture(objectType::THROWINGAXE, new GameTexture("Resources/weapon/3.png", 4, 1, 4));
 	AddTexture(objectType::BOOMERANG, new GameTexture("Resources/weapon/4.png", 3, 1, 3));
 
@@ -98,7 +98,7 @@ void TextureManager::LoadResource()
 	AddTexture(objectType::EFFECT_MONEY_1000, new GameTexture("Resources/other/effect1000.png", 2, 1, 2));
 	AddTexture(objectType::EFFECT_MONEY_400, new GameTexture("Resources/other/effect400.png", 2, 1, 2));
 
-	//enemy
+	//Enemy
 	AddTexture(objectType::GHOST, new GameTexture("Resources/Enemy/1.png", 2, 1, 2));
 	AddTexture(objectType::PANTHER, new GameTexture("Resources/Enemy/2.png", 4, 1, 4));
 	AddTexture(objectType::BAT, new GameTexture("Resources/Enemy/0.png", 4, 1, 4));

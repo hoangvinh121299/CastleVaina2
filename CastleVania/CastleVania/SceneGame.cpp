@@ -108,6 +108,13 @@ void SceneGame::Update(DWORD dt)
 	{
 		listEnemy[i]->Update(dt, &listObject);
 	}
+	for (UINT i = 0; i < listWeaponOfEnemy.size(); i++)
+	{
+		if (listWeaponOfEnemy[i]->getFinish() == false)
+		{
+			listWeaponOfEnemy[i]->Update(dt, &listObject);
+		}
+	}
 	DebugOut(L"Scenegame Update done\n");
 }
 void SceneGame::Render()
@@ -115,6 +122,8 @@ void SceneGame::Render()
 	simon->Render(camera);
 	for (UINT i = 0; i < listEnemy.size(); i++)
 		listEnemy[i]->Render(camera);
+	for (UINT i = 0; i < listWeaponOfEnemy.size(); i++)
+		listWeaponOfEnemy[i]->Render(camera);
 }
 void SceneGame::LoadResources()
 {
@@ -126,6 +135,7 @@ void SceneGame::LoadResources()
 	listEnemy.push_back(new Ghost(50, 300, 1));
 	listEnemy.push_back(new Panther(500, 330, -1,simon));
 	listEnemy.push_back(new Bat(200, 100, 1));
+	listEnemy.push_back(new Fishmen(50, 300, 1, simon, &listWeaponOfEnemy, camera));
 	InitGame();
 	DebugOut(L"SceneGame Loadresources done\n");
 }

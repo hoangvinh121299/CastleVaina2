@@ -11,6 +11,7 @@
 #include "Ghost.h"
 #include "Panther.h"
 #include "Bat.h"
+#include "Fishmen.h"
 class SceneGame:public Scene
 {
 private:
@@ -22,6 +23,7 @@ private:
 	Brick* birck;
 
 	vector<GameObject*> listEnemy;
+	vector<Weapon*> listWeaponOfEnemy;
 public:
 	SceneGame();
 	~SceneGame();

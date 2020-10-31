@@ -129,7 +129,7 @@ typedef D3DXVECTOR2 GVector2;
 
 #ifndef CHECK_OBJECT_IN_CAMERA // Kiểm tra GameObject có nằm trong camera ko?
 #define CHECK_OBJECT_IN_CAMERA(obj) \
-checkObjectInCamera(obj->GetX(), obj->GetY(), (float)obj->GetWidth(),  (float)obj->GetHeight())
+checkObjectInCamera(obj->getX(), obj->getY(), (float)obj->getWidth(),  (float)obj->getHeight())
 #endif
 
 
