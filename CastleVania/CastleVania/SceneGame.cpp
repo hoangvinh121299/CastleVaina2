@@ -99,7 +99,7 @@ void SceneGame::resetResources()
 }
 void SceneGame::Update(DWORD dt)
 {
-	gridGame->getListObjectFromMapGrid(listObject, camera);
+	
 	simon->Update(dt, &listObject);
 	/*if (camera->AllowFollowSimon())
 		camera->SetPosition(simon->getX() - SCREEN_WIDTH / 2 + 30, camera->GetYCam());*/

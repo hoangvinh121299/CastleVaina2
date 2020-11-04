@@ -132,6 +132,9 @@
     <ClInclude Include="FireBall.h">
       <Filter>Object\Weapon</Filter>
     </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Framework\Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSprite.cpp">
@@ -205,6 +208,9 @@
     </ClCompile>
     <ClCompile Include="FireBall.cpp">
       <Filter>Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Framework\Map</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

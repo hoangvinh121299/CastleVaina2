@@ -339,10 +339,10 @@ void Simon::stop()
 }
 void Simon::Init()
 {
-	
+	/*
 	health = SIMON_DEFAULT_HEALTH;
 	lives = SIMON_DEFAULT_LIVES;
-	
+	*/
 	Reset();
 }
 void Simon::Reset()
