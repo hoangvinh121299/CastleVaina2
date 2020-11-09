@@ -5,7 +5,7 @@ SceneGame::SceneGame()
 }
 SceneGame::~SceneGame()
 {
-
+	SAFE_DELETE(tileMap);
 }
 void SceneGame::KeyState(BYTE *state)
 {
@@ -85,10 +85,7 @@ void SceneGame::OnKeyUp(int keycode)
 }
 void SceneGame::InitGame()
 {
-	camera->SetPosition(0, 0);
-	camera->SetBoundary(0, 2000);
-	camera->setAllowFollowSimon(true);
-	simon->setPostion(SIMON_POSITION_DEFAULT);
+	loadMap(objectType::MAP1);
 	simon->Init();
 	DebugOut(L"InitGame done\n");
 }
@@ -101,8 +98,11 @@ void SceneGame::Update(DWORD dt)
 {
 	
 	simon->Update(dt, &listObject);
-	/*if (camera->AllowFollowSimon())
-		camera->SetPosition(simon->getX() - SCREEN_WIDTH / 2 + 30, camera->GetYCam());*/
+	//Camera chạy theo Simon
+	if (camera->AllowFollowSimon())
+		camera->SetPosition(simon->getX() - SCREEN_WIDTH / 2 + 30, camera->GetYCam());
+
+
 	camera->Update(dt);
 	for (UINT i = 0; i < listEnemy.size(); i++)
 	{
@@ -119,6 +119,7 @@ void SceneGame::Update(DWORD dt)
 }
 void SceneGame::Render()
 {
+	tileMap->drawMap(camera);
 	simon->Render(camera);
 	for (UINT i = 0; i < listEnemy.size(); i++)
 		listEnemy[i]->Render(camera);
@@ -131,6 +132,7 @@ void SceneGame::LoadResources()
 	
 	gridGame = new Grid();
 	camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
+	tileMap = new Map();
 	simon = new Simon(camera);
 	listEnemy.push_back(new Ghost(50, 300, 1));
 	listEnemy.push_back(new Panther(500, 330, -1,simon));
@@ -138,4 +140,23 @@ void SceneGame::LoadResources()
 	listEnemy.push_back(new Fishmen(50, 300, 1, simon, &listWeaponOfEnemy, camera));
 	InitGame();
 	DebugOut(L"SceneGame Loadresources done\n");
+}
+
+//Loadmap (Background)
+void SceneGame::loadMap(objectType mapCurrent)
+{
+	this->mapCurrent = mapCurrent;
+	switch (mapCurrent)
+	{
+	case objectType::MAP1:
+		tileMap->loadMap(objectType::MAP1);
+		camera->setAllowFollowSimon(true);
+		camera->SetBoundary(0.0f, (float)(tileMap->getMapWidth() - camera->GetWidth())); //set biên camera dựa vào kích thước map
+		camera->setBoundaryBackup(camera->getBoundaryLeft(), camera->getBoundaryRight()); // backup lại biên
+		camera->SetPosition(0, 0);
+		simon->setPostion(SIMON_POSITION_DEFAULT);
+		break;
+	default:
+		break;
+	}
 }

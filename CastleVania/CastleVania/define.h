@@ -23,7 +23,7 @@ using namespace std;
 #define MAX_FRAME_RATE 90
 #define IS_DEBUG_RENDER_BBOX isDebug_RenderBBox
 
-#define COLOR_BACKGROUND_DEFAULT D3DCOLOR_XRGB(192, 192, 192) // Màu đen
+#define COLOR_BACKGROUND_DEFAULT D3DCOLOR_XRGB(0,0,0) // Màu đen
 #define TIME_LIMIT_WAIT_RESET_GAME 300 //Thời gian vẽ màn màu đen khi reset game
 
 extern D3DCOLOR D3DCOLOR_BACKGROUND; // màu nền game

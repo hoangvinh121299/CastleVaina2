@@ -14,7 +14,7 @@ void Map::loadMap(objectType type)
 	switch (type)
 	{
 	case objectType::MAP1:
-		readMapTxt((char*)"Resources/map/readfile_map_1.txt");
+		readMapTxt((char*)"Resources/Map/Map_1/readfile_map_1.txt");
 		break;
 	case objectType::MAP2:
 		readMapTxt((char*)"Resources/map/readfile_map_2.txt");
@@ -24,6 +24,8 @@ void Map::loadMap(objectType type)
 		return;
 		break;
 	}
+	_texture = TextureManager::GetInstance()->GetTexture(type);
+	_sprite = new GameSprite(_texture, 100);
 }
 
 void Map::readMapTxt(char* filename)
@@ -31,10 +33,8 @@ void Map::readMapTxt(char* filename)
 	ifstream inp(filename, ios::in);
 	inp >> rowMap >> columnMap >> columnTile >> rowTile >> totalTiles >> heightBoard;
 	for (int i = 0; i < rowMap; i++)
-	{
 		for (int j = 0; j < columnMap; j++)
 			inp >> titleMap[i][j];
-	}
 	inp.close();
 }
 void Map::drawMap(Camera* camera)

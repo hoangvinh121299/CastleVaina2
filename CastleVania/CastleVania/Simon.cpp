@@ -290,8 +290,11 @@ void Simon::walking()
 void Simon::sit()
 {
 	
+		
 	vx = 0;
 	isWalking=0;
+	if (isJumping)
+		return;
 	if (isAttacking == true)
 		return;
 	if (isSitting == false)
@@ -358,6 +361,7 @@ void Simon::Reset()
 	vx = 0;
 	vy = 0;
 	isDead = false;
+	
 	
 }
 void Simon::right()

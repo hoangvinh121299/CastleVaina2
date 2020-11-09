@@ -12,6 +12,7 @@
 #include "Panther.h"
 #include "Bat.h"
 #include "Fishmen.h"
+#include "Map.h"
 class SceneGame:public Scene
 {
 private:
@@ -22,8 +23,10 @@ private:
 	Simon *simon;
 	Brick* birck;
 
+	Map* tileMap;
 	vector<GameObject*> listEnemy;
 	vector<Weapon*> listWeaponOfEnemy;
+
 public:
 	SceneGame();
 	~SceneGame();
@@ -38,7 +41,7 @@ public:
 	
 	void Update(DWORD dt);
 	void Render();
-
+	void loadMap(objectType mapCurrent);
 };
 
 #endif
