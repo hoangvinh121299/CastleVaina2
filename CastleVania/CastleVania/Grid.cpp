@@ -22,13 +22,11 @@ void Grid::reloadMapGrid()
 	//Reset giá trị của vector chưa Grid về lại mảng rỗng
 	for (int i = 0; i < GRID_MAP_CELL_MAX_ROW; i++)
 	{
-		for (int j = 0; j < GRID_MAP_CELL_MAX_COLLUM; j++)
-			mapCells[i][j].clear();
+		for (int j = 0; j < GRID_MAP_CELL_MAX_COLLUM; j++)			mapCells[i][j].clear();
 	}
-	
 	float x, y;
 	int objectID, objectType, objectDirection, objectHeight, objectWidth, brickModel, numberofObjects;
-	/*ifstream fileInfo(objectFilePath, ios::in);
+	ifstream fileInfo(objectFilePath, ios::in);
 	fileInfo >> numberofObjects;
 	for (int i=0;i<numberofObjects;i++)
 		for (int i = 0; i < numberofObjects; i++)
@@ -37,7 +35,7 @@ void Grid::reloadMapGrid()
 			fileInfo >> objectID >> objectType >> objectDirection >> x >> y >> objectWidth >> objectHeight >> brickModel;
 			insertObjectToGrid(objectID, objectType, objectDirection, x, y, objectWidth, objectHeight, brickModel);
 		}
-	fileInfo.close();*/
+	fileInfo.close();
 }
 GameObject * Grid::createNewGridObject(int objectType, float x, float y, float objectWidth, int objectHeight, int brickModel)
 {
@@ -45,6 +43,8 @@ GameObject * Grid::createNewGridObject(int objectType, float x, float y, float o
 	{
 	case objectType::BRICK:
 		return new Brick(x, y, objectWidth, objectHeight, brickModel);
+	case objectType::OBJECT_HIDDEN:
+		return new HiddenObject(x, y, objectWidth, objectHeight);
 	}
 	return NULL;
 }
@@ -76,7 +76,7 @@ void Grid::getListObjectFromMapGrid(vector <GameObject*>  &listObject, Camera*ca
 	{
 		listObject.push_back( x.second);
 	}
-}
+ }
 void Grid::insertObjectToGrid(int objectID, int ObjectTye, int objectDirection, float x, float y, int objectWidth, int objectHeight, int brickModel)
 {
 	int top = (int)(y / GRID_CELL_HEIGHT);

@@ -13,6 +13,7 @@
 #include "Bat.h"
 #include "Fishmen.h"
 #include "Map.h"
+#include "HiddenObject.h"
 class SceneGame:public Scene
 {
 private:
@@ -42,6 +43,8 @@ public:
 	void Update(DWORD dt);
 	void Render();
 	void loadMap(objectType mapCurrent);
+	void checkCollision();
+	void checkCollisionSimonWithHiddenObject();
 };
 
 #endif

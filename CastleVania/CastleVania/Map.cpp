@@ -9,22 +9,22 @@ Map::~Map()
 	SAFE_DELETE(_sprite);
 }
 
-void Map::loadMap(objectType type)
+void Map::loadMap(objectType mapType)
 {
-	switch (type)
+	switch (mapType)
 	{
 	case objectType::MAP1:
 		readMapTxt((char*)"Resources/Map/Map_1/readfile_map_1.txt");
 		break;
 	case objectType::MAP2:
-		readMapTxt((char*)"Resources/map/readfile_map_2.txt");
+		readMapTxt((char*)"Resources/Map/Map_2/readfile_map_2.txt");
 		break;
 	default:
 		DebugOut(L"[MAP] Load map that bai!");
 		return;
 		break;
 	}
-	_texture = TextureManager::GetInstance()->GetTexture(type);
+	_texture = TextureManager::GetInstance()->GetTexture(mapType);
 	_sprite = new GameSprite(_texture, 100);
 }
 

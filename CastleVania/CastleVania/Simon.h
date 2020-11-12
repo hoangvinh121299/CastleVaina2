@@ -6,7 +6,7 @@
 #include "Weapon.h"
 #include "MorningStar.h"
 //CÁC THÔNG SỐ CƠ BẢN CỦA SIMON
-#define SIMON_POSITION_DEFAULT 50.0f,300.0f
+#define SIMON_POSITION_DEFAULT 50.0f,0.0f
 #define SIMON__BBOX_WIDTH 60
 #define SIMON_BBOX_HEIGHT 63
 #define SIMON_BBOX_SITTING_HEIGHT 45
@@ -18,7 +18,7 @@
 #define SIMON_VJUMP_HURT 0.2f // Vận tốc nhảy lên của SIMON nhảy lên khi chịu tổn thương
 #define PULL_UP_SIMON_AFTER_JUMPING 18.0f // KÉO SIMON LÊN 18PX SAU KHI NHẢY
 
-#define SIMON_GRAVITY 0.00000f // Trọng lực kéo SIMON
+#define SIMON_GRAVITY 0.005f // Trọng lực kéo SIMON
 #define SIMON_GRAVITY_JUMPING 0.001f // Trọng lực kéo SIMON lúc nhảy
 #define SIMON_GRAVITY_HURTING 0.001f // Trọng lực kéo simon xuống khi nhảy lên lúc chịu tổn thương
 

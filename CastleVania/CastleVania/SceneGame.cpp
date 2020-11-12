@@ -9,6 +9,12 @@ SceneGame::~SceneGame()
 }
 void SceneGame::KeyState(BYTE *state)
 {
+	//Khi đang nhảy có vận tốc thì sẽ hoàn thành theo quán tính
+	//Tạm thời không update Keystate nếu cùng 1 lúc vừa nhảy vừa đi
+	if (simon->isJumping && simon->isWalking)
+	{
+		return;
+	}
 	//Simon ngồi 
 	if (Game::GetInstance()->IsKeyDown(DIK_DOWN))
 	{
@@ -56,7 +62,7 @@ void SceneGame::OnKeyDown(int keycode)
 			isDebug_RenderBBox = 0;
 		DebugOut(L"OnkeyDown done\n");
 	}
-
+	
 	//SIMON nhảy 
 	if (keycode == DIK_SPACE && simon->isOnStair==false&&simon->isJumping==false)
 	{
@@ -78,6 +84,7 @@ void SceneGame::OnKeyDown(int keycode)
 	if (keycode == DIK_A)
 		simon->attack(objectType::MORNINGSTAR);
 	
+	
 }
 void SceneGame::OnKeyUp(int keycode)
 {
@@ -92,18 +99,21 @@ void SceneGame::InitGame()
 void SceneGame::resetResources()
 {
 	gridGame->reloadMapGrid();
-	/*listEnemy.clear();*/
+	
 }
 void SceneGame::Update(DWORD dt)
 {
-	
+	gridGame->getListObjectFromMapGrid(listObject, camera);
 	simon->Update(dt, &listObject);
 	//Camera chạy theo Simon
 	if (camera->AllowFollowSimon())
 		camera->SetPosition(simon->getX() - SCREEN_WIDTH / 2 + 30, camera->GetYCam());
 
-
 	camera->Update(dt);
+	for (UINT i = 0; i < listObject.size(); i++)
+	{
+		listObject[i]->Update(dt, &listObject);
+	}
 	for (UINT i = 0; i < listEnemy.size(); i++)
 	{
 		listEnemy[i]->Update(dt, &listObject);
@@ -115,12 +125,17 @@ void SceneGame::Update(DWORD dt)
 			listWeaponOfEnemy[i]->Update(dt, &listObject);
 		}
 	}
+	checkCollision();
 	DebugOut(L"Scenegame Update done\n");
 }
 void SceneGame::Render()
 {
 	tileMap->drawMap(camera);
 	simon->Render(camera);
+	for (UINT i = 0; i < listObject.size(); i++)
+	{
+		listObject[i]->Render(camera);
+	}
 	for (UINT i = 0; i < listEnemy.size(); i++)
 		listEnemy[i]->Render(camera);
 	for (UINT i = 0; i < listWeaponOfEnemy.size(); i++)
@@ -134,10 +149,10 @@ void SceneGame::LoadResources()
 	camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 	tileMap = new Map();
 	simon = new Simon(camera);
-	listEnemy.push_back(new Ghost(50, 300, 1));
+	/*listEnemy.push_back(new Ghost(50, 300, 1));
 	listEnemy.push_back(new Panther(500, 330, -1,simon));
 	listEnemy.push_back(new Bat(200, 100, 1));
-	listEnemy.push_back(new Fishmen(50, 300, 1, simon, &listWeaponOfEnemy, camera));
+	listEnemy.push_back(new Fishmen(50, 300, 1, simon, &listWeaponOfEnemy, camera));*/
 	InitGame();
 	DebugOut(L"SceneGame Loadresources done\n");
 }
@@ -149,6 +164,7 @@ void SceneGame::loadMap(objectType mapCurrent)
 	switch (mapCurrent)
 	{
 	case objectType::MAP1:
+		gridGame->setObjectFilePath((char*)"Resources/Map/Map_1/readfile_object_map1.txt");
 		tileMap->loadMap(objectType::MAP1);
 		camera->setAllowFollowSimon(true);
 		camera->SetBoundary(0.0f, (float)(tileMap->getMapWidth() - camera->GetWidth())); //set biên camera dựa vào kích thước map
@@ -156,7 +172,47 @@ void SceneGame::loadMap(objectType mapCurrent)
 		camera->SetPosition(0, 0);
 		simon->setPostion(SIMON_POSITION_DEFAULT);
 		break;
+	case objectType::MAP2:
+		
+		tileMap->loadMap(objectType::MAP2);
+		camera->setAllowFollowSimon(true);
+		camera->SetPosition(0, 0);
+		camera->SetBoundary(0, (float)(tileMap->getMapWidth() - camera->GetWidth())); // biên camera khi chưa qua cửa
+		camera->setBoundaryBackup(0, (float)(tileMap->getMapWidth() - camera->GetWidth())); // biên camera khi chưa qua cửa
+		simon->setPostion(SIMON_POSITION_DEFAULT);
+		break;
 	default:
 		break;
 	}
+	resetResources();
+}
+void SceneGame::checkCollisionSimonWithHiddenObject()
+{
+	for (UINT i = 0; i < listObject.size(); i++)
+	{
+		if (listObject[i]->getType() == objectType::OBJECT_HIDDEN)
+		{
+			GameObject* objectTemp = listObject[i];
+			if (objectTemp->getHealth() > 0)
+			{
+				if (simon->isColisionObjectwithObject(objectTemp))
+				{
+					if (mapCurrent == objectType::MAP1)
+					{
+						switch (objectTemp->getID())
+						{
+						case 2: //hidden Object cửa
+							loadMap(objectType::MAP2);
+						default:
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+void SceneGame::checkCollision()
+{
+	checkCollisionSimonWithHiddenObject();
 }

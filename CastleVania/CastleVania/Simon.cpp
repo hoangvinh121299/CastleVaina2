@@ -22,7 +22,7 @@ void Simon::getBoundingBox(float &left, float &top, float &right, float &bottom)
 		left = x + 15;
 		top = y - 1;
 		right = x + SIMON__BBOX_WIDTH - 15;
-		bottom = y + SIMON_BBOX_HEIGHT;
+		bottom = y + SIMON_BBOX_SITTING_HEIGHT;
 	}
 	else
 	{
@@ -216,7 +216,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	else
 	{
 		x += dx;
-		
 	}
 
 	//Trong trạng thái tấn công
@@ -226,16 +225,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		this->getSpeed(vx, vy);
 		this->setSpeed(0, vy);
 		return;
-	}
-	if (y > 300)
-	{
-		if (isSitting)
-			return;
-		y = 300;
-		vy = 0;
-		isJumping = false;
-		stop();
-
 	}
 }
 void Simon::Render(Camera*camera)
@@ -275,6 +264,8 @@ void Simon::left()
 		return;
 	if (isAttacking == true)
 		return;
+	if (isJumping)
+		return;
 	direction = -1;
 }
 void Simon::walking()
@@ -289,14 +280,12 @@ void Simon::walking()
 }
 void Simon::sit()
 {
-	
-		
-	vx = 0;
-	isWalking=0;
+	if (isAttacking)
+		return;
 	if (isJumping)
 		return;
-	if (isAttacking == true)
-		return;
+	vx = 0;
+	isWalking=0;
 	if (isSitting == false)
 		y = y + PULL_UP_SIMON_AFTER_SITTING;
 	isSitting = true;
@@ -366,12 +355,16 @@ void Simon::Reset()
 }
 void Simon::right()
 {
+	if (isJumping)
+		return;
 	if (isOnStair == true)
 		return;
 	if (isAttacking == true)
 		return;
 	direction = 1;
 }
+
+// Đứng trên nền gạch
 void Simon::colissionWithBrick(const vector<LPGAMEOBJECT>* coObjects)
 {
 	vector<LPCollisionEvent> coEvents;

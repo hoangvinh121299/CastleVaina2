@@ -135,6 +135,9 @@
     <ClInclude Include="Map.h">
       <Filter>Framework\Map</Filter>
     </ClInclude>
+    <ClInclude Include="HiddenObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSprite.cpp">
@@ -211,6 +214,9 @@
     </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>Framework\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="HiddenObject.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

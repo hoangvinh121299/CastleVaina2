@@ -147,6 +147,7 @@
     <ClCompile Include="Gametime.cpp" />
     <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="HiddenObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MorningStar.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Gametime.h" />
     <ClInclude Include="Ghost.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="HiddenObject.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MorningStar.h" />
     <ClInclude Include="Panther.h" />

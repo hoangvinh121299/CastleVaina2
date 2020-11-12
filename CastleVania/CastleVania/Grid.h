@@ -6,13 +6,13 @@
 #include "define.h"
 #include "GameObject.h"
 #include "Brick.h"
-
+#include "HiddenObject.h"
 using namespace std;
 #define GRID_CELL_WIDTH (SCREEN_WIDTH /4.0f)
 #define GRID_CELL_HEIGHT (SCREEN_HEIGHT/4.0f)
 
-#define GRID_MAP_CELL_MAX_COLLUM 100//Số lượng hàng tối đa chứa các cell trong map
-#define GRID_MAP_CELL_MAX_ROW 20 //Số lượng hàng tối đa chưa các cell trong map
+#define GRID_MAP_CELL_MAX_COLLUM 10//Số lượng hàng tối đa chứa các cell trong map
+#define GRID_MAP_CELL_MAX_ROW 50 //Số lượng hàng tối đa chưa các cell trong map
 class Grid
 {
 private:

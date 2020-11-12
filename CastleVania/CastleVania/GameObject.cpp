@@ -7,6 +7,7 @@ GameObject::GameObject()
 	x = y = 0;
 	vx = vy = 0;
 	direction = 1;
+	health = 1;
 	lastTimeAttacked = 0;
 }
 void GameObject::getBoundingBox(float &left, float &top, float &right, float &bottom)
