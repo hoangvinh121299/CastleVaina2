@@ -130,8 +130,8 @@ void SceneGame::Update(DWORD dt)
 }
 void SceneGame::Render()
 {
+	
 	tileMap->drawMap(camera);
-	simon->Render(camera);
 	for (UINT i = 0; i < listObject.size(); i++)
 	{
 		listObject[i]->Render(camera);
@@ -140,6 +140,7 @@ void SceneGame::Render()
 		listEnemy[i]->Render(camera);
 	for (UINT i = 0; i < listWeaponOfEnemy.size(); i++)
 		listWeaponOfEnemy[i]->Render(camera);
+	simon->Render(camera);
 }
 void SceneGame::LoadResources()
 {
@@ -173,7 +174,7 @@ void SceneGame::loadMap(objectType mapCurrent)
 		simon->setPostion(SIMON_POSITION_DEFAULT);
 		break;
 	case objectType::MAP2:
-		
+		gridGame->setObjectFilePath((char*)"Resources/Map/Map_2/readfile_object_map2.txt");
 		tileMap->loadMap(objectType::MAP2);
 		camera->setAllowFollowSimon(true);
 		camera->SetPosition(0, 0);

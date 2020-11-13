@@ -45,6 +45,8 @@ GameObject * Grid::createNewGridObject(int objectType, float x, float y, float o
 		return new Brick(x, y, objectWidth, objectHeight, brickModel);
 	case objectType::OBJECT_HIDDEN:
 		return new HiddenObject(x, y, objectWidth, objectHeight);
+	case objectType::TORCH:
+		return new Torch(x, y);
 	}
 	return NULL;
 }

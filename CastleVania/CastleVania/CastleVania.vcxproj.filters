@@ -138,6 +138,9 @@
     <ClInclude Include="HiddenObject.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="Torch.h">
+      <Filter>Object\Ground</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSprite.cpp">
@@ -217,6 +220,9 @@
     </ClCompile>
     <ClCompile Include="HiddenObject.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Torch.cpp">
+      <Filter>Object\Ground</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

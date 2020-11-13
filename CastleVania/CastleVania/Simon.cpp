@@ -374,6 +374,7 @@ void Simon::colissionWithBrick(const vector<LPGAMEOBJECT>* coObjects)
 	vector<LPGAMEOBJECT> listBrick;
 	listBrick.clear();
 	for (UINT i = 0; i < coObjects->size(); i++)
+		if(coObjects->at(i)->getType()==objectType::BRICK)
 		listBrick.push_back(coObjects->at(i));
 	//Tính toán các va chạm có thể xảy ra
 	calcPotentialCollisions(&listBrick, coEvents);
