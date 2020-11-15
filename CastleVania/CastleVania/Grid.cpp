@@ -22,13 +22,15 @@ void Grid::reloadMapGrid()
 	//Reset giá trị của vector chưa Grid về lại mảng rỗng
 	for (int i = 0; i < GRID_MAP_CELL_MAX_ROW; i++)
 	{
-		for (int j = 0; j < GRID_MAP_CELL_MAX_COLLUM; j++)			mapCells[i][j].clear();
+		for (int j = 0; j < GRID_MAP_CELL_MAX_COLLUM; j++)			
+			mapCells[i][j].clear();
 	}
+
 	float x, y;
 	int objectID, objectType, objectDirection, objectHeight, objectWidth, brickModel, numberofObjects;
+	
 	ifstream fileInfo(objectFilePath, ios::in);
 	fileInfo >> numberofObjects;
-	for (int i=0;i<numberofObjects;i++)
 		for (int i = 0; i < numberofObjects; i++)
 		{
 			
@@ -70,6 +72,10 @@ void Grid::getListObjectFromMapGrid(vector <GameObject*>  &listObject, Camera*ca
 				{
 					if (mapObject.find(mapCells[i][j].at(k)->getID()) == mapObject.end())
 						mapObject[mapCells[i][j].at(k)->getID()] = mapCells[i][j].at(k);
+				}
+				else
+				{
+					mapCells[i][j].erase(mapCells[i][j].begin() + k);
 				}
 			}
 		}

@@ -30,25 +30,25 @@ void SceneGame::KeyState(BYTE *state)
 		simon->stop();
 	}
 	//Đi qua phải
-	if (Game::GetInstance()->IsKeyDown(DIK_RIGHT))
-	{
-		 
-		simon->right();
-		simon->walking();
-	}
-	else
-	{ //Hoặc đi qua trái 
-		if (Game::GetInstance()->IsKeyDown(DIK_LEFT))
+	
+		if (Game::GetInstance()->IsKeyDown(DIK_RIGHT))
 		{
-			simon->left();
+			simon->right();
 			simon->walking();
 		}
 		else
-			//Không thì đứng yên
-		{
-			simon->stop();
+		{ //Hoặc đi qua trái 
+			if (Game::GetInstance()->IsKeyDown(DIK_LEFT))
+			{
+				simon->left();
+				simon->walking();
+			}
+			else
+				//Không thì đứng yên
+			{
+				simon->stop();
+			}
 		}
-	}
 }
 
 void SceneGame::OnKeyDown(int keycode)
@@ -99,12 +99,13 @@ void SceneGame::InitGame()
 void SceneGame::resetResources()
 {
 	gridGame->reloadMapGrid();
-	
+	listWeaponOfEnemy.clear();
 }
 void SceneGame::Update(DWORD dt)
 {
-	gridGame->getListObjectFromMapGrid(listObject, camera);
 	simon->Update(dt, &listObject);
+	gridGame->getListObjectFromMapGrid(listObject, camera);
+	
 	//Camera chạy theo Simon
 	if (camera->AllowFollowSimon())
 		camera->SetPosition(simon->getX() - SCREEN_WIDTH / 2 + 30, camera->GetYCam());
@@ -126,7 +127,6 @@ void SceneGame::Update(DWORD dt)
 		}
 	}
 	checkCollision();
-	DebugOut(L"Scenegame Update done\n");
 }
 void SceneGame::Render()
 {
@@ -202,7 +202,7 @@ void SceneGame::checkCollisionSimonWithHiddenObject()
 					{
 						switch (objectTemp->getID())
 						{
-						case 2: //hidden Object cửa
+						case 1: //hidden Object cửa
 							loadMap(objectType::MAP2);
 						default:
 							break;
@@ -215,5 +215,38 @@ void SceneGame::checkCollisionSimonWithHiddenObject()
 }
 void SceneGame::checkCollision()
 {
+	checkCollisionWeaponWithObject(listObject);
 	checkCollisionSimonWithHiddenObject();
+}
+void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
+{
+	for (auto& objWeapon : simon->mapWeapon)
+	{
+		if (objWeapon.second->getFinish() == false) //Vũ khí đang hoạt động
+		{
+			for (UINT i = 0; i < listObject.size(); i++)
+			{
+				if (objWeapon.second->getLastTimeAttack() > listObj[i]->getLastTimeAttacked())
+				{
+					if (objWeapon.second->isColission(listObject[i]) == true)
+						{
+							GameObject* tempObject = listObject[i];
+							switch (tempObject->getType())
+							{
+							case objectType::TORCH:
+							{
+								DebugOut(L"Torch has been attacked\n");
+								tempObject->subHealth(1);
+								break;
+							}
+							default:
+								break;
+							}
+							tempObject->setLastTimeAttacked(objWeapon.second->getLastTimeAttack());
+						}
+				}
+			}
+		}
+		
+	}
 }

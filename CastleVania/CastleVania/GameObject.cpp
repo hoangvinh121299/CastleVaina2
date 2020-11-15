@@ -262,3 +262,7 @@ GameObject::~GameObject()
 {
 	SAFE_DELETE(objectSprite);
 }
+void GameObject::setLastTimeAttacked(DWORD dt)
+{
+	lastTimeAttacked = dt;
+}

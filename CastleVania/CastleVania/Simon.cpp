@@ -166,10 +166,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						else
 							{
 							objectSprite->SelectFrame(SIMON_ANI_IDLE);
-								DebugOut(L"Simon at SIMON_ANI_IDLE\n");
+								
 							}
 					
-			DebugOut(L"Simon đã được update về Sprite\n");
+		
 		}
 		
 		//Update về vũ khí cho Simon
@@ -264,8 +264,6 @@ void Simon::left()
 		return;
 	if (isAttacking == true)
 		return;
-	if (isJumping)
-		return;
 	direction = -1;
 }
 void Simon::walking()
@@ -276,7 +274,6 @@ void Simon::walking()
 		return;
 	isWalking = true;
 	vx = SIMON_WALKING_SPEED * direction;
-	
 }
 void Simon::sit()
 {
@@ -355,8 +352,6 @@ void Simon::Reset()
 }
 void Simon::right()
 {
-	if (isJumping)
-		return;
 	if (isOnStair == true)
 		return;
 	if (isAttacking == true)

@@ -51,7 +51,7 @@ bool Weapon::isColission(GameObject* obj)
 		return false;
 
 
-	if (obj->getHealth() <= 0)
+	if (obj->getHealth() <= 0) //Chết rồi thì không va chạm nữa 
 		return false;
 
 	//Trả về kết quả của hàm kiểm tra va chạm giữa hai object

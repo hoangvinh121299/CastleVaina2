@@ -45,6 +45,7 @@ public:
 	void loadMap(objectType mapCurrent);
 	void checkCollision();
 	void checkCollisionSimonWithHiddenObject();
+	void checkCollisionWeaponWithObject(vector<GameObject*> listObj);
 };
 
 #endif

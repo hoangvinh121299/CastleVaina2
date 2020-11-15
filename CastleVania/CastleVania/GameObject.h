@@ -108,7 +108,7 @@ public:
 
 	//Lấy ra thời điểm bị tấn công cuối
 	DWORD getLastTimeAttacked();
-	/*void setLastTimeAttacked(DWORD dt);*/
+	void setLastTimeAttacked(DWORD dt);
 
 	void setTexture(GameTexture *texture);
 	GameSprite *getSprite();

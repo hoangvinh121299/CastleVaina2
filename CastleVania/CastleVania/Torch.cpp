@@ -21,7 +21,6 @@ void Torch::Render(Camera* camera)
 {
 	if (IS_DEBUG_RENDER_BBOX)
 		renderBoundingBox(camera);
-
 	D3DXVECTOR2 pos = camera->TransForm(x, y);
 	objectSprite->Draw(pos.x,pos.y);
 }
