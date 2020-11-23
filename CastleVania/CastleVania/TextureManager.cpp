@@ -60,19 +60,19 @@ void TextureManager::LoadResource()
 	AddTexture(objectType::CANDLE, new GameTexture("Resources/ground/1.png", 2, 1, 2));
 
 	//item
-	AddTexture(objectType::ITEMDAGGER, new GameTexture("Resources/item/4.png"));
-	AddTexture(objectType::LARGEHEART, new GameTexture("Resources/item/1.png"));
-	AddTexture(objectType::UPGRADEMORNINGSTAR, new GameTexture("Resources/item/3.png"));
-	AddTexture(objectType::BONUS, new GameTexture("Resources/item/2.png", 3, 1, 3));
-	AddTexture(objectType::SMALLHEART, new GameTexture("Resources/item/0.png"));
-	AddTexture(objectType::ITEMHOLYWATER, new GameTexture("Resources/item/9.png"));
-	AddTexture(objectType::POTROAST, new GameTexture("Resources/item/10.png"));
-	AddTexture(objectType::CRYSTALBALL, new GameTexture("Resources/item/13.png", 2, 1, 2));
-	AddTexture(objectType::ITEMTHROWINGAXE, new GameTexture("Resources/item/7.png"));
-	AddTexture(objectType::INVINSIBILTYPOTION, new GameTexture("Resources/item/14.png"));
-	AddTexture(objectType::CROSS, new GameTexture("Resources/item/6.png"));
-	AddTexture(objectType::ITEMBOOMERANG, new GameTexture("Resources/item/8.png"));
-	AddTexture(objectType::ITEMDOUBESHOT, new GameTexture("Resources/item/11.png"));
+	AddTexture(objectType::ITEMDAGGER, new GameTexture("Resources/Item/4.png"));
+	AddTexture(objectType::LARGEHEART, new GameTexture("Resources/Item/1.png"));
+	AddTexture(objectType::UPGRADEMORNINGSTAR, new GameTexture("Resources/Item/3.png"));
+	AddTexture(objectType::BONUS, new GameTexture("Resources/Item/2.png", 3, 1, 3));
+	AddTexture(objectType::SMALLHEART, new GameTexture("Resources/Item/0.png"));
+	AddTexture(objectType::ITEMHOLYWATER, new GameTexture("Resources/Item/9.png"));
+	AddTexture(objectType::POTROAST, new GameTexture("Resources/Item/10.png"));
+	AddTexture(objectType::CRYSTALBALL, new GameTexture("Resources/Item/13.png", 2, 1, 2));
+	AddTexture(objectType::ITEMTHROWINGAXE, new GameTexture("Resources/Item/7.png"));
+	AddTexture(objectType::INVINSIBILTYPOTION, new GameTexture("Resources/Item/14.png"));
+	AddTexture(objectType::CROSS, new GameTexture("Resources/Item/6.png"));
+	AddTexture(objectType::ITEMBOOMERANG, new GameTexture("Resources/Item/8.png"));
+	AddTexture(objectType::ITEMDOUBESHOT, new GameTexture("Resources/Item/11.png"));
 
 	// Weapon
 	AddTexture(objectType::DAGGER, new GameTexture("Resources/weapon/1.png"));
@@ -89,14 +89,14 @@ void TextureManager::LoadResource()
 	AddTexture(objectType::SIMON_DEATH, new GameTexture("Resources/simondeath.png"));
 
 	//effect
-	AddTexture(objectType::FIRE, new GameTexture("Resources/other/1.png", 4, 1, 4));
-	AddTexture(objectType::HIT, new GameTexture("Resources/other/0.png", 2, 1, 2));
-	AddTexture(objectType::BROKENBRICK, new GameTexture("Resources/other/BrokenBrick.png", 2, 1, 2));//, 4,4,16));
-	AddTexture(objectType::STEAM, new GameTexture("Resources/other/2.png"));
-	AddTexture(objectType::EFFECT_MONEY_700, new GameTexture("Resources/other/effect700.png", 2, 1, 2));
-	AddTexture(objectType::EFFECT_MONEY_100, new GameTexture("Resources/other/effect100.png", 2, 1, 2));
-	AddTexture(objectType::EFFECT_MONEY_1000, new GameTexture("Resources/other/effect1000.png", 2, 1, 2));
-	AddTexture(objectType::EFFECT_MONEY_400, new GameTexture("Resources/other/effect400.png", 2, 1, 2));
+	AddTexture(objectType::FIRE, new GameTexture("Resources/Effect/1.png", 4, 1, 4));
+	AddTexture(objectType::HIT, new GameTexture("Resources/Effect/0.png", 2, 1, 2));
+	AddTexture(objectType::BROKENBRICK, new GameTexture("Resources/Effect/BrokenBrick.png", 2, 1, 2));
+	AddTexture(objectType::STEAM, new GameTexture("Resources/Effect/2.png"));
+	AddTexture(objectType::EFFECT_MONEY_700, new GameTexture("Resources/Effect/effect700.png", 2, 1, 2));
+	AddTexture(objectType::EFFECT_MONEY_100, new GameTexture("Resources/Effect/effect100.png", 2, 1, 2));
+	AddTexture(objectType::EFFECT_MONEY_1000, new GameTexture("Resources/Effect/effect1000.png", 2, 1, 2));
+	AddTexture(objectType::EFFECT_MONEY_400, new GameTexture("Resources/Effect/effect400.png", 2, 1, 2));
 
 	//Enemy
 	AddTexture(objectType::GHOST, new GameTexture("Resources/Enemy/1.png", 2, 1, 2));

@@ -141,6 +141,27 @@
     <ClInclude Include="Torch.h">
       <Filter>Object\Ground</Filter>
     </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectHit.h">
+      <Filter>Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="LargeHeart.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="UpgradeMorningStar.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectFire.h">
+      <Filter>Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemDagger.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSprite.cpp">
@@ -203,9 +224,6 @@
     <ClCompile Include="Ghost.cpp">
       <Filter>Object\Enenmy</Filter>
     </ClCompile>
-    <ClCompile Include="Panther.cpp">
-      <Filter>Object\Enenmy</Filter>
-    </ClCompile>
     <ClCompile Include="Bat.cpp">
       <Filter>Object\Enenmy</Filter>
     </ClCompile>
@@ -223,6 +241,30 @@
     </ClCompile>
     <ClCompile Include="Torch.cpp">
       <Filter>Object\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectHit.cpp">
+      <Filter>Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectFire.cpp">
+      <Filter>Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="LargeHeart.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Panther.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="UpgradeMorningStar.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemDagger.cpp">
+      <Filter>Object\Item</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

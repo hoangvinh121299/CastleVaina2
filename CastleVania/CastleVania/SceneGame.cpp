@@ -90,17 +90,20 @@ void SceneGame::OnKeyUp(int keycode)
 {
 	
 }
+
 void SceneGame::InitGame()
 {
 	loadMap(objectType::MAP1);
 	simon->Init();
 	DebugOut(L"InitGame done\n");
 }
+
 void SceneGame::resetResources()
 {
 	gridGame->reloadMapGrid();
 	listWeaponOfEnemy.clear();
 }
+
 void SceneGame::Update(DWORD dt)
 {
 	simon->Update(dt, &listObject);
@@ -126,8 +129,17 @@ void SceneGame::Update(DWORD dt)
 			listWeaponOfEnemy[i]->Update(dt, &listObject);
 		}
 	}
+	for (UINT i = 0; i < listEffect.size(); i++)
+		if (listEffect[i]->getFinish() == false)
+			listEffect[i]->Update(dt);
+	for (UINT i = 0; i < listItem.size(); i++)
+	{
+		if (!listItem[i]->getFinish())
+			listItem[i]->Update(dt, &listObject);//Chỉ kiểm tra va chạm với GROUND
+	}
 	checkCollision();
 }
+
 void SceneGame::Render()
 {
 	
@@ -140,8 +152,16 @@ void SceneGame::Render()
 		listEnemy[i]->Render(camera);
 	for (UINT i = 0; i < listWeaponOfEnemy.size(); i++)
 		listWeaponOfEnemy[i]->Render(camera);
+	for (UINT i = 0; i < listEffect.size(); i++)
+		listEffect[i]->Render(camera);
+	for (UINT i = 0; i < listItem.size(); i++)
+	{
+		if (!listItem[i]->getFinish())
+			listItem[i]->Render(camera);
+	}
 	simon->Render(camera);
 }
+
 void SceneGame::LoadResources()
 {
 	//TextureManager*_textureMangager = TextureManager::GetInstance();
@@ -187,6 +207,7 @@ void SceneGame::loadMap(objectType mapCurrent)
 	}
 	resetResources();
 }
+//Kiểm tra va chạm giữa simon với các vật thể ẩn
 void SceneGame::checkCollisionSimonWithHiddenObject()
 {
 	for (UINT i = 0; i < listObject.size(); i++)
@@ -213,11 +234,13 @@ void SceneGame::checkCollisionSimonWithHiddenObject()
 		}
 	}
 }
+//Kiểm tra va chạm toàn cục
 void SceneGame::checkCollision()
 {
 	checkCollisionWeaponWithObject(listObject);
 	checkCollisionSimonWithHiddenObject();
 }
+//Kiểm tra va chạm giữa vũ khí với object nền 
 void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 {
 	for (auto& objWeapon : simon->mapWeapon)
@@ -230,6 +253,7 @@ void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 				{
 					if (objWeapon.second->isColission(listObject[i]) == true)
 						{
+							bool runEffectHit = false;
 							GameObject* tempObject = listObject[i];
 							switch (tempObject->getType())
 							{
@@ -237,10 +261,20 @@ void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 							{
 								DebugOut(L"Torch has been attacked\n");
 								tempObject->subHealth(1);
+								listItem.push_back(getNewItem(tempObject->getID(),
+									tempObject->getType(),
+									tempObject->getX() + 5,
+									tempObject->getY())); //Rớt đồ 
+								runEffectHit = true;
 								break;
 							}
 							default:
 								break;
+							}
+							if (runEffectHit)
+							{
+								listEffect.push_back(new EffectHit(listObj[i]->getX() + 10, listObj[i]->getY() + 14));
+								listEffect.push_back(new EffectFire(tempObject->getX() - 5, tempObject->getY() + 8));
 							}
 							tempObject->setLastTimeAttacked(objWeapon.second->getLastTimeAttack());
 						}
@@ -248,5 +282,20 @@ void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 			}
 		}
 		
+	}
+}
+Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
+{
+	if (mapCurrent == objectType::MAP1)
+	{
+		if (ObjectType == objectType::TORCH)
+		{
+			if (id == 3 || id == 6) //Nếu id của Torch là 1 hoặc 4 thì là LargeHeart
+				return new LargeHeart(x, y);
+			if (id == 4 || id == 5)
+				return new UpgradeMorningStar(x, y);
+			if (id == 7)
+				return new ItemDagger(x, y);
+		}
 	}
 }

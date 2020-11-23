@@ -40,8 +40,10 @@ void MorningStar::Render(Camera* camera)
 
 	if (IS_DEBUG_RENDER_BBOX)
 	{
-		if (level == 0 && objectSprite->getCurrentFrame() == MORNINGSTAR_ANI_LEVEL0_START || objectSprite->getCurrentFrame() == MORNINGSTAR_ANI_LEVEL0_START+1)
+		if (/*level == 0 && objectSprite->getCurrentFrame() == MORNINGSTAR_ANI_LEVEL0_START || */objectSprite->getCurrentFrame() == MORNINGSTAR_ANI_LEVEL0_START+1)
 			return;
+		/*if (level == 0 && objectSprite->getCurrentFrame() != MORNINGSTAR_ANI_LEVEL0_START)
+			return;*/
 
 		renderBoundingBox(camera);
 	}
@@ -74,19 +76,41 @@ void MorningStar::updatePositionWithSimon()
 
 void MorningStar::getBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (direction == 1)
-	{
-		left = x + 78;
-		top = y + 15;
-		right = x + objectTexture->GetFrameWidth() - 30;
-		bottom = y + objectTexture->GetFrameHeight() - 30;
+	if (objectSprite->getCurrentFrame() == MORNINGSTAR_ANI_LEVEL0_END) {
+		if (direction == 1)
+		{
+			left = x + 78;
+			top = y + 15;
+			right = x + objectTexture->GetFrameWidth() - 30;
+			bottom = y + objectTexture->GetFrameHeight() - 30;
+		}
+		else
+		{
+			left = x + 30;
+			top = y + 15;
+			right = x + objectTexture->GetFrameWidth() - 80;
+			bottom = y + objectTexture->GetFrameHeight() - 30;
+		}
 	}
-	else
+	else 
 	{
-		left = x + 30;
-		top = y + 15;
-		right = x + objectTexture->GetFrameWidth() - 80;
-		bottom = y + objectTexture->GetFrameHeight() - 30;
+		if (objectSprite->getCurrentFrame() == MORNINGSTAR_ANI_LEVEL0_START)
+		{
+			if (direction == 1)
+			{
+				left = x + 5;
+				top = y + 15;
+				right = x + objectTexture->GetFrameWidth() - 135;
+				bottom = y + objectTexture->GetFrameHeight() - 5;
+			}
+			else
+			{
+				left = x + 160;
+				top = y + 15;
+				right = x + objectTexture->GetFrameWidth() - 25;
+				bottom = y + objectTexture->GetFrameHeight() - 5;
+			}
+		}
 	}
 }
 
@@ -101,8 +125,7 @@ int MorningStar::getLevel()
 
 bool MorningStar::isColission(GameObject* obj)
 {
-	if (level == 0 && objectSprite->getCurrentFrame() == MORNINGSTAR_ANI_LEVEL0_START || objectSprite->getCurrentFrame() == MORNINGSTAR_ANI_LEVEL0_START + 1)
-		return false; // frame đầu và frame chuẩn bị đánh thì ko xét va chạm
-
+	/*if (objectSprite->getCurrentFrame() == MORNINGSTAR_ANI_LEVEL0_START + 1)
+		return false; */// frame đầu và frame chuẩn bị đánh thì ko xét va chạm
 	return Weapon::isColission(obj);
 }

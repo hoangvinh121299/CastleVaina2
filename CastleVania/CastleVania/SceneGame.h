@@ -14,6 +14,13 @@
 #include "Fishmen.h"
 #include "Map.h"
 #include "HiddenObject.h"
+#include "Effect.h"
+#include "EffectHit.h"
+#include "EffectFire.h"
+#include "Item.h"
+#include "LargeHeart.h"
+#include "ItemDagger.h"
+#include "UpgradeMorningStar.h"
 class SceneGame:public Scene
 {
 private:
@@ -27,7 +34,8 @@ private:
 	Map* tileMap;
 	vector<GameObject*> listEnemy;
 	vector<Weapon*> listWeaponOfEnemy;
-
+	vector<Effect*> listEffect;
+	vector<Item*> listItem;
 public:
 	SceneGame();
 	~SceneGame();
@@ -46,6 +54,8 @@ public:
 	void checkCollision();
 	void checkCollisionSimonWithHiddenObject();
 	void checkCollisionWeaponWithObject(vector<GameObject*> listObj);
+
+	Item* getNewItem(int id, objectType ObjectType, float x, float y);
 };
 
 #endif
