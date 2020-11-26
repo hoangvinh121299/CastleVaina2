@@ -21,6 +21,7 @@
 #include "LargeHeart.h"
 #include "ItemDagger.h"
 #include "UpgradeMorningStar.h"
+#include "MoneyBag.h"
 class SceneGame:public Scene
 {
 private:
@@ -54,7 +55,7 @@ public:
 	void checkCollision();
 	void checkCollisionSimonWithHiddenObject();
 	void checkCollisionWeaponWithObject(vector<GameObject*> listObj);
-
+	void checkCollionsionSimonWithItem();
 	Item* getNewItem(int id, objectType ObjectType, float x, float y);
 };
 

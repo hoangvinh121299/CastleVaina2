@@ -9,10 +9,24 @@ SceneGame::~SceneGame()
 }
 void SceneGame::KeyState(BYTE *state)
 {
+	//Đóng băng trạng thái của Simon
+	if (simon->getFreeze())
+	{
+		return;
+	}
 	//Khi đang nhảy có vận tốc thì sẽ hoàn thành theo quán tính
 	//Tạm thời không update Keystate nếu cùng 1 lúc vừa nhảy vừa đi
 	if (simon->isJumping && simon->isWalking)
 	{
+		return;
+	}
+
+	if (simon->isAttacking) // đang attack
+	{
+		float vx, vy;
+		simon->getSpeed(vx, vy);
+		simon->setSpeed(0, vy);
+		
 		return;
 	}
 	//Simon ngồi 
@@ -31,28 +45,29 @@ void SceneGame::KeyState(BYTE *state)
 	}
 	//Đi qua phải
 	
-		if (Game::GetInstance()->IsKeyDown(DIK_RIGHT))
-		{
+	if (Game::GetInstance()->IsKeyDown(DIK_RIGHT))
+	{
 			simon->right();
 			simon->walking();
-		}
-		else
-		{ //Hoặc đi qua trái 
-			if (Game::GetInstance()->IsKeyDown(DIK_LEFT))
-			{
+	}
+	else
+	{ //Hoặc đi qua trái 
+		if (Game::GetInstance()->IsKeyDown(DIK_LEFT))
+		{
 				simon->left();
 				simon->walking();
-			}
-			else
-				//Không thì đứng yên
-			{
-				simon->stop();
-			}
 		}
+		else
+				//Không thì đứng yên
+		{
+				simon->stop();
+		}
+	}
 }
 
 void SceneGame::OnKeyDown(int keycode)
 {
+	
 	if (keycode == DIK_R) //Render bounding box
 
 	{
@@ -60,9 +75,13 @@ void SceneGame::OnKeyDown(int keycode)
 			isDebug_RenderBBox = 1;
 		else
 			isDebug_RenderBBox = 0;
+		gridGame->reloadMapGrid();
 		DebugOut(L"OnkeyDown done\n");
 	}
-	
+	if (simon->getFreeze() == true) // Đang bóng băng thì không quan tâm phím
+	{
+		return;
+	}
 	//SIMON nhảy 
 	if (keycode == DIK_SPACE && simon->isOnStair==false&&simon->isJumping==false)
 	{
@@ -88,7 +107,10 @@ void SceneGame::OnKeyDown(int keycode)
 }
 void SceneGame::OnKeyUp(int keycode)
 {
-	
+	if (simon->getFreeze() == true) // Đang bóng băng thì không quan tâm phím
+	{
+		return;
+	}
 }
 
 void SceneGame::InitGame()
@@ -106,7 +128,15 @@ void SceneGame::resetResources()
 
 void SceneGame::Update(DWORD dt)
 {
+	//Hàm Freeze phải đặt trước update của Simon để ngăn Simon Update
+	if (simon->getFreeze() == true)
+	{
+		simon->updateFreeze(dt);
+		if (simon->getFreeze() == true)
+			return;
+	}
 	simon->Update(dt, &listObject);
+	
 	gridGame->getListObjectFromMapGrid(listObject, camera);
 	
 	//Camera chạy theo Simon
@@ -137,6 +167,7 @@ void SceneGame::Update(DWORD dt)
 		if (!listItem[i]->getFinish())
 			listItem[i]->Update(dt, &listObject);//Chỉ kiểm tra va chạm với GROUND
 	}
+	
 	checkCollision();
 }
 
@@ -225,9 +256,17 @@ void SceneGame::checkCollisionSimonWithHiddenObject()
 						{
 						case 1: //hidden Object cửa
 							loadMap(objectType::MAP2);
+							break;
+						case 8:
+							listItem.push_back(
+								getNewItem(objectTemp->getID(), 
+									objectTemp->getType(), 
+									simon->getX(), simon->getY()));
+							break;
 						default:
 							break;
 						}
+						objectTemp->subHealth(1);
 					}
 				}
 			}
@@ -239,6 +278,7 @@ void SceneGame::checkCollision()
 {
 	checkCollisionWeaponWithObject(listObject);
 	checkCollisionSimonWithHiddenObject();
+	checkCollionsionSimonWithItem();
 }
 //Kiểm tra va chạm giữa vũ khí với object nền 
 void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
@@ -296,6 +336,45 @@ Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
 				return new UpgradeMorningStar(x, y);
 			if (id == 7)
 				return new ItemDagger(x, y);
+		}
+		if (ObjectType == objectType::OBJECT_HIDDEN)
+		{
+			if (id == 8)
+				return new MoneyBag(1240, 305,MONEY_BAG_WHITE);
+		}
+	}
+}
+void SceneGame::checkCollionsionSimonWithItem()
+{
+	for (UINT i = 0; i < listItem.size(); i++)
+	{
+		if (listItem[i]->getFinish() == false && listItem[i]->isWaitingToDisplay()==false)
+			//Chưa kết thúc và không phải trong thời gian chờ để hiển thị
+		{
+			if (simon->isColissionWithItem(listItem[i]) == true) //Có xảy ra va chạm
+			{
+				switch (listItem[i]->getType())
+				{
+				case objectType::LARGEHEART:
+					{
+					listItem[i]->setFinish(true);
+					break;
+					}
+				case objectType::UPGRADEMORNINGSTAR:
+					{
+					MorningStar* objMorningStar = dynamic_cast<MorningStar*>(simon->mapWeapon[objectType::MORNINGSTAR]);
+					objMorningStar->upgradeLevel(); //Update MorningStar
+					listItem[i]->setFinish(true);
+					simon->setFreeze(true);
+					break;
+					}
+				case objectType::ITEMDAGGER:
+					{
+					listItem[i]->setFinish(true);
+					break;
+					}
+			}
+			}
 		}
 	}
 }

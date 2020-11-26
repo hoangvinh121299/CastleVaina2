@@ -5,7 +5,7 @@ UpgradeMorningStar::UpgradeMorningStar(float x, float y)
 	objectSprite = new GameSprite(objectTexture, 100);
 	this->x = x;
 	this->y = y;
-
+	ObjectType = objectType::UPGRADEMORNINGSTAR;
 	vy = UPGRADEMORNINGSTAR_GRAVITY;
 	timeDisplayMax = UPGRADEMORNINGSTAR_TIMEDISPLAYMAX;
 	timeWaitMax = UPGRADEMORNINGSTAR_TIMEWAITMAX;

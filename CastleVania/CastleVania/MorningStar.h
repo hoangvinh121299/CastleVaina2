@@ -8,8 +8,8 @@
 #define MORNINGSTAR_ANI_LEVEL0_END 3
 
 //MORNINGSTAR LEVEL 1
-#define MORNING_ANI_LEVEL1_START 4
-#define MORNING_ANI_LEVEL1_END 7
+#define MORNINGSTAR_ANI_LEVEL1_START 4
+#define MORNINGSTAR_ANI_LEVEL1_END 7
 
 //MORNINGSTAR MAX LEVEL
 #define MORNINGSTAR_ANI_LEVEL2_START 8
@@ -37,7 +37,7 @@ public:
 	void getBoundingBox(float& left, float& top, float& right, float& bottom);
 	void renderIcon(float x, float y);
 
-	/*void upgradeLevel();*/
+	void upgradeLevel();
 
 	int getLevel();
 

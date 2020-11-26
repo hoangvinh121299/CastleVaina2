@@ -1,4 +1,4 @@
-7
+8
 1 42 -1 1383 366 30   10 0
 2 21 -1 0    370 1536 32 4
 3 41 -1 167  308 0     0 0
@@ -6,9 +6,11 @@
 5 41 -1 685  308 0     0 0
 6 41 -1 930  308 0     0 0
 7 41 -1 1197 308 0     0 0
-
+8 42 -1 1441 354 30 14 0
 
 // [id] [objectType] [direction] [x] [y] [w] [h] [model];
 // 21 là objectType của Brick
 // 42 là objectType của hiddenObject 
 // 41 là objectType của Torch
+//id 8: rớt túi tiền ra
+//id 7: vào cửa 

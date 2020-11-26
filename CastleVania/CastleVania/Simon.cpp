@@ -219,13 +219,13 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	//Trong trạng thái tấn công
-	if (this->isAttacking)
+	/*if (this->isAttacking)
 	{
 		float vx, vy;
 		this->getSpeed(vx, vy);
 		this->setSpeed(0, vy);
 		return;
-	}
+	}*/
 }
 void Simon::Render(Camera*camera)
 {
@@ -239,16 +239,25 @@ void Simon::Render(Camera*camera)
 	if (untouchable)
 		alpha = 128;
 
-	if (direction == -1)
+	if (this->getFreeze() == true)
 	{
-		objectSprite->Draw(pos.x, pos.y, alpha);
-		
-		
+		if (direction == -1)
+			objectSprite->Draw(pos.x, pos.y, alpha, rand() % 256, rand() % 256, rand() % 256);
+		else
+			objectSprite->DrawFlipX(pos.x, pos.y, alpha, rand() % 256, rand() % 256, rand() % 256);
+
 	}
 	else
 	{
-		objectSprite->DrawFlipX(pos.x, pos.y, alpha);
-		
+		if (direction == -1)
+		{
+			objectSprite->Draw(pos.x, pos.y, alpha);
+		}
+		else
+		{
+			objectSprite->DrawFlipX(pos.x, pos.y, alpha);
+
+		}
 	}
 	for (auto& objWeapon : mapWeapon)
 	{
@@ -312,8 +321,8 @@ void Simon::jump()
 }
 void Simon::stop()
 {
-	if (isAttacking == true)
-		return;
+	/*if (isAttacking == true)
+		return;*/
 	if (isOnStair == true)
 		return;
 	if (isHurting == true)
@@ -347,7 +356,8 @@ void Simon::Reset()
 	vx = 0;
 	vy = 0;
 	isDead = false;
-	
+	isFreeze = false;
+	timeFreeze = 0;
 	
 }
 void Simon::right()
@@ -434,4 +444,39 @@ bool Simon::isUsingWeapon(objectType typeWeapon)
 			return true;
 	}
 	return false;
+}
+bool Simon::isColissionWithItem(Item* objectItem)
+{
+	if (objectItem->getFinish())
+		return false;
+	float l, t, r, b;
+	float l2, t2, r2, b2;
+
+	this->getBoundingBox(l, t, r, b); //Lấy ra boundingBox của Simon
+
+	objectItem->getBoundingBox(l2, t2, r2, b2); //Lấy bounding box của Item
+
+	if (Game::GetInstance()->checkAABB(l, t, r, b, l2, t2, r2, b2))
+	{
+		return true;
+	}
+}
+
+void Simon::setFreeze(int temp)
+{
+	isFreeze = temp;
+	timeFreeze = 0; //Thời gian đã đóng băng
+}
+bool Simon::getFreeze()
+{
+	return isFreeze;
+}
+void Simon::updateFreeze(DWORD dt)
+{
+	if (timeFreeze + dt >= SIMON_TIME_FREEZE_MAX)
+	{
+		setFreeze(false); //Kết thúc quá trình đóng băng
+	}
+	else
+		timeFreeze += dt;
 }

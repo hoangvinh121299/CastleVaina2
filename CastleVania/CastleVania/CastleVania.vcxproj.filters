@@ -162,6 +162,9 @@
     <ClInclude Include="ItemDagger.h">
       <Filter>Object\Item</Filter>
     </ClInclude>
+    <ClInclude Include="MoneyBag.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSprite.cpp">
@@ -257,13 +260,16 @@
     <ClCompile Include="LargeHeart.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
-    <ClCompile Include="Panther.cpp">
-      <Filter>Object\Item</Filter>
-    </ClCompile>
     <ClCompile Include="UpgradeMorningStar.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
     <ClCompile Include="ItemDagger.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Panther.cpp">
+      <Filter>Object\Enenmy</Filter>
+    </ClCompile>
+    <ClCompile Include="MoneyBag.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
   </ItemGroup>

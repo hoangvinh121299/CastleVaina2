@@ -5,6 +5,7 @@
 #include "debug.h"
 #include "Weapon.h"
 #include "MorningStar.h"
+#include "Item.h"
 //CÁC THÔNG SỐ CƠ BẢN CỦA SIMON
 #define SIMON_POSITION_DEFAULT 50.0f,0.0f
 #define SIMON__BBOX_WIDTH 60
@@ -154,7 +155,11 @@ public:
 	bool isUsingWeapon(objectType typeWeapon);
 	void Init(); // Khởi tạo lại các trạng thái, Heartcollect, health, lives, score
 	void Reset();//Khởi tạo lại các trạng thái
-
+	bool isColissionWithItem(Item* objectItem);
+	//Trạng thái nhấp nháy
+	void setFreeze(int temp);
+	bool getFreeze();
+	void updateFreeze(DWORD dt);
 };
 
 #endif

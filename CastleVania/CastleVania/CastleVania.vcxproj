@@ -156,6 +156,7 @@
     <ClCompile Include="LargeHeart.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MoneyBag.cpp" />
     <ClCompile Include="MorningStar.cpp" />
     <ClCompile Include="Panther.cpp" />
     <ClCompile Include="Scence.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="ItemDagger.h" />
     <ClInclude Include="LargeHeart.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MoneyBag.h" />
     <ClInclude Include="MorningStar.h" />
     <ClInclude Include="Panther.h" />
     <ClInclude Include="Scence.h" />
