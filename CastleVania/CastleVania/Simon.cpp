@@ -358,7 +358,7 @@ void Simon::Reset()
 	isDead = false;
 	isFreeze = false;
 	timeFreeze = 0;
-	
+	typeWeaponCollect = objectType::NON_WEAPON_COLLECT;
 }
 void Simon::right()
 {
@@ -427,6 +427,11 @@ void Simon::colissionWithBrick(const vector<LPGAMEOBJECT>* coObjects)
 }
 void Simon::attack(objectType typeWeapon)
 {
+	if (typeWeapon == objectType::NON_WEAPON_COLLECT) //Đang không có vũ khí phụ
+	{
+		return;
+	}
+
 	if (mapWeapon[typeWeapon]->getFinish()) //Chờ đến khi render hết tất cả frame của vũ khí thì mới được tấn công tiếp 
 	{
 		isAttacking = true;
@@ -479,4 +484,38 @@ void Simon::updateFreeze(DWORD dt)
 	}
 	else
 		timeFreeze += dt;
+}
+objectType Simon::getTypeWeaponCollect()
+{
+	return typeWeaponCollect;
+}
+
+void Simon::setTypeWeaponCollect(objectType temp)
+{
+	typeWeaponCollect = temp;
+}
+void Simon::getNewWeapon(objectType temp)
+{
+	switch (temp)
+	{
+		case DAGGER:
+			if (mapWeapon[temp] == NULL)
+			{
+				mapWeapon[temp] = new Dagger(camera);
+			}
+			break;
+	default:
+		break;
+	}
+	setTypeWeaponCollect(temp);
+}
+
+bool Simon::getIsUseDoubleShot()
+{
+	return isUseDoubleShot;
+}
+
+void Simon::setIsUseDoubleShot(bool temp)
+{
+	isUseDoubleShot = temp;
 }

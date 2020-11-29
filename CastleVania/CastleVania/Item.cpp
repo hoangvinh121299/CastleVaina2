@@ -24,7 +24,7 @@ void Item::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 	timeDisplayed += dt;
 	if (timeDisplayed >= timeDisplayMax)
 	{
-		isFinish = true; //Đã có thể ăn được
+		isFinish = true; //Biến mất sau khi quá thời gian hiển thị
 		return;
 	}
 	GameObject::Update(dt);

@@ -6,6 +6,7 @@
 #include "Weapon.h"
 #include "MorningStar.h"
 #include "Item.h"
+#include "Dagger.h"
 //CÁC THÔNG SỐ CƠ BẢN CỦA SIMON
 #define SIMON_POSITION_DEFAULT 50.0f,0.0f
 #define SIMON__BBOX_WIDTH 60
@@ -107,9 +108,9 @@ private:
 	int directionStair_Backup;
 	int directionY_Backup;
 	int directionAfterGo;
-
+	objectType typeWeaponCollect;
 	bool isDead;
-	
+	bool isUseDoubleShot;
 	Camera *camera;
 	
 public:
@@ -160,6 +161,13 @@ public:
 	void setFreeze(int temp);
 	bool getFreeze();
 	void updateFreeze(DWORD dt);
+	//Vũ khí phụ
+	objectType getTypeWeaponCollect();
+	void setTypeWeaponCollect(objectType temp);
+	void getNewWeapon(objectType temp);
+
+	void setIsUseDoubleShot(bool temp);
+	bool getIsUseDoubleShot();
 };
 
 #endif

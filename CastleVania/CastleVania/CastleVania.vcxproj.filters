@@ -165,6 +165,15 @@
     <ClInclude Include="MoneyBag.h">
       <Filter>Object\Item</Filter>
     </ClInclude>
+    <ClInclude Include="Dagger.h">
+      <Filter>Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectMoney.h">
+      <Filter>Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="MoneyBagExtra.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSprite.cpp">
@@ -270,6 +279,15 @@
       <Filter>Object\Enenmy</Filter>
     </ClCompile>
     <ClCompile Include="MoneyBag.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Dagger.cpp">
+      <Filter>Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectMoney.cpp">
+      <Filter>Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="MoneyBagExtra.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
   </ItemGroup>

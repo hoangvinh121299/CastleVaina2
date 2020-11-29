@@ -63,6 +63,7 @@ void SceneGame::KeyState(BYTE *state)
 				simon->stop();
 		}
 	}
+	
 }
 
 void SceneGame::OnKeyDown(int keycode)
@@ -100,9 +101,12 @@ void SceneGame::OnKeyDown(int keycode)
 		}
 	}
 	//Simon tấn công bình thường
-	if (keycode == DIK_A)
+	if (keycode == DIK_A&&!simon->isAttacking)
 		simon->attack(objectType::MORNINGSTAR);
-	
+	if (Game::GetInstance()->IsKeyDown(DIK_S) && !simon->isAttacking)
+	{
+		simon->attack(simon->getTypeWeaponCollect()); //Tấn công với vũ khí phụ
+	}
 	
 }
 void SceneGame::OnKeyUp(int keycode)
@@ -201,10 +205,7 @@ void SceneGame::LoadResources()
 	camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 	tileMap = new Map();
 	simon = new Simon(camera);
-	/*listEnemy.push_back(new Ghost(50, 300, 1));
-	listEnemy.push_back(new Panther(500, 330, -1,simon));
-	listEnemy.push_back(new Bat(200, 100, 1));
-	listEnemy.push_back(new Fishmen(50, 300, 1, simon, &listWeaponOfEnemy, camera));*/
+	
 	InitGame();
 	DebugOut(L"SceneGame Loadresources done\n");
 }
@@ -232,6 +233,10 @@ void SceneGame::loadMap(objectType mapCurrent)
 		camera->SetBoundary(0, (float)(tileMap->getMapWidth() - camera->GetWidth())); // biên camera khi chưa qua cửa
 		camera->setBoundaryBackup(0, (float)(tileMap->getMapWidth() - camera->GetWidth())); // biên camera khi chưa qua cửa
 		simon->setPostion(SIMON_POSITION_DEFAULT);
+		listEnemy.push_back(new Ghost(50, 300, 1));
+		listEnemy.push_back(new Panther(500, 300, -1,simon));
+		listEnemy.push_back(new Bat(200, 100, 1));
+		listEnemy.push_back(new Fishmen(50, 300, 1, simon, &listWeaponOfEnemy, camera));
 		break;
 	default:
 		break;
@@ -279,22 +284,23 @@ void SceneGame::checkCollision()
 	checkCollisionWeaponWithObject(listObject);
 	checkCollisionSimonWithHiddenObject();
 	checkCollionsionSimonWithItem();
+	checkCollsionWithEnemy();
 }
-//Kiểm tra va chạm giữa vũ khí với object nền 
+//Kiểm tra va chạm giữa vũ khí với object
 void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 {
 	for (auto& objWeapon : simon->mapWeapon)
 	{
 		if (objWeapon.second->getFinish() == false) //Vũ khí đang hoạt động
 		{
-			for (UINT i = 0; i < listObject.size(); i++)
+			for (UINT i = 0; i < listObj.size(); i++)
 			{
 				if (objWeapon.second->getLastTimeAttack() > listObj[i]->getLastTimeAttacked())
 				{
-					if (objWeapon.second->isColission(listObject[i]) == true)
+					if (objWeapon.second->isColission(listObj[i]) == true)
 						{
 							bool runEffectHit = false;
-							GameObject* tempObject = listObject[i];
+							GameObject* tempObject = listObj[i];
 							switch (tempObject->getType())
 							{
 							case objectType::TORCH:
@@ -308,6 +314,30 @@ void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 								runEffectHit = true;
 								break;
 							}
+							case objectType::GHOST:
+							{
+								tempObject->subHealth(1);
+								runEffectHit = true;
+								break;
+							}
+							case objectType::FISHMEN:
+							{
+								tempObject->subHealth(1);
+								runEffectHit = true;
+								break;
+							}
+							case objectType::BAT:
+							{
+								tempObject->subHealth(1);
+								runEffectHit = true;
+								break;
+							}
+							case objectType::PANTHER:
+							{
+								tempObject->subHealth(1);
+								runEffectHit = true;
+								break;
+							}
 							default:
 								break;
 							}
@@ -316,8 +346,14 @@ void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 								listEffect.push_back(new EffectHit(listObj[i]->getX() + 10, listObj[i]->getY() + 14));
 								listEffect.push_back(new EffectFire(tempObject->getX() - 5, tempObject->getY() + 8));
 							}
+							//Nếu Dagger va chạm thì xét finish
+							if (objWeapon.second->getType() == objectType::DAGGER)
+							{
+								objWeapon.second->setFinish(true);
+							}
 							tempObject->setLastTimeAttacked(objWeapon.second->getLastTimeAttack());
 						}
+
 				}
 			}
 		}
@@ -340,7 +376,7 @@ Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
 		if (ObjectType == objectType::OBJECT_HIDDEN)
 		{
 			if (id == 8)
-				return new MoneyBag(1240, 305,MONEY_BAG_WHITE);
+				return new MoneyBagExtra(1240, 305);
 		}
 	}
 }
@@ -370,11 +406,21 @@ void SceneGame::checkCollionsionSimonWithItem()
 					}
 				case objectType::ITEMDAGGER:
 					{
+					simon->getNewWeapon(objectType::DAGGER);
 					listItem[i]->setFinish(true);
 					break;
+					}
+				case objectType::BONUS:
+					{
+					listItem[i]->setFinish(true);
+					listEffect.push_back(new EffectMoney(listItem[i]->getX(), listItem[i]->getY(), objectType::EFFECT_MONEY_1000));
 					}
 			}
 			}
 		}
 	}
+}
+void SceneGame::checkCollsionWithEnemy()
+{
+	checkCollisionWeaponWithObject(listEnemy);
 }

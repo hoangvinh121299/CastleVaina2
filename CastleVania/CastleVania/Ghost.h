@@ -2,7 +2,7 @@
 #define _GHOST_
 
 #define GHOST_SPEED_X 0.09f
-#define GHOST_GRAVITY 0.00f
+#define GHOST_GRAVITY 0.25f
 #include "GameObject.h"
 class Ghost:public GameObject
 {

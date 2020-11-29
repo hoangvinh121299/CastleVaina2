@@ -26,8 +26,6 @@ Panther::~Panther()
 void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	GameObject::Update(dt);
-	x += dx;
-	y += dy;
 	if (vx < 0 && x < 0)
 	{
 		
@@ -51,14 +49,6 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else
 		vy += PANTHER_GRAVITY;
-	if (y>330)
-	{
-		y = 330;
-		vy = 0;
-		isJumping = false;
-		run();
-
-	}
 	float distanceLimit; //Khoảng cách để panther bắt đầu tấn công simon
 	if (direction == 1)
 		distanceLimit = 85;
@@ -94,10 +84,62 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 	}
-	
+	//Xét va chạm với nền
+	vector<LPCollisionEvent> coEvents;
+	vector<LPCollisionEvent> coEventsResult;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> list_Brick;
+	list_Brick.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (coObjects->at(i)->getType() == objectType::BRICK)
+			list_Brick.push_back(coObjects->at(i));
+	}
+
+	calcPotentialCollisions(&list_Brick, coEvents);
+	if (coEvents.size() == 0)
+	{
+		x += dx;
+		y += dy;
+	}
+	else
+	{
+		float min_tx, min_ty, nx = 0, ny;
+		filterCollisionEvents(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+
+		x += dx;
+		if (ny == -1)
+			y += min_ty * dy + ny * 0.4f;
+		else
+			y += dy;
+
+		if (ny == -1)
+		{
+			vy = 0;
+			if (isJumping)
+			{
+				isJumping = false; // kết thúc nhảy
+				if (x < simon->getX()) // simon ở bên phải
+				{
+					direction = 1; // đổi hướng panther qua phải 
+				}
+				else
+				{
+					direction = -1; // đổi hướng panther qua trái
+				}
+				run();
+			}
+		}
+	}
+	for (UINT i = 0; i < coEvents.size(); i++)
+		delete coEvents[i];
+#pragma endregion
+
 }
 void Panther::Render(Camera* camera)
 {
+	if (health <= 0)
+		return;
 	D3DXVECTOR2 pos = camera->TransForm(x, y);
 	if (direction == -1)
 		objectSprite->Draw(pos.x, pos.y);

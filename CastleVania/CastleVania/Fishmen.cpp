@@ -2,6 +2,7 @@
 
 Fishmen::Fishmen(float x, float y, int direction, Simon* simon, vector<Weapon*>* listWeapon, Camera* camera)
 {
+	ObjectType = objectType::FISHMEN;
 	objectTexture = TextureManager::GetInstance()->GetTexture(objectType::FISHMEN);
 	objectSprite = new GameSprite(objectTexture, 200);
 
@@ -36,7 +37,7 @@ void Fishmen::getBoundingBox(float& left, float& top, float& right, float& botto
 	right = x + objectTexture->GetFrameWidth() - 5;
 	bottom = y + objectTexture->GetFrameHeight();
 }
-void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 {
 	if (y <= y_start - FISHMEN_Y_JUMP);
 	{
@@ -85,7 +86,7 @@ void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 	}
-	y += dy;
+	/*y += dy;*/
 	if(isAttacking)
 	{
 		DWORD now = GetTickCount();
@@ -119,10 +120,38 @@ void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 	}
+	//Xử lý va chạm với gạch
+	vector<LPCollisionEvent> coEvents;
+	vector<LPCollisionEvent> coEventsResult;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> list_Brick;
+	list_Brick.clear();
+
+	for (UINT i = 0; i <listObject ->size(); i++)
+		if (listObject->at(i)->getType() == objectType::BRICK)
+			list_Brick.push_back(listObject->at(i));
+
+	calcPotentialCollisions(&list_Brick, coEvents);
+
+	float min_tx, min_ty, nx = 0, ny;
+	filterCollisionEvents(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+
+	if (ny == -1)
+	{
+		vy = 0;
+		y += min_ty * dy + ny * 0.4f;
+		isRunning = true;
+	}
+	else
+	{
+		y += dy;
+	}
 
 }
 void Fishmen::Render(Camera* camera)
 {
+	if (health <= 0)
+		return;
 	D3DXVECTOR2 pos = camera->TransForm(x, y);
 	if (direction == -1)
 		objectSprite->Draw(pos.x, pos.y);
@@ -135,6 +164,8 @@ void Fishmen::Render(Camera* camera)
 
 void Fishmen::attack()
 {
+	if (health <= 0)
+		return;
 	if (isAttacking)
 		return;
 
