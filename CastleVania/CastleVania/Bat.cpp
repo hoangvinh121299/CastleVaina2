@@ -59,6 +59,8 @@ void Bat::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 
 void Bat::Render(Camera* camera)
 {
+	if (health <= 0)
+		return;
 	D3DXVECTOR2 pos = camera->TransForm(x, y);
 
 	if (direction == -1)

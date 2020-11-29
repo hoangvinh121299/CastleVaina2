@@ -22,6 +22,9 @@
 #include "ItemDagger.h"
 #include "UpgradeMorningStar.h"
 #include "MoneyBag.h"
+#include "Dagger.h"
+#include "EffectMoney.h"
+#include "MoneyBagExtra.h"
 class SceneGame:public Scene
 {
 private:
@@ -52,10 +55,12 @@ public:
 	void Update(DWORD dt);
 	void Render();
 	void loadMap(objectType mapCurrent);
+	//Kiểm tra va chạm 
 	void checkCollision();
 	void checkCollisionSimonWithHiddenObject();
 	void checkCollisionWeaponWithObject(vector<GameObject*> listObj);
 	void checkCollionsionSimonWithItem();
+	void checkCollsionWithEnemy();
 	Item* getNewItem(int id, objectType ObjectType, float x, float y);
 };
 
