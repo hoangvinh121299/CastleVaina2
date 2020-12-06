@@ -136,6 +136,7 @@
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Candle.cpp" />
     <ClCompile Include="Dagger.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="define.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="GameSprite.cpp" />
     <ClCompile Include="GameTexture.cpp" />
     <ClCompile Include="Gametime.cpp" />
+    <ClCompile Include="Gate.cpp" />
     <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="HiddenObject.cpp" />
@@ -166,6 +168,7 @@
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Simon.cpp" />
+    <ClCompile Include="SmallHeart.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Torch.cpp" />
     <ClCompile Include="UpgradeMorningStar.cpp" />
@@ -176,6 +179,7 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Candle.h" />
     <ClInclude Include="Dagger.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="define.h" />
@@ -190,6 +194,7 @@
     <ClInclude Include="GameSprite.h" />
     <ClInclude Include="GameTexture.h" />
     <ClInclude Include="Gametime.h" />
+    <ClInclude Include="Gate.h" />
     <ClInclude Include="Ghost.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="HiddenObject.h" />
@@ -205,6 +210,7 @@
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Simon.h" />
+    <ClInclude Include="SmallHeart.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Torch.h" />
     <ClInclude Include="UpgradeMorningStar.h" />

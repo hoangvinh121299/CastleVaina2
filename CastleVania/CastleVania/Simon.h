@@ -86,6 +86,7 @@
 #define SIMON_DEFAULT_HERTCOLLECT 5 //SỐ MÁU BAN ĐẦU CỦA SIMON
 #define SIMON_DEFAULT_SCORE 0
 #define SIMON_DEFAULT_LIVES 3 //SỐ MẠNG BAN ĐẦU CỦA SIMON
+#define SIMON_UNTOUCHABLE_TIME 2000
 class Simon:public GameObject
 {
 private:
@@ -126,7 +127,7 @@ public:
 	int directionStair;
 	
 	bool untouchable; //Trạng thái bất tử
-	DWORD utouchable_Start; // Thời điểm bất tử bắt đầu
+	DWORD untouchable_Start; // Thời điểm bất tử bắt đầu
 	bool isCollisionWithGround= false; // Đang va chạm với đất theo trục Y 
 	DWORD timewWaitAfterDeath; // Thời gian chờ hồi sinh sau khi chết
 	
@@ -168,6 +169,10 @@ public:
 
 	void setIsUseDoubleShot(bool temp);
 	bool getIsUseDoubleShot();
+	//Trạng thái bị thương
+	void setHurt(LPCollisionEvent e);
+	//Trạng thái bất tử
+	void StartUntouchable();
 };
 
 #endif

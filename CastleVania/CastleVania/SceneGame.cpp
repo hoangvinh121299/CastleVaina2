@@ -20,6 +20,9 @@ void SceneGame::KeyState(BYTE *state)
 	{
 		return;
 	}
+	//Không update keystate khi simon bị thương
+	if (simon->isHurting)
+		return;
 
 	if (simon->isAttacking) // đang attack
 	{
@@ -83,6 +86,9 @@ void SceneGame::OnKeyDown(int keycode)
 	{
 		return;
 	}
+	//Không update keystate khi simon bị thương
+	if (simon->isHurting)
+		return;
 	//SIMON nhảy 
 	if (keycode == DIK_SPACE && simon->isOnStair==false&&simon->isJumping==false)
 	{
@@ -115,6 +121,9 @@ void SceneGame::OnKeyUp(int keycode)
 	{
 		return;
 	}
+	//Không update keystate khi simon bị thương
+	if (simon->isHurting)
+		return;
 }
 
 void SceneGame::InitGame()
@@ -226,7 +235,7 @@ void SceneGame::loadMap(objectType mapCurrent)
 		simon->setPostion(SIMON_POSITION_DEFAULT);
 		break;
 	case objectType::MAP2:
-		gridGame->setObjectFilePath((char*)"Resources/Map/Map_2/readfile_object_map2.txt");
+ 		gridGame->setObjectFilePath((char*)"Resources/Map/Map_2/readfile_object_map2.txt");
 		tileMap->loadMap(objectType::MAP2);
 		camera->setAllowFollowSimon(true);
 		camera->SetPosition(0, 0);
@@ -317,24 +326,46 @@ void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 							case objectType::GHOST:
 							{
 								tempObject->subHealth(1);
+								listItem.push_back(getNewItem(
+									tempObject->getID(), tempObject->getType(),
+									tempObject->getX() + 5, tempObject->getY()));
 								runEffectHit = true;
 								break;
 							}
 							case objectType::FISHMEN:
 							{
 								tempObject->subHealth(1);
+								listItem.push_back(getNewItem(
+									tempObject->getID(), tempObject->getType(),
+									tempObject->getX() + 5, tempObject->getY()));
 								runEffectHit = true;
 								break;
 							}
 							case objectType::BAT:
 							{
 								tempObject->subHealth(1);
+								listItem.push_back(getNewItem(
+									tempObject->getID(), tempObject->getType(),
+									tempObject->getX() + 5, tempObject->getY()));
 								runEffectHit = true;
 								break;
 							}
 							case objectType::PANTHER:
 							{
 								tempObject->subHealth(1);
+								listItem.push_back(getNewItem(
+									tempObject->getID(), tempObject->getType(),
+									tempObject->getX() + 5, tempObject->getY()));
+								runEffectHit = true;
+								break;
+							}
+							case objectType::CANDLE:
+							{
+								tempObject->subHealth(1);
+								listItem.push_back(getNewItem(
+									tempObject->getID(), tempObject->getType(),
+									tempObject->getX() + 5, tempObject->getY()));
+								// hiệu ứng hit
 								runEffectHit = true;
 								break;
 							}
@@ -379,6 +410,77 @@ Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
 				return new MoneyBagExtra(1240, 305);
 		}
 	}
+	if (mapCurrent == objectType::MAP2)
+	{
+		if (ObjectType == objectType::CANDLE)
+		{
+			switch (id)
+			{
+			case 2:
+				return new MoneyBag(x, y, objectType::MONEY_BAG_WHITE);
+				break;
+			case 3:
+				return new MoneyBag(x, y, objectType::MONEY_BAG_RED);
+				break;
+			case 4:
+				return new MoneyBag(x, y, objectType::MONEY_BAG_PURPLE);
+				break;
+				default:
+			{
+				int random = rand() % 15;
+					switch (random)
+				{
+					case 0:
+						return new MoneyBag(x, y, objectType::MONEY_BAG_RED);
+						break;
+					case 1:
+						return new MoneyBag(x, y, objectType::MONEY_BAG_WHITE);
+						break;
+					case 2:
+						return new MoneyBag(x, y, objectType::MONEY_BAG_PURPLE);
+						break;
+
+					default:
+						return new SmallHeart(x, y);
+						break;
+				}
+				break;
+			}
+			}
+		}
+		if (ObjectType == objectType::GHOST || ObjectType == objectType::PANTHER || ObjectType == objectType::BAT || ObjectType == objectType::FISHMEN)
+		{
+			int random = rand() % 15;
+
+			switch (random)
+			{
+			case 0:
+				return new LargeHeart(x, y);
+				break;
+			case 1:
+				return new SmallHeart(x, y);
+				break;
+			case 2:
+				return new ItemDagger(x, y);
+				break;
+			case 3:
+				return new MoneyBagExtra(x, y);
+				break;
+			case 4:
+				return new MoneyBag(x, y, objectType::MONEY_BAG_RED);
+				break;
+			case 5:
+				return new MoneyBag(x, y, objectType::MONEY_BAG_WHITE);
+				break;
+			case 6:
+				return new MoneyBag(x, y, objectType::MONEY_BAG_PURPLE);
+				break;
+			default: // còn lại là SmallHeart
+				return new SmallHeart(x,y);
+				break;
+			}
+		}
+	}
 }
 void SceneGame::checkCollionsionSimonWithItem()
 {
@@ -415,6 +517,42 @@ void SceneGame::checkCollionsionSimonWithItem()
 					listItem[i]->setFinish(true);
 					listEffect.push_back(new EffectMoney(listItem[i]->getX(), listItem[i]->getY(), objectType::EFFECT_MONEY_1000));
 					}
+				case objectType::SMALLHEART:
+				{
+					listItem[i]->setFinish(true);
+					break;
+				}
+				/* Xử lí ăn tiền */
+				case objectType::MONEY_BAG_RED:
+				{
+					listItem[i]->setFinish(true);
+					listEffect.push_back(new EffectMoney(
+						listItem[i]->getX(), 
+						listItem[i]->getY(), 
+						objectType::EFFECT_MONEY_100));
+					break;
+				}
+
+				case objectType::MONEY_BAG_PURPLE:
+				{
+					listItem[i]->setFinish(true);
+					listEffect.push_back(new EffectMoney(
+						listItem[i]->getX(),
+						listItem[i]->getY(),
+						objectType::EFFECT_MONEY_400));
+					break;
+				}
+
+				case objectType::MONEY_BAG_WHITE:
+				{
+					listItem[i]->setFinish(true);
+					listEffect.push_back(new EffectMoney(
+						listItem[i]->getX(),
+						listItem[i]->getY(),
+						objectType::EFFECT_MONEY_700));
+					break;
+				}
+				
 			}
 			}
 		}
@@ -423,4 +561,75 @@ void SceneGame::checkCollionsionSimonWithItem()
 void SceneGame::checkCollsionWithEnemy()
 {
 	checkCollisionWeaponWithObject(listEnemy);
+	checkCollisionSimonWithEnemy();
+}
+void SceneGame::checkCollisionSimonWithEnemy()
+{
+	if (GetTickCount() - simon->untouchable_Start > SIMON_UNTOUCHABLE_TIME)
+	{
+		simon->untouchable_Start = 0;
+		simon->untouchable = false;
+	}
+	//Va chạm với Enemy
+	//Khi Simon không ở trạng thái bất tử thì có thể va chạm với Enemy hoặc Weapon của Enemy
+	if (!simon->untouchable)
+	{
+		for (UINT i = 0; i < listEnemy.size(); i++)
+		{
+			GameObject* gameobj = dynamic_cast<GameObject*> (listEnemy[i]);
+			if (gameobj->getHealth() > 0) // còn sống
+			{
+				LPCollisionEvent e = simon->sweptAABBEx(gameobj);
+				bool isCollision = false;
+				if (e->t > 0 && e->t <= 1) // có va chạm
+				{
+					simon->setHurt(e);
+					isCollision = true;
+				}
+				if (isCollision == false && simon->checkAABB(gameobj) == true)
+				{
+					LPCollisionEvent e = new CollisionEvent(1.0f, (float)-simon->getDirection(), 0.0f, NULL);
+					simon->setHurt(e);
+					isCollision = true;
+				}
+
+				//Nếu va chạm với dơi thì dơi cũng tự chết 
+				if (isCollision)
+				{
+					if (gameobj->getType() == objectType::BAT)
+					{
+						listEffect.push_back(new EffectFire(
+							gameobj->getX() - 5, 
+							gameobj->getY() + 8)); // hiệu ứng lửa
+						gameobj->setHealth(0);
+					}
+					return; // giảm chi phí duyệt, vì nếu có va chạm thì cũng đang untouchable
+				}
+			}
+		}
+	}
+	//Va chạm với vũ khí của Enemy
+	if (simon->untouchable == false)
+	{
+		for (UINT i = 0; i < listWeaponOfEnemy.size(); i++)
+		{
+			if (listWeaponOfEnemy[i]->getFinish() == false)
+			{
+				LPCollisionEvent e = simon->sweptAABBEx(listWeaponOfEnemy[i]);
+				if (e->t > 0 && e->t <= 1) // có va chạm
+				{
+					simon->setHurt(e);
+					return; // giảm chi phí duyệt, vì nếu có va chạm thì cũng đang untouchable
+				}
+
+				if (simon->checkAABB(listWeaponOfEnemy[i]) == true)
+				{
+					LPCollisionEvent e = new CollisionEvent(
+						1.0f, (float)-simon->getDirection(), 0.0f, NULL);
+					simon->setHurt(e);
+					return;
+				}
+			}
+		}
+	}
 }

@@ -25,6 +25,9 @@
 #include "Dagger.h"
 #include "EffectMoney.h"
 #include "MoneyBagExtra.h"
+#include "Candle.h"
+#include "Gate.h"
+#include "SmallHeart.h"
 class SceneGame:public Scene
 {
 private:
@@ -61,6 +64,7 @@ public:
 	void checkCollisionWeaponWithObject(vector<GameObject*> listObj);
 	void checkCollionsionSimonWithItem();
 	void checkCollsionWithEnemy();
+	void checkCollisionSimonWithEnemy();
 	Item* getNewItem(int id, objectType ObjectType, float x, float y);
 };
 

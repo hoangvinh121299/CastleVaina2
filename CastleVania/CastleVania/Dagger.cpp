@@ -16,6 +16,11 @@ Dagger::~Dagger()
 
 void Dagger::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (!camera->checkObjectInCamera(x, y, (float)getWidth(), (float)getHeight())) // xử lí ra khỏi cam thì kết thúc 
+	{
+		isFinish = true;
+		return;
+	}
 	GameObject::Update(dt);
 	//Chỉ di chuyển theo phương ngang
 	x += dx;

@@ -57,7 +57,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			objectSprite->SelectFrame(SIMON_ANI_HURTING);
 			DebugOut(L"Simon at hurting");
 		}
-
 		//Không bị thương
 		else
 		{
@@ -236,6 +235,7 @@ void Simon::Render(Camera*camera)
 
 	int alpha = 255;
 
+	//Trong trạng thái bất tử thì màu nhạt hơn
 	if (untouchable)
 		alpha = 128;
 
@@ -518,4 +518,38 @@ bool Simon::getIsUseDoubleShot()
 void Simon::setIsUseDoubleShot(bool temp)
 {
 	isUseDoubleShot = temp;
+}
+void Simon::setHurt(LPCollisionEvent e)
+{
+	if (isHurting == true)
+		return;
+	if (e->nx == 0 && e->ny == 0) //Không có va chạm
+		return;
+
+	isWalking = 0;
+	isAttacking = 0;
+	isJumping = 0;
+
+	resetSit();
+
+	//Bị thương thì không render MORNINGSTAR nữa 
+	mapWeapon[objectType::MORNINGSTAR]->setFinish(true);
+
+	if (e->nx != 0)
+	{
+		vx = SIMON_WALKING_SPEED * e->nx;
+		vy = -SIMON_VJUMP_HURT;
+		isHurting = 1;
+	}
+	if (e->ny != 0)
+	{
+		vy = -SIMON_VJUMP_HURT;
+		isHurting = 1;
+	}
+	StartUntouchable();
+}
+void Simon::StartUntouchable()
+{
+	untouchable = true;
+	untouchable_Start = GetTickCount();
 }
