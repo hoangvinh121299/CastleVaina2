@@ -113,6 +113,14 @@ private:
 	bool isDead;
 	bool isUseDoubleShot;
 	Camera *camera;
+
+	float autoGoXDistance; //Khoảng cách Simon auto đi
+	float autoGoXSpeed;
+	float autoGoXDirection; //Hướng tự động đi
+	float autoGoXBackupX; //Vị trí băt đầu đi tự động
+
+	bool isAutoGoX = 0; //Có đang trong trạng thái auto hay không
+
 	
 public:
 	bool isAttacking;
@@ -121,11 +129,12 @@ public:
 	bool isJumping;
 	bool isSitting;
 
-	int directionY;
-	bool isOnStair;
-	bool isProccessingOnStair;
-	int directionStair;
+	int directionY; //Hương đi theo trục y của Simon
+	bool isOnStair; //Có đang ở trên cầu thang hay không
+	int isProccessingOnStair; //Có 2 giai đoạn
+	int directionStair; //Hướng của cầu thang đang đi -1 là qua trái, 1 là qua phải
 	
+	float distancePassOnStair = 0;
 	bool untouchable; //Trạng thái bất tử
 	DWORD untouchable_Start; // Thời điểm bất tử bắt đầu
 	bool isCollisionWithGround= false; // Đang va chạm với đất theo trục Y 
@@ -158,6 +167,7 @@ public:
 	void Init(); // Khởi tạo lại các trạng thái, Heartcollect, health, lives, score
 	void Reset();//Khởi tạo lại các trạng thái
 	bool isColissionWithItem(Item* objectItem);
+	void CollisionIsOnStair(const vector<LPGAMEOBJECT>* coObjects);
 	//Trạng thái nhấp nháy
 	void setFreeze(int temp);
 	bool getFreeze();
@@ -173,6 +183,16 @@ public:
 	void setHurt(LPCollisionEvent e);
 	//Trạng thái bất tử
 	void StartUntouchable();
+
+	void setAutoGoX(int Direction,
+		int DirectionBackup,
+		float dx,
+		float speed); //Set các thông số khi auto go và backup trạng thái trước khi auto
+	bool getIsAutoGoX(); //Kiểm tra xem có đang trong trạng thái auto hay không
+	void restoreBackupAutoGoX();//Khôi phục trạng thái trước khi vào trạng thái Auto
+
+
+
 };
 
 #endif

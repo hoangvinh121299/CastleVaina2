@@ -28,6 +28,25 @@
 #include "Candle.h"
 #include "Gate.h"
 #include "SmallHeart.h"
+
+#define CAMERA_POSITION_Y_LAKE 400.0f
+
+#define CAMERA_BOUNDARY_LAKE_LEFT 3075.0f
+#define CAMERA_BOUNDARY_LAKE_RIGHT (4111.0f-SCREEN_WIDTH)
+#define GRID_INSERT_OBJECT__GETOUTFROMLAKE_LEFT   78, objectType::OBJECT_HIDDEN, -1, 3140, 440, 20, 20, 0 //Đi ra khỏi hồ bên trái
+#define GRID_INSERT_OBJECT__GETINTOLAKE_LEFT      77, objectType::OBJECT_HIDDEN, -1, 3190, 423, 40, 10, 0 //Đi xuống hồ bên trái
+#define GRID_INSERT_OBJECT__GETINTOLAKE_RIGHT     79, objectType::OBJECT_HIDDEN, -1, 3850, 423, 25, 10, 0 //Đi xuống hồ bên phải 
+#define GRID_INSERT_OBJECT__GETOUTFROMLAKE_RIGHT  80, objectType::OBJECT_HIDDEN, -1, 3780, 435, 30, 20, 0 //Đi ra khỏi hồ bên phải
+
+#define GATE1_POSTION_CAM_BEFORE_GO 2809.0f
+#define GATE1_POSITION_CAM_AFTER_GO 3073.0f
+
+#define GATE2_POSTION_CAM_BEFORE_GO 3840.0f
+#define GATE2_POSITION_CAM_AFTER_GO 4095.0f
+
+#define CAMERA_BOUNDARY_BOSS_RIGHT (5648.0f - SCREEN_WIDTH)
+#define DISTANCE_AUTOGO_SIMON_GATE 80.0f //Simon auto 80 sau khi đụng vào gate
+#define CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT (2490.0f) // Biên phải camera trước khi qua cửa 1
 class SceneGame:public Scene
 {
 private:
@@ -43,6 +62,12 @@ private:
 	vector<Weapon*> listWeaponOfEnemy;
 	vector<Effect*> listEffect;
 	vector<Item*> listItem;
+	//Xử lý đi qua cổng 1 của map 2 
+	bool isWalkingThroughGate1;
+	bool doneWalkingThroughGate1;
+	//Xử lý đi qua cổng 2 map 2
+	bool isWalkingThroughGate2;
+	bool doneWalkingThroughGate2;
 public:
 	SceneGame();
 	~SceneGame();
@@ -65,6 +90,7 @@ public:
 	void checkCollionsionSimonWithItem();
 	void checkCollsionWithEnemy();
 	void checkCollisionSimonWithEnemy();
+	void checkCollisionSimonWithGate();
 	Item* getNewItem(int id, objectType ObjectType, float x, float y);
 };
 

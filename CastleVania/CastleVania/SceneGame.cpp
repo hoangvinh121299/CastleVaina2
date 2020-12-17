@@ -23,7 +23,12 @@ void SceneGame::KeyState(BYTE *state)
 	//Không update keystate khi simon bị thương
 	if (simon->isHurting)
 		return;
-
+	//Lúc tự đi không nhận phím
+	if (simon->getIsAutoGoX())
+		return;
+	//Lúc camera tự đi thì không nhận phím
+	if (camera->getIsAutoX())
+		return;
 	if (simon->isAttacking) // đang attack
 	{
 		float vx, vy;
@@ -32,22 +37,121 @@ void SceneGame::KeyState(BYTE *state)
 		
 		return;
 	}
-	//Simon ngồi 
-	if (Game::GetInstance()->IsKeyDown(DIK_DOWN))
+	if (!simon->isJumping)
 	{
-		simon->sit();
-		if (Game::GetInstance()->IsKeyDown(DIK_RIGHT))
-			simon->right();
-		if (Game::GetInstance()->IsKeyDown(DIK_LEFT))
-			simon->left();
+		if (Game::GetInstance()->IsKeyDown(DIK_UP) && simon->isAttacking == false)
+		{
+			if (!simon->isOnStair) //Nếu chưa ở trên thang
+			{
+				for (UINT i = 0; i < listObject.size(); i++)
+				{
+					if (listObject[i]->getType() == objectType::STAIR_BOTTOM)
+					{
+						if (simon->isCollisionWithGround && simon->isColisionObjectwithObject(listObject[i])) //Nếu đang va chạm với mặt đất và va chạm với cả Stair_Bottom
+						{
+							GameObject* gameobj = dynamic_cast<GameObject*>(listObject[i]);
+							simon->directionStair = gameobj->getDirection(); //Lưu hướng cầu thang đang đi vào Simon
+							simon->directionY = -1; // Hướng cho simon đi lên
+							simon->setDirection(simon->directionStair); //Hướng simon đi lên là hướng của cầu thang
+							simon->isOnStair = true; //Set trạng thái đang đi trên cầu thang
+							simon->distancePassOnStair = 0;
+
+							//Nếu vị trí của simon không phải là vị trí lên thang
+							if (simon->getX() < gameobj->getX())
+							{
+								simon->setAutoGoX(1, gameobj->getDirection(), /*Khoảng cách đi là khoảng cách của gameobject trừ cho simon*/gameobj->getX() - simon->getX(), SIMON_WALKING_SPEED);
+
+							}
+							else
+							{
+								simon->setAutoGoX(-1, gameobj->getDirection(), /*Khoảng cách đi là khoảng cách của gameobject trừ cho simon*/-gameobj->getX() + simon->getX(), SIMON_WALKING_SPEED);
+							}
+							return;
+						}
+					}
+				}
+			}
+			else
+			{
+				if (simon->isProccessingOnStair == 0 || simon->isProccessingOnStair == 3)
+				{
+					simon->isWalking = true;
+					simon->isProccessingOnStair = 1;
+					simon->directionY = -1; //hướng đi lên
+					simon->setDirection(simon->directionStair); //Hướng của cầu thang
+					simon->setSpeed(simon->getDirection() * SIMON_SPEED_ONSTAIR, -1 * SIMON_SPEED_ONSTAIR);
+					float vvx, vvy;
+					simon->getSpeed(vvx, vvy);
+				}
+			}
+		}
+		else
+		{
+			if (Game::GetInstance()->IsKeyDown(DIK_DOWN) && simon->isAttacking == false) //Ngược lại nếu  bấm nút xuống
+			{
+				if (!simon->isOnStair)//Chưa trên cầu thang
+				{
+					int countCollisionTop = 0;
+					for (UINT i = 0; i < listObject.size(); i++)
+					{
+						if (listObject[i]->getType() == objectType::STAIR_TOP)
+						{
+							if (simon->isColisionObjectwithObject(listObject[i])&&simon->isCollisionWithGround)
+							{
+								GameObject* gameObj = dynamic_cast <GameObject*>(listObject[i]);
+								simon->directionStair = gameObj->getDirection();
+								simon->directionY = 1;
+								simon->setDirection(simon->directionStair);
+								simon->isOnStair = true;
+								simon->distancePassOnStair = 0;
+
+								//Tự động quay lại chỗ chuẩn bị lên cầu thang
+								if (simon->getX()< gameObj->getX())
+								{
+									simon->setAutoGoX(1, -gameObj->getDirection(), gameObj->getX() - simon->getX(), SIMON_WALKING_SPEED);
+								}
+								else
+								{
+									simon->setAutoGoX(-1, -gameObj->getDirection(), simon->getX() - gameObj->getX(), SIMON_WALKING_SPEED);
+								}
+								countCollisionTop++;
+								return;
+							
+							}
+						}
+					}
+					if (countCollisionTop == 0) //Không đụng stair top, tức là ngồi bình thường
+					{
+						simon->sit();
+							if (Game::GetInstance()->IsKeyDown(DIK_RIGHT))
+								simon->right();
+							if (Game::GetInstance()->IsKeyDown(DIK_LEFT))
+								simon->left();
+							return;
+					}
+				}
+				//Đã ở trên thang
+				else
+				{
+					if (simon->isProccessingOnStair == 0 || simon->isProccessingOnStair == 3)
+					{
+						simon->isWalking = true;
+						simon->isProccessingOnStair = 1;
+						simon->directionY = 1;
+						simon->setDirection(simon->directionStair * -1);//Hướng của simon khi đi xuống là hướng ngược của Simon
+						simon->setSpeed(simon->getDirection() * SIMON_SPEED_ONSTAIR, SIMON_SPEED_ONSTAIR);
+					}
+				}
+			}
+			else
+			{
+				simon->stop();
+			}
+		}
+	}
+	//Khi đang ở trên cầu thang thì không xét qua trái qua phải 
+	if (simon->isOnStair) 
 		return;
-	}
-	else
-	{
-		simon->stop();
-	}
-	//Đi qua phải
-	
 	if (Game::GetInstance()->IsKeyDown(DIK_RIGHT))
 	{
 			simon->right();
@@ -66,7 +170,6 @@ void SceneGame::KeyState(BYTE *state)
 				simon->stop();
 		}
 	}
-	
 }
 
 void SceneGame::OnKeyDown(int keycode)
@@ -89,6 +192,19 @@ void SceneGame::OnKeyDown(int keycode)
 	//Không update keystate khi simon bị thương
 	if (simon->isHurting)
 		return;
+	//Simon tấn công bình thường
+	if(simon->getIsAutoGoX())
+	{
+		return;
+	}
+	if (keycode == DIK_A && !simon->isAttacking&& simon->isProccessingOnStair==0) //Đứng yên trên cầu thang thì mới đánh được 
+		simon->attack(objectType::MORNINGSTAR);
+	if (Game::GetInstance()->IsKeyDown(DIK_S) && !simon->isAttacking)
+	{
+		simon->attack(simon->getTypeWeaponCollect()); //Tấn công với vũ khí phụ
+	}
+	if (simon->isOnStair)
+		return;
 	//SIMON nhảy 
 	if (keycode == DIK_SPACE && simon->isOnStair==false&&simon->isJumping==false)
 	{
@@ -106,13 +222,7 @@ void SceneGame::OnKeyDown(int keycode)
 			simon->jump();
 		}
 	}
-	//Simon tấn công bình thường
-	if (keycode == DIK_A&&!simon->isAttacking)
-		simon->attack(objectType::MORNINGSTAR);
-	if (Game::GetInstance()->IsKeyDown(DIK_S) && !simon->isAttacking)
-	{
-		simon->attack(simon->getTypeWeaponCollect()); //Tấn công với vũ khí phụ
-	}
+	
 	
 }
 void SceneGame::OnKeyUp(int keycode)
@@ -147,6 +257,51 @@ void SceneGame::Update(DWORD dt)
 		simon->updateFreeze(dt);
 		if (simon->getFreeze() == true)
 			return;
+	}
+	//Update trạng thái qua cửa của simon
+	//Gate 1
+	if (isWalkingThroughGate1)
+	{
+		if (doneWalkingThroughGate1 == false)
+		{
+			if (camera->GetXCam() >= GATE1_POSTION_CAM_BEFORE_GO) //Camera đã auto đến vị trí trước khi vào trạng thái AutoGo
+			{
+				simon->setAutoGoX(1, 1, abs(GATE1_POSITION_CAM_AFTER_GO + DISTANCE_AUTOGO_SIMON_GATE - simon->getX()), SIMON_WALKING_SPEED);
+			}
+		}
+		else
+		{
+			if (camera->GetXCam() >= GATE1_POSITION_CAM_AFTER_GO)
+			{
+				camera->SetBoundary(GATE1_POSITION_CAM_AFTER_GO, camera->getBoundaryRight());
+				camera->setBoundaryBackup(camera->getBoundaryLeft(), camera->getBoundaryRight());
+				camera->setAllowFollowSimon(true);
+				isWalkingThroughGate1 = false;
+				camera->stopAutoGoX();
+			}
+		}
+	}
+	//Gate 2
+	if (isWalkingThroughGate2)
+	{
+		if (doneWalkingThroughGate2 == false)
+		{
+			if (camera->GetXCam() >= GATE2_POSTION_CAM_BEFORE_GO) //Camera đã auto đến vị trí trước khi vào trạng thái AutoGo
+			{
+				simon->setAutoGoX(1, 1, abs(GATE2_POSITION_CAM_AFTER_GO + DISTANCE_AUTOGO_SIMON_GATE - simon->getX()), SIMON_WALKING_SPEED);
+			}
+		}
+		else
+		{
+			if (camera->GetXCam() >= GATE2_POSITION_CAM_AFTER_GO)
+			{
+				camera->SetBoundary(GATE2_POSITION_CAM_AFTER_GO, camera->getBoundaryRight());
+				camera->setBoundaryBackup(camera->getBoundaryLeft(), camera->getBoundaryRight());
+				camera->setAllowFollowSimon(true);
+				isWalkingThroughGate2 = false;
+				camera->stopAutoGoX();
+			}
+		}
 	}
 	simon->Update(dt, &listObject);
 	
@@ -239,8 +394,8 @@ void SceneGame::loadMap(objectType mapCurrent)
 		tileMap->loadMap(objectType::MAP2);
 		camera->setAllowFollowSimon(true);
 		camera->SetPosition(0, 0);
-		camera->SetBoundary(0, (float)(tileMap->getMapWidth() - camera->GetWidth())); // biên camera khi chưa qua cửa
-		camera->setBoundaryBackup(0, (float)(tileMap->getMapWidth() - camera->GetWidth())); // biên camera khi chưa qua cửa
+		camera->SetBoundary(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
+		camera->setBoundaryBackup(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
 		simon->setPostion(SIMON_POSITION_DEFAULT);
 		listEnemy.push_back(new Ghost(50, 300, 1));
 		listEnemy.push_back(new Panther(500, 300, -1,simon));
@@ -282,8 +437,82 @@ void SceneGame::checkCollisionSimonWithHiddenObject()
 						}
 						objectTemp->subHealth(1);
 					}
+					if (mapCurrent == objectType::MAP2)
+					{
+						switch (objectTemp->getID())
+						{
+							case 77: // id 77: object ẩn -> bắt đầu xuống hồ nước trái
+							{
+								camera->SetPosition(camera->GetXCam(), CAMERA_POSITION_Y_LAKE);
+								//Giới hạn biên camera để camera không vượt khỏi Hồ 
+								camera->SetBoundary(CAMERA_BOUNDARY_LAKE_LEFT, CAMERA_BOUNDARY_LAKE_RIGHT);
+								simon->setPostion(3150, 405);
+								gridGame->insertObjectToGrid(GRID_INSERT_OBJECT__GETOUTFROMLAKE_LEFT);
+								gridGame->insertObjectToGrid(GRID_INSERT_OBJECT__GETOUTFROMLAKE_RIGHT);
+								objectTemp->setHealth(0);
+								break;
+							}
+							case 78: // id 78: object ẩn -> bắt đầu ra khỏi hồ nước trái
+							{
+
+								camera->SetPosition(camera->GetXCam(), 0);
+								simon->setPostion(3152, 345);
+								gridGame->insertObjectToGrid(GRID_INSERT_OBJECT__GETINTOLAKE_LEFT);
+								objectTemp->setHealth(0);
+								break;
+							}
+							case 79: // id 79:object ẩn -> bắt đầu bước xuống hồ nước phải
+							{
+								camera->SetPosition(camera->GetXCam(), CAMERA_POSITION_Y_LAKE);
+								simon->setPostion(3825, 450);
+			
+								objectTemp->setHealth(0);
+								gridGame->insertObjectToGrid(GRID_INSERT_OBJECT__GETOUTFROMLAKE_RIGHT); // thêm object ẩn để có thể đi xuống sau khi đã lên lại
+								gridGame->insertObjectToGrid(GRID_INSERT_OBJECT__GETOUTFROMLAKE_LEFT);
+								break;
+							}
+							case 80: // id 80:object ẩn -> bắt đầu ra khỏi hồ nước phải
+							{
+								camera->SetPosition(camera->GetXCam(), 0);
+								simon->setPostion(3806, 361);
+
+								objectTemp->setHealth(0);
+								camera->setAllowFollowSimon(true);
+								gridGame->insertObjectToGrid(GRID_INSERT_OBJECT__GETINTOLAKE_RIGHT); // thêm object ẩn để có thể đi xuống sau khi đã lên lại
+							
+								break;
+							}
+							case 82: // đụng trúng box xác nhận simon đã qua GATE1
+							{
+								if (isWalkingThroughGate1)
+								{
+									doneWalkingThroughGate1 = true;
+									camera->setAutoGoX(abs(GATE1_POSITION_CAM_AFTER_GO - camera->GetXCam()), SIMON_WALKING_SPEED);
+								}
+								camera->setPositionCamBackup(camera->GetXCam(), camera->GetYCam());
+								objectTemp->subHealth(1);
+								DebugOut(L"Xac nhan qua xong cua!\n");
+								break;
+							}
+							case 83: // đụng trúng box xác nhận simon đã qua GATE2
+							{
+								if (isWalkingThroughGate2)
+								{
+									doneWalkingThroughGate2 = true;
+									camera->setAutoGoX(abs(GATE2_POSITION_CAM_AFTER_GO - camera->GetXCam()), SIMON_WALKING_SPEED);
+								}
+								camera->setPositionCamBackup(camera->GetXCam(), camera->GetYCam());
+								objectTemp->subHealth(1);
+								DebugOut(L"Xac nhan qua xong cua!\n");
+								break;
+							}
+						default:
+							break;
+						}
+					}
 				}
 			}
+			
 		}
 	}
 }
@@ -293,6 +522,7 @@ void SceneGame::checkCollision()
 	checkCollisionWeaponWithObject(listObject);
 	checkCollisionSimonWithHiddenObject();
 	checkCollionsionSimonWithItem();
+	checkCollisionSimonWithGate();
 	checkCollsionWithEnemy();
 }
 //Kiểm tra va chạm giữa vũ khí với object
@@ -628,6 +858,70 @@ void SceneGame::checkCollisionSimonWithEnemy()
 						1.0f, (float)-simon->getDirection(), 0.0f, NULL);
 					simon->setHurt(e);
 					return;
+				}
+			}
+		}
+	}
+}
+
+void SceneGame::checkCollisionSimonWithGate()
+{
+	for (UINT i = 0; i < listObject.size(); i++)
+	{
+		if (listObject[i]->getType() == objectType::GATE)
+		{
+			//Simon có va chạm với vật thể 
+			if (simon->isColisionObjectwithObject(listObject[i]))
+			{
+				Gate* objectGate = dynamic_cast<Gate*>(listObject[i]);
+				if (mapCurrent == objectType::MAP2)
+				{
+					switch (objectGate->getID())
+					{
+					case 28: //Gate 1
+						if (objectGate->GetStart() == 0)
+						{
+							//di chuyển camera đến GATE_POSITION_CAM_BEFORE_GO
+							camera->SetBoundary(camera->getBoundaryLeft(), camera->getBoundaryRight() + 9999.0f); //Mở rộng biên phải để vào trạng thái AfterGo
+							camera->setAutoGoX(abs(GATE1_POSTION_CAM_BEFORE_GO) - camera->GetXCam(), SIMON_WALKING_SPEED);
+							//Dừng simon lại
+							simon->setSpeed(0, simon->getVy());
+							simon->isWalking = 0;
+							if (simon->isSitting)
+							{
+								simon->isSitting = 0; //Huỷ trạng thái ngồi 
+								simon->setVy(simon->getVy() - PULL_UP_SIMON_AFTER_SITTING); //Kéo simon lên
+		
+							}
+							isWalkingThroughGate1 = true;
+							doneWalkingThroughGate1 = false;
+							objectGate->Start(); //Bắt đầu trạng thái đóng mở cửa
+							break;
+						}
+						break;
+					case 29: //Gate 2
+						if (objectGate->GetStart() == 0)
+						{//di chuyển camera đến GATE1_POSITON_BEFORE_GO
+							camera->SetBoundary(camera->getBoundaryLeft(), CAMERA_BOUNDARY_BOSS_RIGHT);
+							camera->setAutoGoX(abs(GATE2_POSTION_CAM_BEFORE_GO - camera->GetXCam()), SIMON_WALKING_SPEED);
+						//Dừng simon lại
+							simon->setSpeed(0, simon->getVy());
+							simon->isWalking = 0;
+							if (simon->isSitting)
+							{
+								simon->isSitting = 0; //Huỷ trạng thái ngồi 
+								simon->setVy(simon->getVy() - PULL_UP_SIMON_AFTER_SITTING); //Kéo simon lên
+
+							}
+							isWalkingThroughGate2 = true;
+							doneWalkingThroughGate2 = false;
+							objectGate->Start(); //Bắt đầu trạng thái đóng mở cửa
+							break;
+						}
+						break;
+					default:
+						break;
+					}
 				}
 			}
 		}

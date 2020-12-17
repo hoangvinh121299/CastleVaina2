@@ -53,6 +53,10 @@ GameObject * Grid::createNewGridObject(int objectType, float x, float y, float o
 		return new Candle(x, y);
 	case objectType::GATE:
 		return new Gate(x, y);
+	case objectType::STAIR_TOP:
+		return new StairTop(x, y);
+	case objectType::STAIR_BOTTOM:
+		return new StairBottom(x, y);
 	}
 	return NULL;
 }

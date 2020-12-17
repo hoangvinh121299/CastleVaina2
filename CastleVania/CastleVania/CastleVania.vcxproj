@@ -82,7 +82,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -94,7 +95,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -169,6 +171,8 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="SmallHeart.cpp" />
+    <ClCompile Include="StairBottom.cpp" />
+    <ClCompile Include="StairTop.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Torch.cpp" />
     <ClCompile Include="UpgradeMorningStar.cpp" />
@@ -211,6 +215,8 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="SmallHeart.h" />
+    <ClInclude Include="StairBottom.h" />
+    <ClInclude Include="StairTop.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Torch.h" />
     <ClInclude Include="UpgradeMorningStar.h" />

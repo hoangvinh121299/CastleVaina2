@@ -25,7 +25,7 @@ void TextureManager::LoadResource()
 	//AddTexture(objectType::INTRO_BAT, new GameTexture("Resources/intro_bat.png", 2, 1, 2));
 	//AddTexture(objectType::INTRO_BAT_MENU, new GameTexture("Resources/IntroBatMenu.png", 5, 3, 15));
 	//AddTexture(objectType::INTRO_GO_SCENE1, new GameTexture("Resources/intro_go_scene_1.png"));
-	//AddTexture(objectType::HELICOPTER, new GameTexture("Resourc	es/helicopter.png"));
+	//AddTexture(objectType::HELICOPTER, new GameTexture("Resources/helicopter.png"));
 
 	//board
 	//AddTexture(objectType::FONT, new GameTexture("Resources/font/1.png", 13, 3, 37));

@@ -51,8 +51,125 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 #pragma region Update về Sprite
 	int index = objectSprite->getCurrentFrame();
 
-	//Bị thương
-		if (isHurting==true)
+	//Trên thang
+	if (isOnStair)
+	{
+		if (isAttacking) //Đang đánh 
+		{
+			if (directionY == -1)//Đang đi lên
+			{
+				//Xử lý đánh khi đang đi lên cầu thang
+				if (index < SIMON_ANI_UPSTAIR_ATTACKING_BEGIN)//Nếu Ani chưa đúng 
+				{
+					objectSprite->SelectFrame(SIMON_ANI_UPSTAIR_ATTACKING_BEGIN);
+					objectSprite->timeAccumulated = dt; //Cập nhật thời gian
+				}
+				else //Cập nhật sprite bình thường 
+				{
+					objectSprite->timeAccumulated += dt;
+					if(objectSprite->timeAccumulated>=SIMON_TIME_ATTACK_COMPLETE)
+					{
+						objectSprite->timeAccumulated -= SIMON_TIME_ATTACK_COMPLETE;
+						objectSprite->SelectFrame(objectSprite->getCurrentFrame() + 1);
+					}
+
+					if (objectSprite->getCurrentFrame() > SIMON_ANI_UPSTAIR_ATTACKING_END)//Vượt qua frame đánh
+					{
+						isAttacking = false;
+						objectSprite->SelectFrame(SIMON_STAIR_STANDING_UP);
+					}
+				}
+			}
+			else
+				//Xử lý đánh khi đang đi xuống cầu thang
+			{
+				if (index < SIMON_ANI_DOWNSTAIR_ATTACKING_BEGIN) //Nếu Ani chưa đúng
+				{
+					objectSprite->SelectFrame(SIMON_ANI_DOWNSTAIR_ATTACKING_BEGIN);
+					objectSprite->timeAccumulated = dt;
+				}
+				else
+				{
+					//Update ani bình thường
+					objectSprite->timeAccumulated += dt;
+					if (objectSprite->timeAccumulated >= SIMON_TIME_ATTACK_COMPLETE)
+					{
+						objectSprite->timeAccumulated -= SIMON_TIME_ATTACK_COMPLETE;
+						objectSprite->SelectFrame(objectSprite->getCurrentFrame() + 1);
+					}
+					if (objectSprite->getCurrentFrame() > SIMON_ANI_DOWNSTAIR_ATTACKING_END)
+					{
+						isAttacking = false;
+						objectSprite->SelectFrame(SIMON_STAIR_STANDING_DOWN);
+					}
+				}
+			}
+		}
+		else //Các trạng thái khác
+		{
+			if (isWalking) //Đi
+			{
+				if (isProccessingOnStair == 1) //Sprite đầu của Animation bước trên cầu thang
+				{
+					if (vy < 0) //Đi lên
+						objectSprite->SelectFrame(SIMON_ANI_STAIR_GO_UP_BEGIN);
+					else
+						objectSprite->SelectFrame(SIMON_ANI_STAIR_GO_DOWN_BEGIN);
+				}
+				if (isProccessingOnStair == 2) //Sprite cuối của Animation bước trên cầu thang
+				{
+					if (vy < 0) //Đi lên
+						objectSprite->SelectFrame(SIMON_ANI_STAIR_GO_UP_END);
+					else
+						objectSprite->SelectFrame(SIMON_ANI_STAIR_GO_DOWN_END);
+				}
+
+				distancePassOnStair = distancePassOnStair + abs(vy) * 16.0f; //Đi theo góc nghiêng
+
+				if (distancePassOnStair >= 8.0f && isProccessingOnStair == 1) //Đi được 8 pixel và đang ở trạng thái 1
+				{
+					isProccessingOnStair++; //Chuyển trạng thái
+				}
+
+				if (distancePassOnStair >= 16)
+				{
+					isProccessingOnStair++;
+					/* fix lỗi mỗi lần đi quá 16 pixel*/
+					if (direction == 1 && directionY == -1) //Đi lên bên phải 
+					{
+						x -= (distancePassOnStair - 16.0f);
+						y += (distancePassOnStair - 16.0f);
+					}
+					if (direction == -1 && directionY == -1) //Đi lên bên trái  
+					{
+						x += (distancePassOnStair - 16.0f);
+						y += (distancePassOnStair - 16.0f);
+					}
+					if (direction == 1 && directionY == 1) //Đi xuống bên phải  
+					{
+						x -= (distancePassOnStair - 16.0f);
+						y -= (distancePassOnStair - 16.0f);
+					}
+					if (direction == 1 && directionY == -1) //Đi xuống bên trái 
+					{
+						x += (distancePassOnStair - 16.0f);
+						y -= (distancePassOnStair - 16.0f);
+					}
+					distancePassOnStair = 0;
+				}
+			}
+			else //Đứng yên trên cầu thang
+			{
+				if (this->directionY == -1) // ddang di len
+					objectSprite->SelectFrame(SIMON_STAIR_STANDING_UP);
+				else
+					objectSprite->SelectFrame(SIMON_STAIR_STANDING_DOWN);
+			}
+		}
+	}
+	else //Các trường hợp không ở trên thang
+	{
+		if (isHurting == true)
 		{
 			objectSprite->SelectFrame(SIMON_ANI_HURTING);
 			DebugOut(L"Simon at hurting");
@@ -61,10 +178,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		else
 		{
 			//Ngồi
-			if (isSitting==true)
+			if (isSitting == true)
 			{
 				//Ngồi đánh 
-				if (isAttacking==true)
+				if (isAttacking == true)
 				{
 					if (index < SIMON_ANI_SITTING_ATTACKING_BEGIN)//Sai ani
 					{
@@ -72,7 +189,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						objectSprite->timeAccumulated = dt;
 						DebugOut(L"Simon is sitting attacking/n ");
 					}
-					
+
 					else
 					{
 						/* Update ani bình thường */
@@ -87,10 +204,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						/* Update ani bình thường */
 						if (objectSprite->getCurrentFrame() > SIMON_ANI_SITTING_ATTACKING_END) // đã đi vượt qua frame cuối
 						{
-							
+
 							isAttacking = false;
 							objectSprite->SelectFrame(SIMON_ANI_SITTING);
-								DebugOut(L"Simon at sitting\n");
+							DebugOut(L"Simon at sitting\n");
 						}
 					}
 
@@ -98,16 +215,16 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				//Không đánh chỉ ngồi 
 				else
 				{
-					
+
 					objectSprite->SelectFrame(SIMON_ANI_SITTING);
 					DebugOut(L"Simon at sitting\n");
 				}
 
 			}
 			//Không ngồi 
-			else 
+			else
 				//Đứng đánh 
-				if (isAttacking==true )
+				if (isAttacking == true)
 				{
 
 					if (index < SIMON_ANI_STANDING_ATTACKING_BEGIN)
@@ -138,7 +255,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			//Không đứng đánh 
 				else
 					//Đi bộ
-					if (isWalking==true)
+					if (isWalking == true)
 					{
 						//Không nhảy đi bộ
 						if (isJumping == false)
@@ -153,23 +270,24 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							objectSprite->SelectFrame(SIMON_ANI_JUMPING);
 						}
 					}
-						//Các trường hợp khác 
+			//Các trường hợp khác 
 					else
-							//Nhảy
-						if (isJumping==true )
-							{
-								objectSprite->SelectFrame(SIMON_ANI_JUMPING);
-								DebugOut(L"Simon at SIMON_ANI_JUMPING\n");
-							}
-							//Các trường hợp không làm gì cả 
+						//Nhảy
+						if (isJumping == true)
+						{                                                                                                                                                                                                                                   
+							objectSprite->SelectFrame(SIMON_ANI_JUMPING);
+							DebugOut(L"Simon at SIMON_ANI_JUMPING\n");
+						}
+			//Các trường hợp không làm gì cả 
 						else
-							{
+						{
 							objectSprite->SelectFrame(SIMON_ANI_IDLE);
-								
-							}
-					
-		
+
+						}
+
+
 		}
+	}
 		
 		//Update về vũ khí cho Simon
 		GameObject::Update(dt);
@@ -187,7 +305,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 //update trạng thái riêng của Simon
-	if (isOnStair == false)
+	if (isOnStair == false) //Không trên cầu thang thì mới có trọng lực
 	{
 		if (isJumping == true)
 		{
@@ -210,13 +328,14 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (isOnStair == false)
 	{
-		colissionWithBrick(coObjects);
-	}
-	else
-	{
-		x += dx;
+		if (!isAutoGoX)
+			colissionWithBrick(coObjects);
+		else
+			x += dx;
 	}
 
+	if (isOnStair == true)
+		CollisionIsOnStair(coObjects);
 	//Trong trạng thái tấn công
 	/*if (this->isAttacking)
 	{
@@ -225,6 +344,25 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		this->setSpeed(0, vy);
 		return;
 	}*/
+	//Tự động reset isProcessing về bằng 0 khi isProcessing ++ =3
+	if (isProccessingOnStair == 3)
+	{
+		isProccessingOnStair = 0;
+		vx = 0;
+		vy = 0;
+		isWalking = false;
+	}
+	if (isAutoGoX == true)
+	{
+		if (abs(x - autoGoXBackupX) >= autoGoXDistance)
+		{
+			x = x - (abs(x - autoGoXBackupX) - autoGoXDistance);
+			restoreBackupAutoGoX();
+			isAutoGoX = false;
+
+			DebugOut(L"[SIMON] end auto go X\n");
+		}
+	}
 }
 void Simon::Render(Camera*camera)
 {
@@ -265,8 +403,10 @@ void Simon::Render(Camera*camera)
 		{
 			objWeapon.second->Render(camera);
 		}
+		
 	}
 }
+
 void Simon::left()
 {
 	if (isOnStair == true)
@@ -347,7 +487,7 @@ void Simon::Reset()
 {
 	direction = 1;
 	isSitting = false;
-	isProccessingOnStair = false;
+	isProccessingOnStair = 0;
 	isOnStair = false;
 	isJumping = false;
 	isWalking = false;
@@ -359,6 +499,8 @@ void Simon::Reset()
 	isFreeze = false;
 	timeFreeze = 0;
 	typeWeaponCollect = objectType::NON_WEAPON_COLLECT;
+	isAutoGoX = 0;
+	distancePassOnStair = 0;
 }
 void Simon::right()
 {
@@ -437,7 +579,6 @@ void Simon::attack(objectType typeWeapon)
 		isAttacking = true;
 		objectSprite->SelectFrame(SIMON_ANI_IDLE);
 		objectSprite->ResetTime();
-
 		mapWeapon[typeWeapon]->attack(this->x, this->y, this->direction);
 	}
 }
@@ -552,4 +693,196 @@ void Simon::StartUntouchable()
 {
 	untouchable = true;
 	untouchable_Start = GetTickCount();
+}
+void Simon::setAutoGoX(int directionBeforeGo, int directionAfterGo, float distance, float speed)
+{
+	if (isAutoGoX)
+		return;
+	isAutoGoX = true;
+	autoGoXBackupX = x;
+
+	//Backup trạng thái
+	isWalking_Backup = isWalking;
+	isJumping_Backup = isJumping;
+	isSitting_Backup = isSitting;
+	isAttacking_Backup = isAttacking;
+	isOnStair_Backup = isOnStair;
+	isProccessing_OnStair_Backup = isProccessingOnStair;
+	directionStair_Backup = directionStair;
+	directionY_Backup = directionY;
+	//Thiết lập thông số Auto
+	autoGoXDistance = distance;
+	autoGoXSpeed = speed;
+	autoGoXDirection = (float)directionBeforeGo;
+	this->directionAfterGo = directionAfterGo;
+	//Thiết lập trạng thái trong khi đang Auto
+	this->direction = directionBeforeGo;
+	vx = speed * directionBeforeGo;
+	isWalking = 1;
+	isJumping = 0;
+	isSitting = 0;
+	isAttacking = 0;
+	isOnStair = 0;
+	isProccessingOnStair = 0;
+}
+
+bool Simon::getIsAutoGoX()
+{
+	return isAutoGoX;
+}
+
+void Simon::restoreBackupAutoGoX() //Trả lại trạng thái sau khi AutoGoX
+{
+	isWalking = isWalking_Backup;
+	isJumping = isJumping_Backup;
+	isSitting = isSitting_Backup;
+	isAttacking = isAttacking_Backup;
+	isOnStair = isOnStair_Backup;
+	isProccessingOnStair = isProccessing_OnStair_Backup;
+	directionStair = directionStair_Backup;
+	directionY = directionY_Backup;
+
+	direction = directionAfterGo; // set hướng sau khi đi
+
+	isWalking = 0; // tắt trạng thái đang đi
+	isAutoGoX = 0; // tắt trạng thái auto
+
+	vx = 0;
+	vy = 0;
+	// đi xong thì cho simon đứng yên
+}
+
+//Lúc đang đi trên cầu thang
+void Simon::CollisionIsOnStair(const vector<LPGAMEOBJECT>* coObjects)
+{
+	if (directionY == 1) //Đang đi xuống
+	{
+		int countCollisionBottom = 0;
+		vector <LPGAMEOBJECT> listObj;
+		listObj.clear();
+		for (UINT i = 0; i < (*coObjects).size(); i++)
+		{
+			if ((*coObjects)[i]->getType() == objectType::STAIR_BOTTOM)
+			{
+				if (this->isColisionObjectwithObject((*coObjects)[i]))
+				{
+					countCollisionBottom++;
+					break;
+				}
+			}
+		}
+		//Kiểm tra xem có va chạm với gạch lúc đi xuống không để kết thúc quá trình đi cầu thang
+		if (countCollisionBottom > 0) // Có va chạm với bottom
+		{
+			vector<LPCollisionEvent> coEvents;
+			vector <LPCollisionEvent> coEventResults;
+			coEvents.clear();
+			vector<LPGAMEOBJECT> listBrick;
+			listBrick.clear();
+
+			for (UINT i = 0; i < coObjects->size(); i++)
+			{
+				if (coObjects->at(i)->getType() == objectType::BRICK)
+				{
+					listBrick.push_back(coObjects->at(i));
+				}
+			}
+			calcPotentialCollisions(&listBrick, coEvents);
+			if (coEvents.size() == 0)
+			{
+				x += dx;
+				y += dy;
+			}
+			else
+			{
+				float min_tx, min_ty, nx = 0, ny;
+				filterCollisionEvents(coEvents, coEventResults, min_tx, min_ty, nx, ny);
+				x += min_tx * dx + nx * 0.4f;
+				y += min_ty * dy + ny * 0.4f;
+				if (nx != 0 || ny != 0)
+				{
+					vx = 0;
+					vy = 0;
+					isOnStair = false;
+					isWalking = false;
+					isProccessingOnStair = 0;
+				}
+			}
+
+			for (UINT i = 0; i < coEvents.size(); i++)
+			{
+				delete coEvents[i];
+			}
+			return;
+		}
+	}
+
+	if (directionY == -1) //Đang lên
+	{
+		vector<LPGAMEOBJECT> listObj;
+		int countCollisionTop = 0;
+		listObj.clear();
+		for (UINT i = 0; i < (*coObjects).size(); i++)
+		{
+			if ((*coObjects)[i]->getType() == objectType::STAIR_TOP)
+			{
+				if (this->isColisionObjectwithObject((*coObjects)[i]))
+				{
+					countCollisionTop++;
+						break;
+				}
+			}
+		}
+		if (countCollisionTop > 0) //Có va chạm với top và đang đi lên
+		{
+			float backupVy = vy;
+			y = y - 50;//Kéo simon lên cao để tạo va chạm giả với mặt đất
+			vy = 999999999.0f; //Trọng lực kéo xuống để Simon đặt chân ngay trên sàn
+			dy = vy * dt; //Cập nhật lại dy với vy mới 
+
+			vector<LPCollisionEvent> coEvents;
+			vector<LPCollisionEvent> coEventsResult;
+			coEvents.clear();
+			vector<LPGAMEOBJECT> listBrick;
+			listBrick.clear();
+			for (UINT i = 0; i < coObjects->size(); i++)
+			{
+				if (coObjects->at(i)->getType() == objectType::BRICK)
+				{
+					listBrick.push_back(coObjects->at(i));
+				}
+			}
+			calcPotentialCollisions(&listBrick, coEvents);
+			if (coEvents.size() == 0)
+			{
+				x += dx;
+				y += dy;
+			}
+			else
+			{
+				float min_tx, min_ty, nx = 0, ny;
+
+				filterCollisionEvents(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+				x += min_tx * dx + nx * 0.4f;
+				y += min_ty * dy + ny * 0.4;
+
+				if (nx != 0 || ny != 0)
+				{
+					vx = 0;
+					vy = 0;
+					isOnStair = false;
+					isWalking = false;
+					isProccessingOnStair = 0;
+				}
+			}
+			for (UINT i = 0; i < coEvents.size(); i++)
+				delete coEvents[i];
+			vy = backupVy;
+			dy = vy * dt; //Cập nhật lại vy bình thường 
+			return;
+		}
+	}
+	//Nếu không đụng TOP và BOT thì di chuyển bình thường
+	x += dx;
+	y += dy;
 }

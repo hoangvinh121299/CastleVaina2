@@ -11,6 +11,7 @@ class Dagger:public Weapon
 
 private: 
 	Camera* camera;
+	float xBackup;
 public:
 	Dagger(Camera* camera);
 	~Dagger();

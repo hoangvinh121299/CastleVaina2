@@ -183,6 +183,12 @@
     <ClInclude Include="SmallHeart.h">
       <Filter>Object\Item</Filter>
     </ClInclude>
+    <ClInclude Include="StairBottom.h">
+      <Filter>Object\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="StairTop.h">
+      <Filter>Object\Ground</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSprite.cpp">
@@ -307,6 +313,12 @@
     </ClCompile>
     <ClCompile Include="SmallHeart.cpp">
       <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="StairBottom.cpp">
+      <Filter>Object\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="StairTop.cpp">
+      <Filter>Object\Ground</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

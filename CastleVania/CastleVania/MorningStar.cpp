@@ -99,6 +99,64 @@ void MorningStar::getBoundingBox(float& left, float& top, float& right, float& b
 	{
 		case 0:
 	{
+			/*switch (objectSprite->getCurrentFrame())
+			{
+			case MORNINGSTAR_ANI_LEVEL0_START:
+			{
+				if (direction == 1)
+				{
+					left = x + 5;
+					top = y + 15;
+					right = x + objectTexture->GetFrameWidth() - 135;
+					bottom = y + objectTexture->GetFrameHeight() - 5;
+					
+				}
+				else
+				{
+					left = x + 140;
+					top = y + 15;
+					right = x + objectTexture->GetFrameWidth() - 10;
+					bottom = y + objectTexture->GetFrameHeight() - 5;
+				}
+				break;
+			}
+			case MORNINGSTAR_ANI_LEVEL0_START +1:
+			{
+				if (direction == 1)
+				{
+					left = x + 78;
+					top = y + 15;
+					right = x + objectTexture->GetFrameWidth() - 30;
+					bottom = y + objectTexture->GetFrameHeight() - 30;
+				}
+				else
+				{
+					left = x + 30;
+					top = y + 15;
+					right = x + objectTexture->GetFrameWidth() - 80;
+					bottom = y + objectTexture->GetFrameHeight() - 30;
+				}
+				break;
+			}
+			case MORNINGSTAR_ANI_LEVEL0_END:
+			{
+				if (direction == 1)
+				{
+					left = x + 78;
+					top = y + 15;
+					right = x + objectTexture->GetFrameWidth() - 30;
+					bottom = y + objectTexture->GetFrameHeight() - 30;
+				}
+				else
+				{
+					left = x + 30;
+					top = y + 15;
+					right = x + objectTexture->GetFrameWidth() - 80;
+					bottom = y + objectTexture->GetFrameHeight() - 30;
+				}
+				break;
+			}
+			}*/
 		/*if (objectSprite->getCurrentFrame() == MORNINGSTAR_ANI_LEVEL0_END)*/ {
 			if (direction == 1)
 			{
@@ -135,6 +193,7 @@ void MorningStar::getBoundingBox(float& left, float& top, float& right, float& b
 				}
 			}
 		}*/
+			break;
 	}
 		case 1:
 	{

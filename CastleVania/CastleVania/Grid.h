@@ -10,6 +10,8 @@
 #include "Torch.h"
 #include "Gate.h"
 #include "Candle.h"
+#include "StairBottom.h"
+#include "StairTop.h"
 using namespace std;
 #define GRID_CELL_WIDTH (SCREEN_WIDTH /4.0f)
 #define GRID_CELL_HEIGHT (SCREEN_HEIGHT/4.0f)
