@@ -52,7 +52,7 @@ void SceneGame::KeyState(BYTE *state)
 							GameObject* gameobj = dynamic_cast<GameObject*>(listObject[i]);
 							simon->directionStair = gameobj->getDirection(); //Lưu hướng cầu thang đang đi vào Simon
 							simon->directionY = -1; // Hướng cho simon đi lên
-							simon->setDirection(simon->directionStair); //Hướng simon đi lên là hướng của cầu thang
+							simon->setDirection(-(simon->directionStair)); //Hướng simon đi lên là hướng của cầu thang
 							simon->isOnStair = true; //Set trạng thái đang đi trên cầu thang
 							simon->distancePassOnStair = 0;
 
@@ -238,7 +238,7 @@ void SceneGame::OnKeyUp(int keycode)
 
 void SceneGame::InitGame()
 {
-	loadMap(objectType::MAP1);
+	loadMap(objectType::MAP2);
 	simon->Init();
 	DebugOut(L"InitGame done\n");
 }
