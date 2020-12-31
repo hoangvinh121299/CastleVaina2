@@ -61,6 +61,12 @@
     <Filter Include="Framework\Scene">
       <UniqueIdentifier>{84b02301-46e6-455f-b6b8-867266fdf656}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Board\Font">
+      <UniqueIdentifier>{355454a7-1e80-4b66-877f-fcf92fb6888b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Scene\SceneIntro">
+      <UniqueIdentifier>{9d4ca039-d7d0-4db2-81e0-12aae65e77d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSprite.h">
@@ -188,6 +194,27 @@
     </ClInclude>
     <ClInclude Include="StairTop.h">
       <Filter>Object\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Framework\Board\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="brokenBrick.h">
+      <Filter>Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="PotRoast.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="BoardHealth.h">
+      <Filter>Framework\Board</Filter>
+    </ClInclude>
+    <ClInclude Include="ScenenIntro.h">
+      <Filter>Framework\Scene\SceneIntro</Filter>
+    </ClInclude>
+    <ClInclude Include="Helicopter.h">
+      <Filter>Framework\Scene\SceneIntro</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroBat.h">
+      <Filter>Framework\Scene\SceneIntro</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +346,27 @@
     </ClCompile>
     <ClCompile Include="StairTop.cpp">
       <Filter>Object\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Framework\Board\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="brokenBrick.cpp">
+      <Filter>Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="PotRoast.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="BoardHealth.cpp">
+      <Filter>Framework\Board</Filter>
+    </ClCompile>
+    <ClCompile Include="ScenenIntro.cpp">
+      <Filter>Framework\Scene\SceneIntro</Filter>
+    </ClCompile>
+    <ClCompile Include="Helicopter.cpp">
+      <Filter>Framework\Scene\SceneIntro</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroBat.cpp">
+      <Filter>Framework\Scene\SceneIntro</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

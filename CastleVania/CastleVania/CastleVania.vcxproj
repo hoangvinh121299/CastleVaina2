@@ -136,7 +136,9 @@
   <ItemGroup>
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="BoardHealth.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="brokenBrick.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Candle.cpp" />
     <ClCompile Include="Dagger.cpp" />
@@ -148,6 +150,7 @@
     <ClCompile Include="EffectMoney.cpp" />
     <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="Fishmen.cpp" />
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameSprite.cpp" />
@@ -156,7 +159,9 @@
     <ClCompile Include="Gate.cpp" />
     <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Helicopter.cpp" />
     <ClCompile Include="HiddenObject.cpp" />
+    <ClCompile Include="IntroBat.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemDagger.cpp" />
     <ClCompile Include="LargeHeart.cpp" />
@@ -166,9 +171,11 @@
     <ClCompile Include="MoneyBagExtra.cpp" />
     <ClCompile Include="MorningStar.cpp" />
     <ClCompile Include="Panther.cpp" />
+    <ClCompile Include="PotRoast.cpp" />
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ScenenIntro.cpp" />
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="SmallHeart.cpp" />
     <ClCompile Include="StairBottom.cpp" />
@@ -181,7 +188,9 @@
   <ItemGroup>
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Board.h" />
+    <ClInclude Include="BoardHealth.h" />
     <ClInclude Include="Brick.h" />
+    <ClInclude Include="brokenBrick.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Candle.h" />
     <ClInclude Include="Dagger.h" />
@@ -193,6 +202,7 @@
     <ClInclude Include="EffectMoney.h" />
     <ClInclude Include="FireBall.h" />
     <ClInclude Include="Fishmen.h" />
+    <ClInclude Include="Font.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameSprite.h" />
@@ -201,7 +211,9 @@
     <ClInclude Include="Gate.h" />
     <ClInclude Include="Ghost.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="Helicopter.h" />
     <ClInclude Include="HiddenObject.h" />
+    <ClInclude Include="IntroBat.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemDagger.h" />
     <ClInclude Include="LargeHeart.h" />
@@ -210,9 +222,11 @@
     <ClInclude Include="MoneyBagExtra.h" />
     <ClInclude Include="MorningStar.h" />
     <ClInclude Include="Panther.h" />
+    <ClInclude Include="PotRoast.h" />
     <ClInclude Include="Scence.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="ScenenIntro.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="SmallHeart.h" />
     <ClInclude Include="StairBottom.h" />

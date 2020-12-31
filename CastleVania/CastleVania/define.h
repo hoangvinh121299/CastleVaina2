@@ -116,7 +116,7 @@ enum objectType
 	//INTRO
 	MAINMENU = 181,
 	INTRO_GO_SCENE1 = 182,
-	INTRO_BAT_MENU = 143, // CON DƠI LÚC Ở GAME
+	INTRO_BAT_MENU = 183, // Con dơi lúc ở menu với ngọn núi 
 	INTRO_BAT = 185, //CON DƠI LÚC VÀO GAME
 	HELICOPTER = 184 // MÁY BAT TRỰC THĂNG LÚC VÀO GAME
 };

@@ -87,6 +87,7 @@
 #define SIMON_DEFAULT_SCORE 0
 #define SIMON_DEFAULT_LIVES 3 //SỐ MẠNG BAN ĐẦU CỦA SIMON
 #define SIMON_UNTOUCHABLE_TIME 2000
+#define SIMON_HEART_DEFAULT 5
 class Simon:public GameObject
 {
 private:
@@ -190,9 +191,14 @@ public:
 		float speed); //Set các thông số khi auto go và backup trạng thái trước khi auto
 	bool getIsAutoGoX(); //Kiểm tra xem có đang trong trạng thái auto hay không
 	void restoreBackupAutoGoX();//Khôi phục trạng thái trước khi vào trạng thái Auto
+	int getLives();
+	void setLives(int l );
+	int getScore();
+	void setScore(int s);
+	void setHeartCollect(int h);
+	int getHeartCollect();
 
-
-
+	int getHealth();
 };
 
 #endif

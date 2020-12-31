@@ -1,6 +1,6 @@
 #include "debug.h"
 #include "Game.h"
-
+#include "ScenenIntro.h"
 #include "SceneManager.h"
 #include "SceneGame.h"
 #define WINDOW_CLASS_NAME L"CastleVania"

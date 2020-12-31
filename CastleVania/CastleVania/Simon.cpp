@@ -131,7 +131,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					isProccessingOnStair++; //Chuyển trạng thái
 				}
 
-				if (distancePassOnStair >= 16)
+				if (distancePassOnStair >= 16.0f)
 				{
 					isProccessingOnStair++;
 					/* fix lỗi mỗi lần đi quá 16 pixel*/
@@ -477,10 +477,11 @@ void Simon::stop()
 }
 void Simon::Init()
 {
-	/*
+	
 	health = SIMON_DEFAULT_HEALTH;
 	lives = SIMON_DEFAULT_LIVES;
-	*/
+	heartCollect = SIMON_HEART_DEFAULT;
+	score = SIMON_DEFAULT_SCORE;
 	Reset();
 }
 void Simon::Reset()
@@ -573,13 +574,61 @@ void Simon::attack(objectType typeWeapon)
 	{
 		return;
 	}
-
+	//Kiểm tra còn đủ tim để đánh hay không
+	switch (typeWeapon)
+	{
+		case MORNINGSTAR:
+		{
+			if (isAttacking)
+			{
+				return;
+			}
+			break;
+		}
+		default: // các vũ khí còn lại
+		{
+			if (heartCollect >= 1)
+			{
+			//Cho qua tiếp
+			}
+			else
+				//Nếu không đủ thì bắt return lại
+			return;// ko đủ HeartCollect thì ko attack
+			break;
+		}
+	}
+	bool subHeart = false;
 	if (mapWeapon[typeWeapon]->getFinish()) //Chờ đến khi render hết tất cả frame của vũ khí thì mới được tấn công tiếp 
 	{
 		isAttacking = true;
 		objectSprite->SelectFrame(SIMON_ANI_IDLE);
 		objectSprite->ResetTime();
 		mapWeapon[typeWeapon]->attack(this->x, this->y, this->direction);
+		subHeart = true;
+	}
+	//Trừ tim 
+	if (subHeart)
+	{
+		switch (typeWeapon)
+		{
+			case MORNINGSTAR:
+			{
+			// ko trừ
+			break;
+			}
+
+			case STOPWATCH:
+			{
+			heartCollect -= 5;
+			break;
+			}
+
+			default: // các vũ khí còn lại
+			{
+			heartCollect -= 1;
+			break;
+			}
+		}
 	}
 }
 bool Simon::isUsingWeapon(objectType typeWeapon)
@@ -687,6 +736,7 @@ void Simon::setHurt(LPCollisionEvent e)
 		vy = -SIMON_VJUMP_HURT;
 		isHurting = 1;
 	}
+	subHealth(2);
 	StartUntouchable();
 }
 void Simon::StartUntouchable()
@@ -885,4 +935,34 @@ void Simon::CollisionIsOnStair(const vector<LPGAMEOBJECT>* coObjects)
 	//Nếu không đụng TOP và BOT thì di chuyển bình thường
 	x += dx;
 	y += dy;
+}
+void Simon::setLives(int l)
+{
+	lives = 1;
+}
+int Simon::getLives()
+{
+	return lives;
+}
+int Simon::getScore()
+{
+	return score;
+}
+void Simon::setScore(int s)
+{
+	score = s;
+}
+void Simon::setHeartCollect(int h)
+{
+	heartCollect = h;
+}
+int Simon::getHeartCollect()
+{
+	return heartCollect;
+}
+
+
+int Simon::getHealth()
+{
+	return this->health;
 }

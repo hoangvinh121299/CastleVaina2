@@ -80,8 +80,8 @@ void SceneGame::KeyState(BYTE *state)
 					simon->directionY = -1; //hướng đi lên
 					simon->setDirection(simon->directionStair); //Hướng của cầu thang
 					simon->setSpeed(simon->getDirection() * SIMON_SPEED_ONSTAIR, -1 * SIMON_SPEED_ONSTAIR);
-					float vvx, vvy;
-					simon->getSpeed(vvx, vvy);
+					/*float vvx, vvy;
+					simon->getSpeed(vvx, vvy);*/
 				}
 			}
 		}
@@ -238,7 +238,7 @@ void SceneGame::OnKeyUp(int keycode)
 
 void SceneGame::InitGame()
 {
-	loadMap(objectType::MAP2);
+	loadMap(objectType::MAP1);
 	simon->Init();
 	DebugOut(L"InitGame done\n");
 }
@@ -303,7 +303,7 @@ void SceneGame::Update(DWORD dt)
 			}
 		}
 	}
-	simon->Update(dt, &listObject);
+	simon-> Update(dt, &listObject);
 	
 	gridGame->getListObjectFromMapGrid(listObject, camera);
 	
@@ -357,21 +357,23 @@ void SceneGame::Render()
 	{
 		if (!listItem[i]->getFinish())
 			listItem[i]->Render(camera);
-	}
+	}	
 	simon->Render(camera);
+	board->Render(simon,currentStage , 0,0);
 }
 
 void SceneGame::LoadResources()
 {
-	//TextureManager*_textureMangager = TextureManager::GetInstance();
+	TextureManager*_textureMangager = TextureManager::GetInstance();
 	
 	gridGame = new Grid();
 	camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 	tileMap = new Map();
 	simon = new Simon(camera);
-	
+	board = new Board(BOARD_DEFAULT_POSITION_X, BOARD_DEFAULT_POSITION_Y);
+
+
 	InitGame();
-	DebugOut(L"SceneGame Loadresources done\n");
 }
 
 //Loadmap (Background)
@@ -388,6 +390,7 @@ void SceneGame::loadMap(objectType mapCurrent)
 		camera->setBoundaryBackup(camera->getBoundaryLeft(), camera->getBoundaryRight()); // backup lại biên
 		camera->SetPosition(0, 0);
 		simon->setPostion(SIMON_POSITION_DEFAULT);
+		currentStage = 1;
 		break;
 	case objectType::MAP2:
  		gridGame->setObjectFilePath((char*)"Resources/Map/Map_2/readfile_object_map2.txt");
@@ -401,6 +404,7 @@ void SceneGame::loadMap(objectType mapCurrent)
 		listEnemy.push_back(new Panther(500, 300, -1,simon));
 		listEnemy.push_back(new Bat(200, 100, 1));
 		listEnemy.push_back(new Fishmen(50, 300, 1, simon, &listWeaponOfEnemy, camera));
+		currentStage = 2;
 		break;
 	default:
 		break;
@@ -599,6 +603,69 @@ void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 								runEffectHit = true;
 								break;
 							}
+							case objectType::BRICK:
+							{
+								if (objWeapon.second->getType() != objectType::MORNINGSTAR) // chỉ xét MorningStar
+									break;
+
+								GameObject* gameObject = listObj[i];
+								if (gameObject->getHealth() > 0)
+								{
+									switch (gameObject->getID())
+									{
+										case 40: // id 39 : brick 4 ô-> chỉ hiện effect
+										{
+										gameObject->subHealth(1);
+										listItem.push_back(getNewItem(gameObject->getID(), gameObject->getType(), gameObject->getX(), gameObject->getY()));
+										HIT_ADD_EFFECT(listEffect, gameObject); // hiệu ứng hit
+										BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick
+										/*sound->Play(eSound::soundBrokenBrick);*/
+										break;
+										}
+										case 41: // id 40: brick 3 ô-> effect
+										{
+										gameObject->subHealth(1);
+										listItem.push_back(getNewItem(gameObject->getID(), gameObject->getType(), gameObject->getX(), gameObject->getY()));
+										HIT_ADD_EFFECT(listEffect, gameObject); // hiệu ứng hit
+										BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick								sound->Play(eSound::soundBrokenBrick);
+										break;
+										}
+										case 51: // id 114: brick -> a bonus
+										{
+										gameObject->subHealth(1);
+										/*sound->Play(eSound::soundDisplayMonney);*/
+										listItem.push_back(getNewItem(gameObject->getID(), gameObject->getType(), gameObject->getX(), gameObject->getY()));
+										HIT_ADD_EFFECT(listEffect, gameObject); // hiệu ứng hit
+										BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick								sound->Play(eSound::soundBrokenBrick)
+										break;
+										}
+										case 49: // id 51: brick 2 -> effect
+										{
+										gameObject->subHealth(1);
+										HIT_ADD_EFFECT(listEffect, gameObject); // hiệu ứng hit
+										BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick								sound->Play(eSound::soundBrokenBrick)
+										break;
+										}
+
+										case 60: // id 104: double shot
+										{
+										gameObject->subHealth(1);
+
+										listItem.push_back(getNewItem(gameObject->getID(), gameObject->getType(), gameObject->getX(), gameObject->getY()));
+
+										HIT_ADD_EFFECT(listEffect, gameObject); // hiệu ứng hit
+										BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick								sound->Play(eSound::soundBrokenBrick);
+										break;
+										}
+
+										default:
+											break;
+									}
+							
+								}
+								break;
+							}
+
 							default:
 								break;
 							}
@@ -710,6 +777,28 @@ Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
 				break;
 			}
 		}
+		if (ObjectType == objectType::BRICK)
+		{
+			switch (id)
+			{
+			case 40:
+				return new PotRoast(x, y);
+				break;
+			case 51:
+				return new MoneyBagExtra(x, y);
+				break;
+
+			//case 104: // Double shot
+			//	return new ItemDoubleShot(X, Y);
+			//	break;
+
+
+			default:
+				return new SmallHeart(x,y);
+				break;
+			}
+
+		}
 	}
 }
 void SceneGame::checkCollionsionSimonWithItem()
@@ -725,6 +814,7 @@ void SceneGame::checkCollionsionSimonWithItem()
 				{
 				case objectType::LARGEHEART:
 					{
+					simon->setHeartCollect(simon->getHeartCollect() + 5);
 					listItem[i]->setFinish(true);
 					break;
 					}
@@ -745,10 +835,12 @@ void SceneGame::checkCollionsionSimonWithItem()
 				case objectType::BONUS:
 					{
 					listItem[i]->setFinish(true);
+					simon->setScore(simon->getScore() + 1000);
 					listEffect.push_back(new EffectMoney(listItem[i]->getX(), listItem[i]->getY(), objectType::EFFECT_MONEY_1000));
+					break;
 					}
 				case objectType::SMALLHEART:
-				{
+				{	simon->setHeartCollect(simon->getHeartCollect() + 1);
 					listItem[i]->setFinish(true);
 					break;
 				}
@@ -756,6 +848,7 @@ void SceneGame::checkCollionsionSimonWithItem()
 				case objectType::MONEY_BAG_RED:
 				{
 					listItem[i]->setFinish(true);
+					simon->setScore(simon->getScore() + 100);
 					listEffect.push_back(new EffectMoney(
 						listItem[i]->getX(), 
 						listItem[i]->getY(), 
@@ -766,6 +859,7 @@ void SceneGame::checkCollionsionSimonWithItem()
 				case objectType::MONEY_BAG_PURPLE:
 				{
 					listItem[i]->setFinish(true);
+					simon->setScore(simon->getScore() + 400);
 					listEffect.push_back(new EffectMoney(
 						listItem[i]->getX(),
 						listItem[i]->getY(),
@@ -776,12 +870,20 @@ void SceneGame::checkCollionsionSimonWithItem()
 				case objectType::MONEY_BAG_WHITE:
 				{
 					listItem[i]->setFinish(true);
+					simon->setScore(simon->getScore() + 700);
 					listEffect.push_back(new EffectMoney(
 						listItem[i]->getX(),
 						listItem[i]->getY(),
 						objectType::EFFECT_MONEY_700));
 					break;
 				}
+				case objectType::POTROAST:
+				{
+					listItem[i]->setFinish(true);
+					/*sound->Play(eSound::soundCollectItem);*/
+					simon->setHealth(min(simon->getHealth() + 6, SIMON_DEFAULT_HEALTH)); // tăng 6 đơn vị máu
+					break;
+				}	
 				
 			}
 			}

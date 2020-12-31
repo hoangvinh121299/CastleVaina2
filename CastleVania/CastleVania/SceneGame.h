@@ -28,7 +28,9 @@
 #include "Candle.h"
 #include "Gate.h"
 #include "SmallHeart.h"
-
+#include "Board.h"
+#include "brokenBrick.h"
+#include "PotRoast.h"
 #define CAMERA_POSITION_Y_LAKE 400.0f
 
 #define CAMERA_BOUNDARY_LAKE_LEFT 3075.0f
@@ -62,6 +64,8 @@ private:
 	vector<Weapon*> listWeaponOfEnemy;
 	vector<Effect*> listEffect;
 	vector<Item*> listItem;
+	Board *board;
+	int currentStage;
 	//Xử lý đi qua cổng 1 của map 2 
 	bool isWalkingThroughGate1;
 	bool doneWalkingThroughGate1;

@@ -20,20 +20,20 @@ GameTexture* TextureManager::GetTexture(objectType type)
 //Phương thức nạp tất cả các textures
 void TextureManager::LoadResource()
 {
-	//// Intro
-	//AddTexture(objectType::MAINMENU, new GameTexture("Resources/mainmenu.png"));
-	//AddTexture(objectType::INTRO_BAT, new GameTexture("Resources/intro_bat.png", 2, 1, 2));
-	//AddTexture(objectType::INTRO_BAT_MENU, new GameTexture("Resources/IntroBatMenu.png", 5, 3, 15));
-	//AddTexture(objectType::INTRO_GO_SCENE1, new GameTexture("Resources/intro_go_scene_1.png"));
-	//AddTexture(objectType::HELICOPTER, new GameTexture("Resources/helicopter.png"));
+	// Intro
+	AddTexture(objectType::MAINMENU, new GameTexture("Resources/Intro/mainmenu.png"));
+	AddTexture(objectType::INTRO_BAT, new GameTexture("Resources/Intro/intro_bat.png", 2, 1, 2));
+	AddTexture(objectType::INTRO_BAT_MENU, new GameTexture("Resources/Intro/IntroBatMenu.png", 5, 3, 15));
+	AddTexture(objectType::INTRO_GO_SCENE1, new GameTexture("Resources/Intro/intro_go_scene_1.png"));
+	AddTexture(objectType::HELICOPTER, new GameTexture("Resources/Intro/helicopter.png"));
 
 	//board
-	//AddTexture(objectType::FONT, new GameTexture("Resources/font/1.png", 13, 3, 37));
+	AddTexture(objectType::FONT, new GameTexture("Resources/Font/1.png", 13, 3, 37));
 
-	//AddTexture(objectType::BOARD, new GameTexture("Resources/blackboard.png", 1, 1, 1));
-	//AddTexture(objectType::BOARD_TRANS, new GameTexture("Resources/blackboard.png", 1, 1, 1, 0, 0, 0));
+	AddTexture(objectType::BOARD, new GameTexture("Resources/Board/blackboard.png", 1, 1, 1));
+	AddTexture(objectType::BOARD_TRANS, new GameTexture("Resources/blackboard.png", 1, 1, 1, 0, 0, 0));
 
-	//AddTexture(objectType::BOARDHEALTH, new GameTexture("Resources/heal.png", 3, 1, 3));
+	AddTexture(objectType::BOARDHEALTH, new GameTexture("Resources/Board/heal.png", 3, 1, 3));
 	AddTexture(objectType::RENDERBBOX, new GameTexture("Resources/bbox.png")); // dùng để vẽ BBOX
 
 	//MAP
