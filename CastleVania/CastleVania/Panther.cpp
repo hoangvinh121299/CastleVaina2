@@ -1,6 +1,6 @@
 ﻿#include "Panther.h"
 
-Panther::Panther(float x, float y, int direction,Simon *simon)
+Panther::Panther(float x, float y, int direction, float autoGoX_Distance,Simon *simon)
 {
 	ObjectType = objectType::PANTHER;
 
@@ -9,13 +9,15 @@ Panther::Panther(float x, float y, int direction,Simon *simon)
 
 	this->x = x;
 	this->y = y;
-
+	autoGoXBackup = x;
+	autoGoXDistance = autoGoX_Distance;
 	objectTexture = TextureManager::GetInstance()->GetTexture(objectType::PANTHER);
 	objectSprite = new GameSprite(objectTexture,120);
 	isSitting = 1;
 	isRunning = 0;
 	isJumping = 0;
 	isStart = 0;
+	isAutoGoX = 0;
 	this->simon = simon;
 }
 Panther::~Panther()
@@ -26,7 +28,7 @@ Panther::~Panther()
 void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	GameObject::Update(dt);
-	if (vx < 0 && x < 0)
+	/*if (vx < 0 && x < 0)
 	{
 		
 		this->direction = 1;
@@ -40,7 +42,7 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x = 500;
 		vx = -PANTHER_SPEED_RUNNING;
 		jump();
-	}
+	}*/
 	if (isJumping)
 	{
 		dx = vx * dt;
@@ -54,13 +56,16 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		distanceLimit = 85;
 	else
 		distanceLimit = 177;
+
+	//Kích hoạt Panther khi Simon đi ngang qua
 	if (isStart == 0 && abs(simon->getX() - (this->x + objectTexture->GetFrameWidth())) <= distanceLimit)
 	{
 		isSitting = false;
 		isRunning = true;
 		run();
-
+		isAutoGoX = 1;
 		isStart = 1;
+		
 	}
 
 	if (isSitting)
@@ -134,6 +139,19 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	for (UINT i = 0; i < coEvents.size(); i++)
 		delete coEvents[i];
 #pragma endregion
+	if (isAutoGoX)
+	{
+		if (abs(x - autoGoXBackup) >= autoGoXDistance)
+		{
+			x = x - (abs(x - autoGoXBackup) - autoGoXDistance);
+			isAutoGoX = false;
+			vx = 0;
+
+			jump(); // Sau khi chạy xong thì nhảy
+
+			DebugOut(L"[PANTHER] end auto go X\n");
+		}
+	}
 
 }
 void Panther::Render(Camera* camera)
@@ -153,7 +171,7 @@ void Panther::jump()
 	if (isJumping == true)
 		return;
 	vy = -PANTHER_VYJUMP;
-	vx = PANTHER_VXJUMP;
+	vx = PANTHER_VXJUMP * direction;
 	isJumping = true;
 }
 
@@ -161,4 +179,9 @@ void Panther::run()
 {
 	vx = PANTHER_SPEED_RUNNING * direction;
 	isRunning = true;
+}
+
+bool Panther::getStart()
+{
+	return isStart;
 }

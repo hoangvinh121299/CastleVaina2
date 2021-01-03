@@ -11,7 +11,7 @@ Ghost::Ghost(float x, float y, int direction)
 	objectSprite = new GameSprite(objectTexture, 100);
 
 	ObjectType = objectType::GHOST;
-
+	this->health = 1;
 	vx = GHOST_SPEED_X * this->direction;
 }
 
@@ -46,7 +46,7 @@ void Ghost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
-		if (vx < 0 && x < 0)
+		/*if (vx < 0 && x < 0)
 		{
 			this->direction = 1;
 			x = 0;
@@ -57,7 +57,7 @@ void Ghost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			this->direction = -1;
 			x = 500;
 			vx = -GHOST_SPEED_X;
-		}
+		}*/
 	}
 	else
 	{

@@ -39,6 +39,7 @@ void Fishmen::getBoundingBox(float& left, float& top, float& right, float& botto
 }
 void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 {
+	//Khoảng cách nhảy từ dưới nước lên
 	if (y <= y_start - FISHMEN_Y_JUMP);
 	{
 		vy = FISHMEN_SPEED_Y_DOWN;
@@ -69,7 +70,7 @@ void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 		vy += FISHMEN_GRAVITY;
 	}
 	GameObject::Update(dt);
-	if (vx < 0 && x < 0)
+	/*if (vx < 0 && x < 0)
 	{
 
 		this->direction = 1;
@@ -81,7 +82,7 @@ void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 		this->direction = -1;
 		x = 500;
 		vx = -FISHMEN_SPEED_X;
-	}
+	}*/
 	if (!isAttacking)
 	{
 		x += dx;

@@ -12,7 +12,7 @@ private:
 
 public:
 	GameSprite(GameTexture * Texture, DWORD timeAnimation);
-	virtual ~GameSprite(); //Phương thức thuần ảod
+	virtual ~GameSprite(); //Phương thức thuần ảo
 	GameTexture * texture;
 	//Quản lý thời gian chuyển giữa các sprite
 	DWORD timeAccumulated; // Thời gian chờ đã tích luỹ

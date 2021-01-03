@@ -31,6 +31,8 @@
 #include "Board.h"
 #include "brokenBrick.h"
 #include "PotRoast.h"
+#include "Gametime.h"
+#define GAME_TIME_MAX 300
 #define CAMERA_POSITION_Y_LAKE 400.0f
 
 #define CAMERA_BOUNDARY_LAKE_LEFT 3075.0f
@@ -64,7 +66,8 @@ private:
 	vector<Weapon*> listWeaponOfEnemy;
 	vector<Effect*> listEffect;
 	vector<Item*> listItem;
-	Board *board;
+	Board *board1;
+	Gametime* gametime;
 	int currentStage;
 	//Xử lý đi qua cổng 1 của map 2 
 	bool isWalkingThroughGate1;
@@ -72,6 +75,7 @@ private:
 	//Xử lý đi qua cổng 2 map 2
 	bool isWalkingThroughGate2;
 	bool doneWalkingThroughGate2;
+	int directionPanther = -1;
 public:
 	SceneGame();
 	~SceneGame();

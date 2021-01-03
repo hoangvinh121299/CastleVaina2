@@ -8,7 +8,7 @@
 #include "Item.h"
 #include "Dagger.h"
 //CÁC THÔNG SỐ CƠ BẢN CỦA SIMON
-#define SIMON_POSITION_DEFAULT 50.0f,0.0f
+#define SIMON_POSITION_DEFAULT 50.0f, 300.0f
 #define SIMON__BBOX_WIDTH 60
 #define SIMON_BBOX_HEIGHT 63
 #define SIMON_BBOX_SITTING_HEIGHT 45

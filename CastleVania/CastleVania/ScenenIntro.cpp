@@ -12,7 +12,6 @@ Scene_Intro::Scene_Intro()
 Scene_Intro::~Scene_Intro()
 {
 	SAFE_DELETE(simon);
-	SAFE_DELETE(board);
 }
 
 void Scene_Intro::KeyState(BYTE* state)
@@ -151,11 +150,8 @@ void Scene_Intro::Render()
 		introBat1->Render(camera);
 		introBat2->Render(camera);
 
-		board->Render(simon, 1, 300, NULL);
 		simon->Render(camera);
-
-
-
+		board->Render(simon, 1, 300, NULL);
 		break;
 	}
 	}

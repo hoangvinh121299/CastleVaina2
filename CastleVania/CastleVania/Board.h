@@ -19,7 +19,7 @@ private:
 	Font _font;
 
 	GameTexture *boardTexture;
-	GameSprite *boardsprite;
+	GameSprite *boardSprite;
 	BoardHealth* _boardHealth;
 	float x, y;
 

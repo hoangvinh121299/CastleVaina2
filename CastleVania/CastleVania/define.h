@@ -17,8 +17,8 @@ using namespace std;
 #define COLOR_BLACK D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 #define COLOR_KEY D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f)
 
-#define SCREEN_WIDTH 600
-#define SCREEN_HEIGHT 500
+#define SCREEN_WIDTH 528
+#define SCREEN_HEIGHT 480
 
 #define MAX_FRAME_RATE 90
 #define IS_DEBUG_RENDER_BBOX isDebug_RenderBBox
@@ -133,7 +133,7 @@ checkObjectInCamera(obj->getX(), obj->getY(), (float)obj->getWidth(),  (float)ob
 #endif
 
 
-#ifndef SAFE_DEL	ETE
+#ifndef SAFE_DELETE
 #define SAFE_DELETE(ptr) \
 if(ptr) \
 {\

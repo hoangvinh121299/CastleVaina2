@@ -6,6 +6,7 @@ SceneGame::SceneGame()
 SceneGame::~SceneGame()
 {
 	SAFE_DELETE(tileMap);
+	SAFE_DELETE(gridGame);
 }
 void SceneGame::KeyState(BYTE *state)
 {
@@ -199,7 +200,7 @@ void SceneGame::OnKeyDown(int keycode)
 	}
 	if (keycode == DIK_A && !simon->isAttacking&& simon->isProccessingOnStair==0) //Đứng yên trên cầu thang thì mới đánh được 
 		simon->attack(objectType::MORNINGSTAR);
-	if (Game::GetInstance()->IsKeyDown(DIK_S) && !simon->isAttacking)
+	if (Game::GetInstance()->IsKeyDown(DIK_S) && !simon->isAttacking&&simon->isProccessingOnStair==0)
 	{
 		simon->attack(simon->getTypeWeaponCollect()); //Tấn công với vũ khí phụ
 	}
@@ -240,6 +241,7 @@ void SceneGame::InitGame()
 {
 	loadMap(objectType::MAP1);
 	simon->Init();
+	gametime->setTime(0);
 	DebugOut(L"InitGame done\n");
 }
 
@@ -337,6 +339,7 @@ void SceneGame::Update(DWORD dt)
 	}
 	
 	checkCollision();
+	gametime->Update(dt);
 }
 
 void SceneGame::Render()
@@ -359,7 +362,7 @@ void SceneGame::Render()
 			listItem[i]->Render(camera);
 	}	
 	simon->Render(camera);
-	board->Render(simon,currentStage , 0,0);
+	board1->Render(simon,currentStage , GAME_TIME_MAX-gametime->getTime(),NULL);
 }
 
 void SceneGame::LoadResources()
@@ -370,9 +373,9 @@ void SceneGame::LoadResources()
 	camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 	tileMap = new Map();
 	simon = new Simon(camera);
-	board = new Board(BOARD_DEFAULT_POSITION_X, BOARD_DEFAULT_POSITION_Y);
 
-
+	board1= new Board(BOARD_DEFAULT_POSITION_X, BOARD_DEFAULT_POSITION_Y);
+	gametime = new Gametime();
 	InitGame();
 }
 
@@ -401,7 +404,7 @@ void SceneGame::loadMap(objectType mapCurrent)
 		camera->setBoundaryBackup(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
 		simon->setPostion(SIMON_POSITION_DEFAULT);
 		listEnemy.push_back(new Ghost(50, 300, 1));
-		listEnemy.push_back(new Panther(500, 300, -1,simon));
+		listEnemy.push_back(new Panther(1398.0f, 225.0f, directionPanther, directionPanther == -1 ? 20.0f : 9.0f, simon));
 		listEnemy.push_back(new Bat(200, 100, 1));
 		listEnemy.push_back(new Fishmen(50, 300, 1, simon, &listWeaponOfEnemy, camera));
 		currentStage = 2;
@@ -673,12 +676,13 @@ void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 							{
 								listEffect.push_back(new EffectHit(listObj[i]->getX() + 10, listObj[i]->getY() + 14));
 								listEffect.push_back(new EffectFire(tempObject->getX() - 5, tempObject->getY() + 8));
+								//Nếu Dagger va chạm thì xét finish
+								if (objWeapon.second->getType() == objectType::DAGGER)
+								{
+									objWeapon.second->setFinish(true);
+								}
 							}
-							//Nếu Dagger va chạm thì xét finish
-							if (objWeapon.second->getType() == objectType::DAGGER)
-							{
-								objWeapon.second->setFinish(true);
-							}
+							
 							tempObject->setLastTimeAttacked(objWeapon.second->getLastTimeAttack());
 						}
 

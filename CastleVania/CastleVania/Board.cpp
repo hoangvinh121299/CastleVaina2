@@ -10,9 +10,9 @@ string Board::fillNumber(string s, UINT MaxNumber)
 Board::Board(float X, float Y)
 {
 	boardTexture = TextureManager::GetInstance()->GetTexture(objectType::BOARD);
-	boardsprite = new GameSprite(boardTexture, 0);
+	boardSprite = new GameSprite(boardTexture, 0);
 
-	spriteIconDoubleShot = new GameSprite(TextureManager::GetInstance()->GetTexture(objectType::ITEMDOUBESHOT), 0);
+	/*spriteIconDoubleShot = new GameSprite(TextureManager::GetInstance()->GetTexture(objectType::ITEMDOUBESHOT), 0);*/
 
 	x = X;
 	y = Y;
@@ -23,7 +23,7 @@ Board::Board(float X, float Y)
 
 void Board::Render(Simon* simon, int state, int RemainingTime, GameObject* boss)
 {
-	boardsprite->Draw(x, y);
+	boardSprite->Draw(x, y);
 
 	_font.Draw(x + 100, y + 15, fillNumber(std::to_string(simon->getScore()), 6));
 
@@ -65,10 +65,10 @@ void Board::Render(Simon* simon, int state, int RemainingTime, GameObject* boss)
 		break;
 	}
 
-	if (simon->getIsUseDoubleShot())
+	/*if (simon->getIsUseDoubleShot())
 	{
 		spriteIconDoubleShot->Draw(x + 465, y + 35);
-	}
+	}*/
 }
 
 
@@ -80,5 +80,5 @@ Board::~Board()
 void Board::SetTexture(GameTexture* tex)
 {
 	boardTexture = tex;
-	boardsprite->texture = tex;
+	boardSprite->texture = tex;
 }

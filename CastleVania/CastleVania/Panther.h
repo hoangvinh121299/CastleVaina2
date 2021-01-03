@@ -22,9 +22,13 @@ private:
 	bool isRunning;
 	bool isJumping;
 	bool isStart;
+	bool isAutoGoX;
 	Simon* simon;
+
+	float autoGoXDistance;
+	float autoGoXBackup;
 public:
-	Panther(float X, float Y, int Direction,Simon *simon);
+	Panther(float X, float Y, int Direction,float autoGoX_Distance,Simon *simon);
 	virtual ~Panther();
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
@@ -32,7 +36,7 @@ public:
 
 	void jump();
 	void run();
-
+	bool getStart();
 };
 #endif  
 
