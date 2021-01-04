@@ -84,6 +84,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
       <LanguageStandard>Default</LanguageStandard>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -97,6 +98,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
       <LanguageStandard>Default</LanguageStandard>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,6 +146,8 @@
     <ClCompile Include="Dagger.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="define.cpp" />
+    <ClCompile Include="DSubtil.cpp" />
+    <ClCompile Include="dxutil.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EffectFire.cpp" />
     <ClCompile Include="EffectHit.cpp" />
@@ -178,6 +182,7 @@
     <ClCompile Include="ScenenIntro.cpp" />
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="SmallHeart.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="StairBottom.cpp" />
     <ClCompile Include="StairTop.cpp" />
     <ClCompile Include="TextureManager.cpp" />
@@ -196,6 +201,8 @@
     <ClInclude Include="Dagger.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="define.h" />
+    <ClInclude Include="DSubtil.h" />
+    <ClInclude Include="dxutil.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="EffectFire.h" />
     <ClInclude Include="EffectHit.h" />
@@ -229,6 +236,7 @@
     <ClInclude Include="ScenenIntro.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="SmallHeart.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="StairBottom.h" />
     <ClInclude Include="StairTop.h" />
     <ClInclude Include="TextureManager.h" />

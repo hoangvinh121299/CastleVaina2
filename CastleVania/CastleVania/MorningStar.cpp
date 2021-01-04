@@ -76,7 +76,7 @@ void MorningStar::attack(float x, float y, int direction)
 
 		break;
 	}
-	
+	Sound::GetInstance()->Play(eSound::soundWhip);
 }
 
 void MorningStar::updatePositionWithSimon()

@@ -49,6 +49,7 @@ void Gate::Render(Camera* camera)
 		{
 			objectSprite->timeAccumulated = 0;
 			objectSprite->Next();
+			Sound::GetInstance()->Play(eSound::soundOpenDoor);
 			isStart++;
 		}
 		break;

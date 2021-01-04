@@ -216,6 +216,15 @@
     <ClInclude Include="IntroBat.h">
       <Filter>Framework\Scene\SceneIntro</Filter>
     </ClInclude>
+    <ClInclude Include="DSubtil.h">
+      <Filter>Framework\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="dxutil.h">
+      <Filter>Framework\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Framework\Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSprite.cpp">
@@ -367,6 +376,15 @@
     </ClCompile>
     <ClCompile Include="IntroBat.cpp">
       <Filter>Framework\Scene\SceneIntro</Filter>
+    </ClCompile>
+    <ClCompile Include="DSubtil.cpp">
+      <Filter>Framework\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="dxutil.cpp">
+      <Filter>Framework\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Framework\Sound</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

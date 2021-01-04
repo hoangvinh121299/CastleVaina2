@@ -40,6 +40,7 @@ void Dagger::attack(float x, float y, int direction)
 	this->xBackup = x;
 	this->isFinish = false;
 	vx = DAGGER_SPEED * this->direction;
+	Sound::GetInstance()->Play(eSound::soundDagger);
 }
 
 void Dagger::renderIcon(float x, float y)

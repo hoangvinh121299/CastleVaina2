@@ -6,7 +6,7 @@
 #include "GameTexture.h"
 #include "GameSprite.h"
 #include "GameObject.h"
-
+#include "Sound.h"
 class Weapon: public GameObject
 {
 protected:

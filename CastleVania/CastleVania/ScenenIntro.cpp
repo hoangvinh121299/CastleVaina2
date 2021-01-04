@@ -44,7 +44,7 @@ void Scene_Intro::OnKeyUp(int KeyCode)
 void Scene_Intro::LoadResources()
 {
 	TextureManager* _textureManager = TextureManager::GetInstance(); // Đã gọi load resource
-	/*sound = Sound::GetInstance();*/
+	sound = Sound::GetInstance();
 
 	Sprite_MainMenu = new GameSprite(_textureManager->GetTexture(objectType::MAINMENU), 0);
 	Sprite_IntroBatMenu = new GameSprite(_textureManager->GetTexture(objectType::INTRO_BAT_MENU), 100);
@@ -81,7 +81,7 @@ void Scene_Intro::Update(DWORD dt)
 			if (TimeWaited >= 1000)
 			{ // qua trạng thái 2
 				StatusProcess = INTRO_STATUS_PROCESS_GO_SCENE1;
-				/*sound->Play(eSound::musicGame_Start_Prologue);*/
+				sound->Play(eSound::musicGame_Start_Prologue);
 
 				listBrick.push_back(new Brick(0, 400, 600, 32, BRICK_MODEL_TRANSPARENT));
 				simon->setPostion(500, 336);
@@ -116,10 +116,10 @@ void Scene_Intro::Update(DWORD dt)
 		introBat1->Update(dt);
 		introBat2->Update(dt);
 
-		/*if (sound->isPlaying(eSound::musicGame_Start_Prologue) == false)
+		if (sound->isPlaying(eSound::musicGame_Start_Prologue) == false)
 		{
-			SceneManager::GetInstance()->SetScene(new SceneGame());
-		}*/
+			SceneManager::getInstance()->SetScene(new SceneGame());
+		}
 
 		break;
 	}

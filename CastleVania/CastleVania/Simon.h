@@ -7,6 +7,7 @@
 #include "MorningStar.h"
 #include "Item.h"
 #include "Dagger.h"
+#include "Sound.h"
 //CÁC THÔNG SỐ CƠ BẢN CỦA SIMON
 #define SIMON_POSITION_DEFAULT 50.0f, 300.0f
 #define SIMON__BBOX_WIDTH 60
@@ -142,7 +143,7 @@ public:
 	DWORD timewWaitAfterDeath; // Thời gian chờ hồi sinh sau khi chết
 	
 	unordered_map<objectType, Weapon*> mapWeapon;
-
+	Sound* sound;
 	Simon(Camera *camera);
 	~Simon();
 

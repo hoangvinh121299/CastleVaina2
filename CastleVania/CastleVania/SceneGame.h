@@ -32,6 +32,7 @@
 #include "brokenBrick.h"
 #include "PotRoast.h"
 #include "Gametime.h"
+#include "Sound.h"
 #define GAME_TIME_MAX 300
 #define CAMERA_POSITION_Y_LAKE 400.0f
 
@@ -50,7 +51,7 @@
 
 #define CAMERA_BOUNDARY_BOSS_RIGHT (5648.0f - SCREEN_WIDTH)
 #define DISTANCE_AUTOGO_SIMON_GATE 80.0f //Simon auto 80 sau khi đụng vào gate
-#define CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT (2490.0f) // Biên phải camera trước khi qua cửa 1
+#define CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT (2555.0f) // Biên phải camera trước khi qua cửa 1
 class SceneGame:public Scene
 {
 private:
@@ -60,7 +61,7 @@ private:
 	vector<GameObject*>listObject;
 	Simon *simon;
 	Brick* birck;
-
+	Sound* sound;
 	Map* tileMap;
 	vector<GameObject*> listEnemy;
 	vector<Weapon*> listWeaponOfEnemy;
@@ -100,6 +101,7 @@ public:
 	void checkCollisionSimonWithEnemy();
 	void checkCollisionSimonWithGate();
 	Item* getNewItem(int id, objectType ObjectType, float x, float y);
+	void replayMusic();
 };
 
 #endif

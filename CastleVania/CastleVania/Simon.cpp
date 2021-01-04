@@ -7,6 +7,7 @@ Simon::Simon(Camera *camera)
 	ObjectType = objectType::SIMON;
 	mapWeapon[objectType::MORNINGSTAR] = new MorningStar();
 	this->camera = camera;
+	this->sound = Sound::GetInstance();
 	Init();
 }
 //Khi Simon chết
@@ -697,6 +698,7 @@ void Simon::getNewWeapon(objectType temp)
 	default:
 		break;
 	}
+	sound->Play(eSound::soundCollectWeapon);
 	setTypeWeaponCollect(temp);
 }
 
@@ -724,19 +726,24 @@ void Simon::setHurt(LPCollisionEvent e)
 
 	//Bị thương thì không render MORNINGSTAR nữa 
 	mapWeapon[objectType::MORNINGSTAR]->setFinish(true);
+	//Không đang trên thang và tự đi thì tự động bật ra khi bị thương
+	if (!isOnStair && !isAutoGoX)
+	{
+		if (e->nx != 0)
+		{
+			vx = SIMON_WALKING_SPEED * e->nx;
+			vy = -SIMON_VJUMP_HURT;
+			isHurting = 1;
+		}
 
-	if (e->nx != 0)
-	{
-		vx = SIMON_WALKING_SPEED * e->nx;
-		vy = -SIMON_VJUMP_HURT;
-		isHurting = 1;
-	}
-	if (e->ny != 0)
-	{
-		vy = -SIMON_VJUMP_HURT;
-		isHurting = 1;
+		if (e->ny != 0)
+		{
+			vy = -SIMON_VJUMP_HURT;
+			isHurting = 1;
+		}
 	}
 	subHealth(2);
+	sound->Play(eSound::soundHurting);
 	StartUntouchable();
 }
 void Simon::StartUntouchable()

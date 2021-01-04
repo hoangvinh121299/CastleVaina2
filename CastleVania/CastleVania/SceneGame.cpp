@@ -242,6 +242,7 @@ void SceneGame::InitGame()
 	loadMap(objectType::MAP1);
 	simon->Init();
 	gametime->setTime(0);
+	replayMusic();
 	DebugOut(L"InitGame done\n");
 }
 
@@ -368,7 +369,7 @@ void SceneGame::Render()
 void SceneGame::LoadResources()
 {
 	TextureManager*_textureMangager = TextureManager::GetInstance();
-	
+	sound = Sound::GetInstance();
 	gridGame = new Grid();
 	camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 	tileMap = new Map();
@@ -433,11 +434,12 @@ void SceneGame::checkCollisionSimonWithHiddenObject()
 						case 1: //hidden Object cửa
 							loadMap(objectType::MAP2);
 							break;
-						case 8:
+						case 8: //BONUS
 							listItem.push_back(
 								getNewItem(objectTemp->getID(), 
 									objectTemp->getType(), 
 									simon->getX(), simon->getY()));
+							sound->Play(eSound::soundDisplayMonney);
 							break;
 						default:
 							break;
@@ -622,7 +624,7 @@ void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 										listItem.push_back(getNewItem(gameObject->getID(), gameObject->getType(), gameObject->getX(), gameObject->getY()));
 										HIT_ADD_EFFECT(listEffect, gameObject); // hiệu ứng hit
 										BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick
-										/*sound->Play(eSound::soundBrokenBrick);*/
+										sound->Play(eSound::soundBrokenBrick);
 										break;
 										}
 										case 41: // id 40: brick 3 ô-> effect
@@ -630,23 +632,23 @@ void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 										gameObject->subHealth(1);
 										listItem.push_back(getNewItem(gameObject->getID(), gameObject->getType(), gameObject->getX(), gameObject->getY()));
 										HIT_ADD_EFFECT(listEffect, gameObject); // hiệu ứng hit
-										BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick								sound->Play(eSound::soundBrokenBrick);
+										BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick								
 										break;
 										}
 										case 51: // id 114: brick -> a bonus
 										{
 										gameObject->subHealth(1);
-										/*sound->Play(eSound::soundDisplayMonney);*/
+										sound->Play(eSound::soundDisplayMonney);
 										listItem.push_back(getNewItem(gameObject->getID(), gameObject->getType(), gameObject->getX(), gameObject->getY()));
 										HIT_ADD_EFFECT(listEffect, gameObject); // hiệu ứng hit
-										BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick								sound->Play(eSound::soundBrokenBrick)
+										BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick							
 										break;
 										}
 										case 49: // id 51: brick 2 -> effect
 										{
 										gameObject->subHealth(1);
 										HIT_ADD_EFFECT(listEffect, gameObject); // hiệu ứng hit
-										BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick								sound->Play(eSound::soundBrokenBrick)
+										BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick								
 										break;
 										}
 
@@ -657,7 +659,7 @@ void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 										listItem.push_back(getNewItem(gameObject->getID(), gameObject->getType(), gameObject->getX(), gameObject->getY()));
 
 										HIT_ADD_EFFECT(listEffect, gameObject); // hiệu ứng hit
-										BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick								sound->Play(eSound::soundBrokenBrick);
+										BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick								
 										break;
 										}
 
@@ -819,6 +821,7 @@ void SceneGame::checkCollionsionSimonWithItem()
 				case objectType::LARGEHEART:
 					{
 					simon->setHeartCollect(simon->getHeartCollect() + 5);
+					sound->Play(eSound::soundCollectItem);
 					listItem[i]->setFinish(true);
 					break;
 					}
@@ -826,6 +829,7 @@ void SceneGame::checkCollionsionSimonWithItem()
 					{
 					MorningStar* objMorningStar = dynamic_cast<MorningStar*>(simon->mapWeapon[objectType::MORNINGSTAR]);
 					objMorningStar->upgradeLevel(); //Update MorningStar
+					sound->Play(eSound::soundCollectWeapon);
 					listItem[i]->setFinish(true);
 					simon->setFreeze(true);
 					break;
@@ -841,10 +845,12 @@ void SceneGame::checkCollionsionSimonWithItem()
 					listItem[i]->setFinish(true);
 					simon->setScore(simon->getScore() + 1000);
 					listEffect.push_back(new EffectMoney(listItem[i]->getX(), listItem[i]->getY(), objectType::EFFECT_MONEY_1000));
+					sound->Play(eSound::soundCollectItem);
 					break;
 					}
 				case objectType::SMALLHEART:
 				{	simon->setHeartCollect(simon->getHeartCollect() + 1);
+					sound->Play(eSound::soundCollectItem);
 					listItem[i]->setFinish(true);
 					break;
 				}
@@ -857,6 +863,7 @@ void SceneGame::checkCollionsionSimonWithItem()
 						listItem[i]->getX(), 
 						listItem[i]->getY(), 
 						objectType::EFFECT_MONEY_100));
+					sound->Play(eSound::soundCollectItem);
 					break;
 				}
 
@@ -868,6 +875,7 @@ void SceneGame::checkCollionsionSimonWithItem()
 						listItem[i]->getX(),
 						listItem[i]->getY(),
 						objectType::EFFECT_MONEY_400));
+					sound->Play(eSound::soundCollectItem);
 					break;
 				}
 
@@ -879,12 +887,13 @@ void SceneGame::checkCollionsionSimonWithItem()
 						listItem[i]->getX(),
 						listItem[i]->getY(),
 						objectType::EFFECT_MONEY_700));
+					sound->Play(eSound::soundCollectItem);
 					break;
 				}
 				case objectType::POTROAST:
 				{
 					listItem[i]->setFinish(true);
-					/*sound->Play(eSound::soundCollectItem);*/
+					sound->Play(eSound::soundCollectItem);
 					simon->setHealth(min(simon->getHealth() + 6, SIMON_DEFAULT_HEALTH)); // tăng 6 đơn vị máu
 					break;
 				}	
@@ -1032,4 +1041,10 @@ void SceneGame::checkCollisionSimonWithGate()
 			}
 		}
 	}
+}
+void SceneGame::replayMusic()
+{
+	sound->StopAll(); //Tắt hết nhạc
+	//Bắt đầu lại từ đầu
+	sound->Play(eSound::musicState1);
 }
