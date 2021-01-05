@@ -586,6 +586,14 @@ void Simon::attack(objectType typeWeapon)
 			}
 			break;
 		}
+
+		case STOPWATCH:
+		{
+			if (heartCollect >= 5) {}
+			else
+				return; // ko đủ HeartCollect thì ko attack
+			break;
+
 		default: // các vũ khí còn lại
 		{
 			if (heartCollect >= 1)
@@ -607,6 +615,90 @@ void Simon::attack(objectType typeWeapon)
 		mapWeapon[typeWeapon]->attack(this->x, this->y, this->direction);
 		subHeart = true;
 	}
+
+	else // xử lí Double Shot
+	{
+		if (isUseDoubleShot && typeWeapon != objectType::MORNINGSTAR && typeWeapon != objectType::STOPWATCH) // đang ở chế độ DoubleShot và k phải là Morning star VÀ STOPWATCH
+		{
+			if (GetTickCount() - mapWeapon[typeWeapon]->getLastTimeAttack() >= 250) // sau 250 ms thì mới được dùng Double Shot
+			{
+				bool isMustRecreateDoubleShot = false; // ban đầu k cần tạo lại
+
+
+				if (mapWeapon.find(objectType::WEAPON_DOUBLE_SHOT) == mapWeapon.end()) // chưa tạo Double shot
+				{
+					isMustRecreateDoubleShot = true; // chưa tạo thì phải tạo lại
+				}
+				else
+				{
+					if (mapWeapon[objectType::WEAPON_DOUBLE_SHOT]->getFinish() == false) // vũ khí đã tạo vẫn còn đang chạy
+					{
+						return; // thoát luôn
+					}
+					else
+					{
+						if (mapWeapon[objectType::WEAPON_DOUBLE_SHOT]->getType() != typeWeapon) // vũ khí đã tạo khác với vũ khí đang dùng để tấn công
+						{
+							isMustRecreateDoubleShot = true; // tạo lại cho đúng
+						}
+					}
+				}
+
+				if (isMustRecreateDoubleShot)
+				{
+					SAFE_DELETE(mapWeapon[objectType::WEAPON_DOUBLE_SHOT]); // DELETE vũ khí hiện tại
+					objectType t = getTypeWeaponCollect();
+					switch (t)
+					{
+
+					case DAGGER:
+					{
+						mapWeapon[objectType::WEAPON_DOUBLE_SHOT] = new Dagger(camera);
+						break;
+					}
+
+					case HOLYWATER:
+					{
+						mapWeapon[objectType::WEAPON_DOUBLE_SHOT] = new HolyWater(camera);
+						break;
+					}
+
+					case STOPWATCH:
+					{
+						mapWeapon[objectType::WEAPON_DOUBLE_SHOT] = new StopWatch();
+						break;
+					}
+
+					case THROWINGAXE:
+					{
+						mapWeapon[objectType::WEAPON_DOUBLE_SHOT] = new ThrowingAxe(camera);
+						break;
+					}
+
+					case BOOMERANG:
+					{
+						mapWeapon[objectType::WEAPON_DOUBLE_SHOT] = new Boomerang(camera, this);
+						break;
+					}
+					default:
+						break;
+					}
+				}
+
+
+				isAttacking = true; // set trang thái tấn công
+				objectSprite->SelectFrame(0);
+				objectSprite->ResetTime();
+
+
+				mapWeapon[objectType::WEAPON_DOUBLE_SHOT]->attack(this->x, this->y, this->direction);
+				subHeart = true;
+
+			}
+
+		}
+	}
+
 	//Trừ tim 
 	if (subHeart)
 	{
@@ -632,6 +724,7 @@ void Simon::attack(objectType typeWeapon)
 		}
 	}
 }
+
 bool Simon::isUsingWeapon(objectType typeWeapon)
 {
 	if (this->mapWeapon.find(typeWeapon) != this->mapWeapon.end())
@@ -689,12 +782,49 @@ void Simon::getNewWeapon(objectType temp)
 {
 	switch (temp)
 	{
-		case DAGGER:
-			if (mapWeapon[temp] == NULL)
-			{
-				mapWeapon[temp] = new Dagger(camera);
-			}
-			break;
+	case DAGGER:
+	{
+		if (mapWeapon[temp] == NULL)
+		{
+			mapWeapon[temp] = new Dagger(camera);
+		}
+		break;
+	}
+	case HOLYWATER:
+	{
+		if (mapWeapon[temp] == NULL)
+		{
+			mapWeapon[temp] = new HolyWater(camera);
+		}
+		break;
+	}
+
+	case STOPWATCH:
+	{
+		if (mapWeapon[temp] == NULL)
+		{
+			mapWeapon[temp] = new StopWatch();
+		}
+		break;
+	}
+
+	case THROWINGAXE:
+	{
+		if (mapWeapon[temp] == NULL)
+		{
+			mapWeapon[temp] = new ThrowingAxe(camera);
+		}
+		break;
+	}
+
+	case BOOMERANG:
+	{
+		if (mapWeapon[temp] == NULL)
+		{
+			mapWeapon[temp] = new Boomerang(camera, this);
+		}
+		break;
+	}
 	default:
 		break;
 	}
