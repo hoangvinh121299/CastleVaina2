@@ -225,6 +225,45 @@
     <ClInclude Include="Sound.h">
       <Filter>Framework\Sound</Filter>
     </ClInclude>
+    <ClInclude Include="Boomerang.h">
+      <Filter>Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="BoomerangItem.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="CrossItem.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="CrystalBall.h">
+      <Filter>Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleShotItem.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="HolyWater.h">
+      <Filter>Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="HolyWaterItem.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="InvisibilityPostionItem.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="SteamEffect.h">
+      <Filter>Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="StopWatch.h">
+      <Filter>Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="StopWatchItem.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ThrowingAxe.h">
+      <Filter>Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="ThrowingAxeItem.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSprite.cpp">
@@ -385,6 +424,45 @@
     </ClCompile>
     <ClCompile Include="Sound.cpp">
       <Filter>Framework\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Boomerang.cpp">
+      <Filter>Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="BoomerangItem.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CrossItem.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CrystalBall.cpp">
+      <Filter>Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="DoubleShotItem.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="HolyWater.cpp">
+      <Filter>Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="HolyWaterItem.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="InvisibilityPostionItem.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="SteamEffect.cpp">
+      <Filter>Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="StopWatch.cpp">
+      <Filter>Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="StopWatchItem.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ThrowingAxe.cpp">
+      <Filter>Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="ThrowingAxeItem.cpp">
+      <Filter>Object\Item</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
