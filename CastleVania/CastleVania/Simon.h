@@ -7,15 +7,7 @@
 #include "MorningStar.h"
 #include "Item.h"
 #include "Dagger.h"
-<<<<<<< Updated upstream
 #include "Sound.h"
-=======
-#include "ThrowingAxe.h"
-#include "StopWatch.h"
-#include "Boomerang.h"
-#include "HolyWater.h"
-
->>>>>>> Stashed changes
 //CÁC THÔNG SỐ CƠ BẢN CỦA SIMON
 #define SIMON_POSITION_DEFAULT 50.0f, 300.0f
 #define SIMON__BBOX_WIDTH 60
