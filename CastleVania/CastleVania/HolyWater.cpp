@@ -59,7 +59,7 @@ void HolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				vy = 0;
 				vx = 0;
 				isCollisionBrick = true;
-				//Sound::GetInstance()->Play(eSound::soundHolyWater); // chạm đất thì mới playsound
+				Sound::GetInstance()->Play(eSound::soundHolyWater); // chạm đất thì mới playsound
 			}
 		}
 		for (UINT i = 0; i < coEvents.size(); i++)
@@ -68,7 +68,7 @@ void HolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 }
 
-void HolyWater::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void HolyWater::getBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x - 5;
 	top = y;
@@ -83,7 +83,7 @@ void HolyWater::GetBoundingBox(float& left, float& top, float& right, float& bot
 	}
 }
 
-void HolyWater::UpdatePositionFitSimon()
+void HolyWater::updatePositionWithSimon()
 {
 	y += 15;
 	if (this->direction == -1)
@@ -91,12 +91,12 @@ void HolyWater::UpdatePositionFitSimon()
 
 }
 
-void HolyWater::Attack(float X, float Y, int Direction)
+void HolyWater::attack(float X, float Y, int Direction)
 {
 	if (isFinish == false)
 		return;
 	Weapon::attack(X, Y, Direction);
-	UpdatePositionFitSimon();
+	updatePositionWithSimon();
 	vx = HOLLYWATER_SPEED_X * Direction;
 	vy = -HOLLYWATER_SPEED_Y;
 	isCollisionBrick = false;
@@ -104,7 +104,7 @@ void HolyWater::Attack(float X, float Y, int Direction)
 	CountLoop = 0;
 }
 
-void HolyWater::RenderIcon(float X, float Y)
+void HolyWater::renderIcon(float X, float Y)
 {
 	_spriteIcon->Draw(X, Y);
 }

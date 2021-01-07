@@ -427,15 +427,18 @@ void SceneGame::Update(DWORD dt)
 	{
 		listObject[i]->Update(dt, &listObject);
 	}
-	for (UINT i = 0; i < listEnemy.size(); i++)
+	if (!simon->isUsingWeapon(objectType::STOPWATCH))
 	{
-		listEnemy[i]->Update(dt, &listObject);
-	}
-	for (UINT i = 0; i < listWeaponOfEnemy.size(); i++)
-	{
-		if (listWeaponOfEnemy[i]->getFinish() == false)
+		for (UINT i = 0; i < listEnemy.size(); i++)
 		{
-			listWeaponOfEnemy[i]->Update(dt, &listObject);
+			listEnemy[i]->Update(dt, &listObject);
+		}
+		for (UINT i = 0; i < listWeaponOfEnemy.size(); i++)
+		{
+			if (listWeaponOfEnemy[i]->getFinish() == false)
+			{
+				listWeaponOfEnemy[i]->Update(dt, &listObject);
+			}
 		}
 	}
 	for (UINT i = 0; i < listEffect.size(); i++)
@@ -830,10 +833,25 @@ Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
 	{
 		if (ObjectType == objectType::TORCH)
 		{
-			if (id == 3 || id == 6) //Nếu id của Torch là 1 hoặc 4 thì là LargeHeart
-				return new LargeHeart(x, y);
-			if (id == 4 || id == 5)
-				return new UpgradeMorningStar(x, y);
+			if (id == 3 /*|| id == 6*/) //Nếu id của Torch là 1 hoặc 4 thì là LargeHeart
+			{
+				/*return new LargeHeart(x, y);*/
+				return new  BoomerangItem(x, y);
+			}
+			if (id == 6)
+			{
+				return new HolyWaterItem(x, y);
+			}
+			if (id == 4 /*|| id == 5*/)
+			{
+				/*return new UpgradeMorningStar(x, y);*/
+				return new ThrowingAxeItem(x, y);
+				
+			}
+			if (id == 5)
+			{
+				return new StopWatchItem(x, y);
+			}
 			if (id == 7)
 				return new ItemDagger(x, y);
 		}
@@ -948,6 +966,7 @@ void SceneGame::checkCollionsionSimonWithItem()
 			{
 				switch (listItem[i]->getType())
 				{
+					//Đạn của Simon
 				case objectType::LARGEHEART:
 					{
 					simon->setHeartCollect(simon->getHeartCollect() + 5);
@@ -955,6 +974,7 @@ void SceneGame::checkCollionsionSimonWithItem()
 					listItem[i]->setFinish(true);
 					break;
 					}
+					//Nâng cấp MorningStar
 				case objectType::UPGRADEMORNINGSTAR:
 					{
 					MorningStar* objMorningStar = dynamic_cast<MorningStar*>(simon->mapWeapon[objectType::MORNINGSTAR]);
@@ -964,12 +984,7 @@ void SceneGame::checkCollionsionSimonWithItem()
 					simon->setFreeze(true);
 					break;
 					}
-				case objectType::ITEMDAGGER:
-					{
-					simon->getNewWeapon(objectType::DAGGER);
-					listItem[i]->setFinish(true);
-					break;
-					}
+	
 				case objectType::BONUS:
 					{
 					listItem[i]->setFinish(true);
@@ -978,6 +993,7 @@ void SceneGame::checkCollionsionSimonWithItem()
 					sound->Play(eSound::soundCollectItem);
 					break;
 					}
+
 				case objectType::SMALLHEART:
 				{	simon->setHeartCollect(simon->getHeartCollect() + 1);
 					sound->Play(eSound::soundCollectItem);
@@ -1026,8 +1042,41 @@ void SceneGame::checkCollionsionSimonWithItem()
 					sound->Play(eSound::soundCollectItem);
 					simon->setHealth(min(simon->getHealth() + 6, SIMON_DEFAULT_HEALTH)); // tăng 6 đơn vị máu
 					break;
-				}	
-				
+				}
+				//Vũ khí phụ của Simon
+				case objectType::ITEMDAGGER:
+				{
+					simon->getNewWeapon(objectType::DAGGER);
+					listItem[i]->setFinish(true);
+					break;
+				}
+				case objectType::ITEMHOLYWATER:
+				{
+					simon->getNewWeapon(objectType::HOLYWATER);
+					listItem[i]->setFinish(true);
+
+					break;
+				}
+				case objectType::STOPWATCH:
+				{
+					simon->getNewWeapon(objectType::STOPWATCH);
+
+					listItem[i]->setFinish(true);
+					break;
+				}
+				case objectType::ITEMTHROWINGAXE:
+				{
+					simon->getNewWeapon(objectType::THROWINGAXE);
+
+					listItem[i]->setFinish(true);
+					break;
+				}
+				case objectType::ITEMBOOMERANG:
+				{
+					simon->getNewWeapon(objectType::BOOMERANG);
+					listItem[i]->setFinish(true);
+					break;
+				}
 			}
 			}
 		}

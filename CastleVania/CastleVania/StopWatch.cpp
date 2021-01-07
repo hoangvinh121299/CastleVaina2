@@ -16,15 +16,15 @@ StopWatch::StopWatch()
 
 StopWatch::~StopWatch()
 {
-	/*if (Sound::GetInstance()->isPlaying(eSound::soundStopWatch))
-		Sound::GetInstance()->Stop(eSound::soundStopWatch);*/
+	if (Sound::GetInstance()->isPlaying(eSound::soundStopWatch))
+		Sound::GetInstance()->Stop(eSound::soundStopWatch);
 }
 
-void StopWatch::Attack(float X, float Y, int Direction)
+void StopWatch::attack(float X, float Y, int Direction)
 {
 	TimeSpent = 0;
 	isFinish = false;
-	/*Sound::GetInstance()->Play(eSound::soundStopWatch, true, 100);*/
+	Sound::GetInstance()->Play(eSound::soundStopWatch, true, 100);
 }
 
 void StopWatch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -35,8 +35,8 @@ void StopWatch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (TimeSpent >= 4000) // hoạt động trong 5s
 	{
 		TimeSpent = 0;
-		/*if (Sound::GetInstance()->isPlaying(eSound::soundStopWatch))
-			Sound::GetInstance()->Stop(eSound::soundStopWatch);*/
+		if (Sound::GetInstance()->isPlaying(eSound::soundStopWatch))
+			Sound::GetInstance()->Stop(eSound::soundStopWatch);
 		isFinish = true;
 	}
 }
@@ -45,12 +45,12 @@ void StopWatch::Render(Camera* camera)
 {
 }
 
-bool StopWatch::isCollision(GameObject* obj)
+bool StopWatch::isColission(GameObject* obj)
 {
 	return false; // StopWatch ko xét va chạm
 }
 
-void StopWatch::RenderIcon(float X, float Y)
+void StopWatch::renderIcon(float X, float Y)
 {
 	objectSprite->Draw(X, Y);
 }

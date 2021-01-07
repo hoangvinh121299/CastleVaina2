@@ -9,7 +9,7 @@
 #define BOOMERANG_LIMIT_DISTANCE_X 285.0f // boomerang đi được 285px thì đổi hướng
 
 #include "Weapon.h" 
-//#include "Sound.h"
+#include "Sound.h"
 class Boomerang :
 	public Weapon
 {
@@ -25,9 +25,9 @@ private:
 public:
 	Boomerang(Camera* camera, GameObject* simon);
 
-	virtual void RenderIcon(float X, float Y);
+	virtual void renderIcon(float X, float Y);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
-	void Attack(float X, float Y, int Direction);
+	void attack(float X, float Y, int Direction);
 
 	virtual ~Boomerang();
 };

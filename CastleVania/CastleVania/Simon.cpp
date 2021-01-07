@@ -597,6 +597,17 @@ void Simon::attack(objectType typeWeapon)
 			}
 			break;
 		}
+		case STOPWATCH :
+		{
+			if (heartCollect >= 5)
+			{
+				
+			}
+			else
+				return; // ko đủ HeartCollect thì ko attack
+			break;
+		}
+
 		default: // các vũ khí còn lại
 		{
 			if (heartCollect >= 1)
@@ -706,8 +717,43 @@ void Simon::getNewWeapon(objectType temp)
 				mapWeapon[temp] = new Dagger(camera);
 			}
 			break;
-	default:
-		break;
+		case HOLYWATER:
+		{
+			if (mapWeapon[temp] == NULL)
+			{
+				mapWeapon[temp] = new HolyWater(camera);
+			}
+			break;
+		}
+
+		case STOPWATCH:
+		{
+			if (mapWeapon[temp] == NULL)
+			{
+				mapWeapon[temp] = new StopWatch();
+			}
+			break;
+		}
+
+		case THROWINGAXE:
+		{
+			if (mapWeapon[temp] == NULL)
+			{
+				mapWeapon[temp] = new ThrowingAxe(camera);
+			}
+			break;
+		}
+
+		case BOOMERANG:
+		{
+			if (mapWeapon[temp] == NULL)
+			{
+				mapWeapon[temp] = new Boomerang(camera, this);
+			}
+			break;
+		}
+		default:
+			break;
 	}
 	sound->Play(eSound::soundCollectWeapon);
 	setTypeWeaponCollect(temp);

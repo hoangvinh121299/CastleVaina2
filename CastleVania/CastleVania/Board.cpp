@@ -49,18 +49,18 @@ void Board::Render(Simon* simon, int state, int RemainingTime, GameObject* boss)
 	case objectType::DAGGER:
 		simon->mapWeapon[TypeWeaponCollect]->renderIcon(x + 310.0f, y + 40.0f);
 		break;
-	/*case eType::HOLYWATER:
-		simon->mapWeapon[TypeWeaponCollect]->Render(x + 312, y + 33);
+	case objectType::HOLYWATER:
+		simon->mapWeapon[TypeWeaponCollect]->renderIcon(x + 312, y + 33);
 		break;
-	case eType::STOPWATCH:
-		simon->mapWeapon[TypeWeaponCollect]->Render(x + 312, y + 31);
+	case objectType::STOPWATCH:
+		simon->mapWeapon[TypeWeaponCollect]->renderIcon(x + 312, y + 31);
 		break;
-	case eType::THROWINGAXE:
-		simon->mapWeapon[TypeWeaponCollect]->RenderIcon(x + 310, y + 35);
+	case objectType::THROWINGAXE:
+		simon->mapWeapon[TypeWeaponCollect]->renderIcon(x + 310, y + 35);
 		break;
-	case eType::BOOMERANG:
-		simon->mapWeapon[TypeWeaponCollect]->RenderIcon(x + 310, y + 35);
-		break;*/
+	case objectType::BOOMERANG:
+		simon->mapWeapon[TypeWeaponCollect]->renderIcon(x + 310, y + 35);
+		break;
 	default:
 		break;
 	}

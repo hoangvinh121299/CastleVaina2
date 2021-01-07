@@ -22,10 +22,10 @@ public:
 	virtual ~HolyWater();
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
-	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	void UpdatePositionFitSimon();
-	void Attack(float X, float Y, int Direction);
-	void RenderIcon(float X, float Y);
+	void getBoundingBox(float& left, float& top, float& right, float& bottom);
+	void updatePositionWithSimon();
+	void attack(float X, float Y, int Direction);
+	void renderIcon(float X, float Y);
 	void Render(Camera* camera);
 
 };

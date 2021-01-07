@@ -22,8 +22,8 @@ public:
 	virtual ~ThrowingAxe();
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
-	void Attack(float X, float Y, int Direction);
-	virtual void RenderIcon(float X, float Y);
+	void attack(float X, float Y, int Direction);
+	virtual void renderIcon(float X, float Y);
 
 };
 

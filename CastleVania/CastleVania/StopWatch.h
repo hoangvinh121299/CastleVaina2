@@ -16,11 +16,11 @@ public:
 	StopWatch();
 	virtual ~StopWatch();
 
-	virtual void Attack(float X, float Y, int Direction);
+	virtual void attack(float X, float Y, int Direction);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void Render(Camera* camera);
-	virtual bool isCollision(GameObject* obj);
-	virtual void RenderIcon(float X, float Y);
+	virtual bool isColission(GameObject* obj);
+	virtual void renderIcon(float X, float Y);
 };
 
 #endif

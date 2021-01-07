@@ -8,6 +8,10 @@
 #include "Item.h"
 #include "Dagger.h"
 #include "Sound.h"
+#include "HolyWater.h"
+#include "Boomerang.h"
+#include "ThrowingAxe.h"
+#include "StopWatch.h"
 //CÁC THÔNG SỐ CƠ BẢN CỦA SIMON
 #define SIMON_POSITION_DEFAULT 50.0f, 300.0f
 #define SIMON__BBOX_WIDTH 60
@@ -88,7 +92,7 @@
 #define SIMON_DEFAULT_SCORE 0
 #define SIMON_DEFAULT_LIVES 0 //SỐ MẠNG BAN ĐẦU CỦA SIMON
 #define SIMON_UNTOUCHABLE_TIME 2000
-#define SIMON_HEART_DEFAULT 5
+#define SIMON_HEART_DEFAULT 100
 class Simon:public GameObject
 {
 private:

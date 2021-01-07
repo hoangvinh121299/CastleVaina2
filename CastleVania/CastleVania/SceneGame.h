@@ -33,7 +33,15 @@
 #include "PotRoast.h"
 #include "Gametime.h"
 #include "Sound.h"
-#define GAME_TIME_MAX 10
+#include "BoomerangItem.h"
+#include "Boomerang.h"
+#include "StopWatchItem.h"
+#include "StopWatch.h"
+#include "ThrowingAxeItem.h"
+#include "ThrowingAxe.h"
+#include "HolyWaterItem.h"
+#include "HolyWater.h"
+#define GAME_TIME_MAX 300
 #define CAMERA_POSITION_Y_LAKE 400.0f
 
 #define CAMERA_BOUNDARY_LAKE_LEFT 3075.0f

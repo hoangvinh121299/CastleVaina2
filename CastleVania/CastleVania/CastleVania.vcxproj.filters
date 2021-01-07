@@ -234,9 +234,6 @@
     <ClInclude Include="CrossItem.h">
       <Filter>Object\Item</Filter>
     </ClInclude>
-    <ClInclude Include="CrystalBall.h">
-      <Filter>Object\Weapon</Filter>
-    </ClInclude>
     <ClInclude Include="DoubleShotItem.h">
       <Filter>Object\Item</Filter>
     </ClInclude>
@@ -262,6 +259,9 @@
       <Filter>Object\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="ThrowingAxeItem.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="CrystalBall.h">
       <Filter>Object\Item</Filter>
     </ClInclude>
   </ItemGroup>
@@ -434,9 +434,6 @@
     <ClCompile Include="CrossItem.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
-    <ClCompile Include="CrystalBall.cpp">
-      <Filter>Object\Weapon</Filter>
-    </ClCompile>
     <ClCompile Include="DoubleShotItem.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
@@ -462,6 +459,9 @@
       <Filter>Object\Weapon</Filter>
     </ClCompile>
     <ClCompile Include="ThrowingAxeItem.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CrystalBall.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
   </ItemGroup>

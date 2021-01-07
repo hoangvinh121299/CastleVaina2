@@ -18,8 +18,8 @@ ThrowingAxe::ThrowingAxe(Camera* camera)
 
 ThrowingAxe::~ThrowingAxe()
 {
-	/*if (Sound::GetInstance()->isPlaying(eSound::soundAxe))
-		Sound::GetInstance()->Stop(eSound::soundAxe);*/
+	if (Sound::GetInstance()->isPlaying(eSound::soundAxe))
+		Sound::GetInstance()->Stop(eSound::soundAxe);
 }
 
 void ThrowingAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -28,8 +28,8 @@ void ThrowingAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		isFinish = true;
 
-		/*if (Sound::GetInstance()->isPlaying(eSound::soundAxe))
-			Sound::GetInstance()->Stop(eSound::soundAxe);*/
+		if (Sound::GetInstance()->isPlaying(eSound::soundAxe))
+			Sound::GetInstance()->Stop(eSound::soundAxe);
 
 		return;
 	}
@@ -43,7 +43,7 @@ void ThrowingAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	objectSprite->Update(dt);
 }
 
-void ThrowingAxe::Attack(float X, float Y, int Direction)
+void ThrowingAxe::attack(float X, float Y, int Direction)
 {
 	if (isFinish == false)
 		return;
@@ -52,10 +52,10 @@ void ThrowingAxe::Attack(float X, float Y, int Direction)
 	vx = THROWINGAXE_SPEED_X * Direction;
 	vy = -THROWINGAXE_SPEED_Y;
 
-	/*Sound::GetInstance()->Play(eSound::soundAxe, true);*/
+	Sound::GetInstance()->Play(eSound::soundAxe, true);
 }
 
-void ThrowingAxe::RenderIcon(float X, float Y)
+void ThrowingAxe::renderIcon(float X, float Y)
 {
 	_spriteIcon->Draw(X, Y);
 }

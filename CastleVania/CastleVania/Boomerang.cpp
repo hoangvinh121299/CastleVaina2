@@ -17,7 +17,7 @@ Boomerang::Boomerang(Camera* camera, GameObject* simon)
 }
 
 
-void Boomerang::RenderIcon(float X, float Y)
+void Boomerang::renderIcon(float X, float Y)
 {
 	_spriteIcon->Draw(X, Y);
 
@@ -48,8 +48,8 @@ void Boomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (!camera->CHECK_OBJECT_IN_CAMERA(this) || isColission(simon)) // nếu boomerang ra khỏi cam, hoặc quay lại chạm simon
 		{
 			isFinish = true;
-			/*if (Sound::GetInstance()->isPlaying(eSound::soundBoomerang))
-				Sound::GetInstance()->Stop(eSound::soundBoomerang);*/
+			if (Sound::GetInstance()->isPlaying(eSound::soundBoomerang))
+				Sound::GetInstance()->Stop(eSound::soundBoomerang);
 		}
 		break;
 	}
@@ -61,7 +61,7 @@ void Boomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 }
 
-void Boomerang::Attack(float X, float Y, int Direction)
+void Boomerang::attack(float X, float Y, int Direction)
 {
 	if (isFinish == false)
 		return;
@@ -74,7 +74,7 @@ void Boomerang::Attack(float X, float Y, int Direction)
 
 	xCreate = X;
 
-	/*Sound::GetInstance()->Play(eSound::soundBoomerang, true);*/
+	Sound::GetInstance()->Play(eSound::soundBoomerang, true);
 }
 
 Boomerang::~Boomerang()
