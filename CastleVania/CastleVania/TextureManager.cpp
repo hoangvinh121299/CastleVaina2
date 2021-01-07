@@ -86,7 +86,7 @@ void TextureManager::LoadResource()
 	//SIMON
 	AddTexture(objectType::SIMON, new GameTexture("Resources/Simon/simon.png", 8, 3, 24));
 	AddTexture(objectType::SIMON_TRANS, new GameTexture("Resources/simon_trans.png", 8, 3, 24));
-	AddTexture(objectType::SIMON_DEATH, new GameTexture("Resources/simondeath.png"));
+	AddTexture(objectType::SIMON_DEATH, new GameTexture("Resources/Simon/simondeath.png"));
 
 	//effect
 	AddTexture(objectType::FIRE, new GameTexture("Resources/Effect/1.png", 4, 1, 4));

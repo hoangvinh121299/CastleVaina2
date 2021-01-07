@@ -4,6 +4,7 @@ Simon::Simon(Camera *camera)
 {
 	objectTexture = TextureManager::GetInstance()->GetTexture(objectType::SIMON);
 	objectSprite = new GameSprite(objectTexture, 250);
+	spriteDead = new GameSprite(TextureManager::GetInstance()->GetTexture(objectType::SIMON_DEATH), 250);
 	ObjectType = objectType::SIMON;
 	mapWeapon[objectType::MORNINGSTAR] = new MorningStar();
 	this->camera = camera;
@@ -13,7 +14,7 @@ Simon::Simon(Camera *camera)
 //Khi Simon chết
 Simon::~Simon()
 {
-	/*SAFE_DELETE(_sprite_death);*/
+	SAFE_DELETE(spriteDead);
 }
 void Simon::getBoundingBox(float &left, float &top, float &right, float &bottom)
 {
@@ -378,24 +379,34 @@ void Simon::Render(Camera*camera)
 	if (untouchable)
 		alpha = 128;
 
-	if (this->getFreeze() == true)
+	if (isDead && isCollisionWithGround) //Chết và đang va chạm với nền 
 	{
 		if (direction == -1)
-			objectSprite->Draw(pos.x, pos.y, alpha, rand() % 256, rand() % 256, rand() % 256);
+			spriteDead->Draw(pos.x, pos.y, 255);
 		else
-			objectSprite->DrawFlipX(pos.x, pos.y, alpha, rand() % 256, rand() % 256, rand() % 256);
-
+			spriteDead->DrawFlipX(pos.x, pos.y, 255);
 	}
-	else
+	else //Các trường hợp khác ngoài chết 
 	{
-		if (direction == -1)
+		if (this->getFreeze() == true) //Đang trong trạng thái nhấp nháy 
 		{
-			objectSprite->Draw(pos.x, pos.y, alpha);
+			if (direction == -1)
+				objectSprite->Draw(pos.x, pos.y, alpha, rand() % 256, rand() % 256, rand() % 256);
+			else
+				objectSprite->DrawFlipX(pos.x, pos.y, alpha, rand() % 256, rand() % 256, rand() % 256);
+
 		}
 		else
 		{
-			objectSprite->DrawFlipX(pos.x, pos.y, alpha);
+			if (direction == -1)
+			{
+				objectSprite->Draw(pos.x, pos.y, alpha);
+			}
+			else
+			{
+				objectSprite->DrawFlipX(pos.x, pos.y, alpha);
 
+			}
 		}
 	}
 	for (auto& objWeapon : mapWeapon)
@@ -972,4 +983,45 @@ int Simon::getHeartCollect()
 int Simon::getHealth()
 {
 	return this->health;
+}
+
+void Simon::setDead()
+{
+	setIsDead(true);
+	timeWaitAfterDeath = 0;
+
+	resetSit();
+	vx = 0;
+	isWalking = 0;
+	isOnStair = 0;
+
+	sound->Play(eSound::musicLifeLost);
+
+	stop();
+}
+bool Simon::getIsDead()
+{
+	return isDead;
+}
+void Simon::setIsDead(bool dead)
+{
+	isDead = dead;
+}
+
+bool Simon::loseLife()
+{
+	if (lives - 1 < 0)
+		return false;
+
+	health = SIMON_DEFAULT_HEALTH;
+	lives = lives - 1;
+
+	heartCollect = SIMON_DEFAULT_HERTCOLLECT;
+
+	Reset();
+
+	x = positionBackup.x;
+	y = positionBackup.y;
+
+	return true;
 }

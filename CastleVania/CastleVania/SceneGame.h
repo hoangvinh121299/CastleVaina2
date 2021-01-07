@@ -33,7 +33,7 @@
 #include "PotRoast.h"
 #include "Gametime.h"
 #include "Sound.h"
-#define GAME_TIME_MAX 300
+#define GAME_TIME_MAX 10
 #define CAMERA_POSITION_Y_LAKE 400.0f
 
 #define CAMERA_BOUNDARY_LAKE_LEFT 3075.0f
@@ -77,6 +77,16 @@ private:
 	bool isWalkingThroughGate2;
 	bool doneWalkingThroughGate2;
 	int directionPanther = -1;
+	/* xử lí chờ vẽ màn đen khi bắt đầu lại game*/
+	bool isWaitResetGame;
+	DWORD TimeWaitedResetGame;
+
+	/* Xử lí gameover*/
+	bool isGameOver;
+	Font Text;
+
+	GameSprite* _spriteLagerHeart;
+	int GameOverSelect;
 public:
 	SceneGame();
 	~SceneGame();

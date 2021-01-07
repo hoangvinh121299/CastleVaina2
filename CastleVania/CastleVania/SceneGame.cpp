@@ -10,6 +10,10 @@ SceneGame::~SceneGame()
 }
 void SceneGame::KeyState(BYTE *state)
 {
+	if (simon->getIsDead() || isWaitResetGame || isGameOver)
+	{
+		return;
+	}
 	//Đóng băng trạng thái của Simon
 	if (simon->getFreeze())
 	{
@@ -186,6 +190,40 @@ void SceneGame::OnKeyDown(int keycode)
 		gridGame->reloadMapGrid();
 		DebugOut(L"OnkeyDown done\n");
 	}
+
+	if (isGameOver)
+	{
+		switch (keycode)
+		{
+		case DIK_UP:
+		{
+			GameOverSelect = GAMEOVER_SELECT_CONTINUE;
+			break;
+		}
+		case DIK_DOWN:
+		{
+			GameOverSelect = GAMEOVER_SELECT_END;
+			break;
+		}
+		case DIK_RETURN:
+		{
+			if (GameOverSelect == GAMEOVER_SELECT_CONTINUE)
+			{
+				InitGame();
+				isGameOver = false;
+			}
+			else
+				if (GameOverSelect == GAMEOVER_SELECT_END)
+				{
+					DestroyWindow(Game::GetInstance()->GetWindowHandle()); // thoát
+				}
+			break;
+		}
+		}
+
+		return;
+	}
+
 	if (simon->getFreeze() == true) // Đang bóng băng thì không quan tâm phím
 	{
 		return;
@@ -248,8 +286,26 @@ void SceneGame::InitGame()
 
 void SceneGame::resetResources()
 {
-	gridGame->reloadMapGrid();
-	listWeaponOfEnemy.clear();
+	gridGame->reloadMapGrid(); // nạp lại lưới
+
+	/*listItem.clear();
+	listEffect.clear();
+	listEnemy.clear();
+	listWeaponOfEnemy.clear();*/
+	camera->setAllowFollowSimon(true);
+
+	isWalkingThroughGate1 = false; // ban đầu chưa cần xử lí qua cửa
+	doneWalkingThroughGate1 = false;
+
+	isWalkingThroughGate2 = false; // ban đầu chưa cần xử lí qua cửa
+	doneWalkingThroughGate2 = false;
+	/* Set Chờ hiển thị màn đen */
+	isWaitResetGame = true;
+	TimeWaitedResetGame = 0;
+
+	/*init gameover*/
+	isGameOver = false;
+	GameOverSelect = GAMEOVER_SELECT_CONTINUE;
 }
 
 void SceneGame::Update(DWORD dt)
@@ -261,6 +317,58 @@ void SceneGame::Update(DWORD dt)
 		if (simon->getFreeze() == true)
 			return;
 	}
+// Xử lí vẽ màn đen trước khi bắt đầu game
+	if (isWaitResetGame)
+	{
+		TimeWaitedResetGame += dt;
+		if (TimeWaitedResetGame >= TIME_LIMIT_WAIT_RESET_GAME)
+		{
+			isWaitResetGame = false;
+		}
+		else
+			return;
+	}
+//Xử lý liên quan đến máu và thời gian
+	if (gametime->getTime() >= GAME_TIME_MAX || simon->getHealth() <= 0) // hết thời gian hoặc hết máu
+	{
+		if (simon->getIsDead())
+		{
+			simon->timeWaitAfterDeath += dt;
+			if (simon->timeWaitAfterDeath >= 1500)
+			{
+				bool result = simon->loseLife(); // đã khôi phục x,y
+
+				if (result == true) // còn mạng để chơi tiếp, giảm mạng reset máu xong
+				{
+					camera->RestorePosition(); // khôi phục vị trí camera;
+					camera->RestoreBoundary(); // khôi phục biên camera
+
+					gametime->setTime(0);
+					replayMusic();
+
+					resetResources(); // reset lại game
+				}
+				else
+				{
+					isGameOver = true;
+				}
+				return;
+			}
+		}
+		else // chưa chết mà hết máu hoặc time thì set trạng thái isDeadth
+		{
+			simon->setDead();
+		}
+
+	}
+	else
+	{
+		//if (isAllowProcessClearState3 == false) // đang xử lí ClearState thì không đếm time
+		//{
+		//	gameTime->Update(dt);
+		//}
+	}
+
 	//Update trạng thái qua cửa của simon
 	//Gate 1
 	if (isWalkingThroughGate1)
@@ -340,30 +448,54 @@ void SceneGame::Update(DWORD dt)
 	}
 	
 	checkCollision();
+	if(!simon->getIsDead())
 	gametime->Update(dt);
 }
 
 void SceneGame::Render()
 {
-	
-	tileMap->drawMap(camera);
-	for (UINT i = 0; i < listObject.size(); i++)
+	if (isWaitResetGame)
+		return;
+	if (!isGameOver)
 	{
-		listObject[i]->Render(camera);
+		tileMap->drawMap(camera);
+		for (UINT i = 0; i < listObject.size(); i++)
+		{
+			listObject[i]->Render(camera);
+		}
+		for (UINT i = 0; i < listEnemy.size(); i++)
+			listEnemy[i]->Render(camera);
+		for (UINT i = 0; i < listWeaponOfEnemy.size(); i++)
+			listWeaponOfEnemy[i]->Render(camera);
+		for (UINT i = 0; i < listEffect.size(); i++)
+			listEffect[i]->Render(camera);
+		for (UINT i = 0; i < listItem.size(); i++)
+		{
+			if (!listItem[i]->getFinish())
+				listItem[i]->Render(camera);
+		}
+		simon->Render(camera);
+		board1->Render(simon, currentStage, GAME_TIME_MAX - gametime->getTime(), NULL);
 	}
-	for (UINT i = 0; i < listEnemy.size(); i++)
-		listEnemy[i]->Render(camera);
-	for (UINT i = 0; i < listWeaponOfEnemy.size(); i++)
-		listWeaponOfEnemy[i]->Render(camera);
-	for (UINT i = 0; i < listEffect.size(); i++)
-		listEffect[i]->Render(camera);
-	for (UINT i = 0; i < listItem.size(); i++)
+	else
 	{
-		if (!listItem[i]->getFinish())
-			listItem[i]->Render(camera);
-	}	
-	simon->Render(camera);
-	board1->Render(simon,currentStage , GAME_TIME_MAX-gametime->getTime(),NULL);
+		Text.Draw(200, 200, "GAME OVER");
+		Text.Draw(215, 250, "CONTINUE");
+		Text.Draw(215, 280, "END");
+		switch (GameOverSelect)
+		{
+			case GAMEOVER_SELECT_CONTINUE:
+			{
+				_spriteLagerHeart->Draw(175, 245);
+				break;
+			}
+			case GAMEOVER_SELECT_END:
+			{
+			_spriteLagerHeart->Draw(175, 275);
+			break;
+			}
+		}
+	}
 }
 
 void SceneGame::LoadResources()
@@ -374,7 +506,7 @@ void SceneGame::LoadResources()
 	camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 	tileMap = new Map();
 	simon = new Simon(camera);
-
+	_spriteLagerHeart = new GameSprite(TextureManager::GetInstance()->GetTexture(objectType::LARGEHEART), 100);
 	board1= new Board(BOARD_DEFAULT_POSITION_X, BOARD_DEFAULT_POSITION_Y);
 	gametime = new Gametime();
 	InitGame();
@@ -409,8 +541,6 @@ void SceneGame::loadMap(objectType mapCurrent)
 		listEnemy.push_back(new Bat(200, 100, 1));
 		listEnemy.push_back(new Fishmen(50, 300, 1, simon, &listWeaponOfEnemy, camera));
 		currentStage = 2;
-		break;
-	default:
 		break;
 	}
 	resetResources();

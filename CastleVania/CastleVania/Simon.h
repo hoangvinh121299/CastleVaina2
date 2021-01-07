@@ -83,16 +83,16 @@
 #define SIMON_ANI_STAIR_GO_DOWN_BEGIN 10// Bắt đầu đi xuống
 #define SIMON_ANI_STAIR_GO_DOWN_END 11//Kết thúc quá trình đi xuống
 //Thông số mặc định của SIMON
-#define SIMON_DEFAULT_HEALTH 16
+#define SIMON_DEFAULT_HEALTH 5
 #define SIMON_DEFAULT_HERTCOLLECT 5 //SỐ MÁU BAN ĐẦU CỦA SIMON
 #define SIMON_DEFAULT_SCORE 0
-#define SIMON_DEFAULT_LIVES 3 //SỐ MẠNG BAN ĐẦU CỦA SIMON
+#define SIMON_DEFAULT_LIVES 0 //SỐ MẠNG BAN ĐẦU CỦA SIMON
 #define SIMON_UNTOUCHABLE_TIME 2000
 #define SIMON_HEART_DEFAULT 5
 class Simon:public GameObject
 {
 private:
-	GameSprite *_sprite_death;
+	GameSprite *spriteDead;
 	int heartCollect; //Số lượng item heart nhặt được
 	int lives; //Số mạng người chơi
 	int score; //số điểm
@@ -140,7 +140,7 @@ public:
 	bool untouchable; //Trạng thái bất tử
 	DWORD untouchable_Start; // Thời điểm bất tử bắt đầu
 	bool isCollisionWithGround= false; // Đang va chạm với đất theo trục Y 
-	DWORD timewWaitAfterDeath; // Thời gian chờ hồi sinh sau khi chết
+	DWORD timeWaitAfterDeath; // Thời gian chờ hồi sinh sau khi chết
 	
 	unordered_map<objectType, Weapon*> mapWeapon;
 	Sound* sound;
@@ -200,6 +200,12 @@ public:
 	int getHeartCollect();
 
 	int getHealth();
+
+	void setDead();
+	bool getIsDead();
+	void setIsDead(bool dead);
+
+	bool loseLife(); //thiết lập các thuộc tính sau khi SIMON mất mạng
 };
 
 #endif
