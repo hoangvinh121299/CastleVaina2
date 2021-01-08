@@ -105,7 +105,7 @@ void TextureManager::LoadResource()
 	AddTexture(objectType::FISHMEN, new GameTexture("Resources/Enemy/3.png", 3, 1, 3));
 
 	//boss
-	AddTexture(objectType::PHANTOMBAT, new GameTexture("Resources/boss/0.png", 3, 1, 3));
+	AddTexture(objectType::PHANTOMBAT, new GameTexture("Resources/Boss/0.png", 3, 1, 3));
 
 }
 TextureManager::TextureManager()

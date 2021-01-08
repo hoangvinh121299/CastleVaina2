@@ -277,8 +277,9 @@ void SceneGame::OnKeyUp(int keycode)
 
 void SceneGame::InitGame()
 {
-	loadMap(objectType::MAP1);
+	loadMap(objectType::MAP2);
 	simon->Init();
+	//phantomBat->Start();
 	gametime->setTime(0);
 	replayMusic();
 	DebugOut(L"InitGame done\n");
@@ -302,7 +303,9 @@ void SceneGame::resetResources()
 	/* Set Chờ hiển thị màn đen */
 	isWaitResetGame = true;
 	TimeWaitedResetGame = 0;
-
+	if (phantomBat != NULL) {
+		phantomBat->ResetResource();
+	}
 	/*init gameover*/
 	isGameOver = false;
 	GameOverSelect = GAMEOVER_SELECT_CONTINUE;
@@ -538,11 +541,13 @@ void SceneGame::loadMap(objectType mapCurrent)
 		camera->SetPosition(0, 0);
 		camera->SetBoundary(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
 		camera->setBoundaryBackup(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
-		simon->setPostion(SIMON_POSITION_DEFAULT);
+		//simon->setPostion(SIMON_POSITION_DEFAULT);
+		simon->setPostion(2250.0f, 300.0f);
 		listEnemy.push_back(new Ghost(50, 300, 1));
 		listEnemy.push_back(new Panther(1398.0f, 225.0f, directionPanther, directionPanther == -1 ? 20.0f : 9.0f, simon));
 		listEnemy.push_back(new Bat(200, 100, 1));
 		listEnemy.push_back(new Fishmen(50, 300, 1, simon, &listWeaponOfEnemy, camera));
+		
 		currentStage = 2;
 		break;
 	}
@@ -591,6 +596,7 @@ void SceneGame::checkCollisionSimonWithHiddenObject()
 								simon->setPostion(3150, 405);
 								gridGame->insertObjectToGrid(GRID_INSERT_OBJECT__GETOUTFROMLAKE_LEFT);
 								gridGame->insertObjectToGrid(GRID_INSERT_OBJECT__GETOUTFROMLAKE_RIGHT);
+
 								objectTemp->setHealth(0);
 								break;
 							}
@@ -648,6 +654,14 @@ void SceneGame::checkCollisionSimonWithHiddenObject()
 								DebugOut(L"Xac nhan qua xong cua!\n");
 								break;
 							}
+							case 114: //điểm kích hoạt boss
+							{
+								phantomBat->Start();
+								camera->SetBoundary(camera->getBoundaryRight(), camera->getBoundaryRight());
+								camera->setAllowFollowSimon(false);
+								objectTemp->setHealth(0);
+							}
+							break;
 						default:
 							break;
 						}
@@ -666,6 +680,7 @@ void SceneGame::checkCollision()
 	checkCollionsionSimonWithItem();
 	checkCollisionSimonWithGate();
 	checkCollsionWithEnemy();
+	checkCollisionSimonWithBoss();
 }
 //Kiểm tra va chạm giữa vũ khí với object
 void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
@@ -1210,6 +1225,9 @@ void SceneGame::checkCollisionSimonWithGate()
 							isWalkingThroughGate2 = true;
 							doneWalkingThroughGate2 = false;
 							objectGate->Start(); //Bắt đầu trạng thái đóng mở cửa
+							if (phantomBat == NULL) {
+								phantomBat = new PhantomBat(simon, camera, &listWeaponOfEnemy);
+							}
 							break;
 						}
 						break;
@@ -1217,6 +1235,30 @@ void SceneGame::checkCollisionSimonWithGate()
 						break;
 					}
 				}
+			}
+		}
+	}
+}
+void SceneGame::checkCollisionSimonWithBoss() {
+	if (phantomBat == NULL) return;
+	if (phantomBat->getHealth() <= 0) return;
+	vector<GameObject*> listObject{ phantomBat };
+	checkCollisionWeaponWithObject(listObject);
+	if (GetTickCount() - simon->untouchable_Start > SIMON_UNTOUCHABLE_TIME) {
+		simon->untouchable_Start = 0;
+		simon->untouchable = false;
+	}
+	if (simon->untouchable == false) {
+		if (phantomBat->getHealth() > 0) {
+			LPCollisionEvent e = simon->sweptAABBEx(phantomBat);
+			if (e->t > 0 && e->t <= 1) {
+				simon->setHurt(e);
+				return;
+			}
+			if (simon->checkAABB(phantomBat) == true) {
+				LPCollisionEvent e = new CollisionEvent(1.0f, (float)-simon->getDirection(), 0.0f, NULL);
+				simon->setHurt(e);
+				return;
 			}
 		}
 	}

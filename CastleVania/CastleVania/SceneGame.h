@@ -42,6 +42,9 @@
 #include "HolyWaterItem.h"
 #include "HolyWater.h"
 #define GAME_TIME_MAX 300
+#include "PhantomBat.h"
+
+#define GAME_TIME_MAX 3000
 #define CAMERA_POSITION_Y_LAKE 400.0f
 
 #define CAMERA_BOUNDARY_LAKE_LEFT 3075.0f
@@ -68,6 +71,7 @@ private:
 	objectType mapCurrent;
 	vector<GameObject*>listObject;
 	Simon *simon;
+	PhantomBat* phantomBat;
 	Brick* birck;
 	Sound* sound;
 	Map* tileMap;
@@ -118,6 +122,7 @@ public:
 	void checkCollsionWithEnemy();
 	void checkCollisionSimonWithEnemy();
 	void checkCollisionSimonWithGate();
+	void checkCollisionSimonWithBoss();
 	Item* getNewItem(int id, objectType ObjectType, float x, float y);
 	void replayMusic();
 };

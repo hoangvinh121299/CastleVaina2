@@ -183,6 +183,7 @@
     <ClCompile Include="MoneyBagExtra.cpp" />
     <ClCompile Include="MorningStar.cpp" />
     <ClCompile Include="Panther.cpp" />
+    <ClCompile Include="PhantomBat.cpp" />
     <ClCompile Include="PotRoast.cpp" />
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="SceneGame.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="MoneyBagExtra.h" />
     <ClInclude Include="MorningStar.h" />
     <ClInclude Include="Panther.h" />
+    <ClInclude Include="PhantomBat.h" />
     <ClInclude Include="PotRoast.h" />
     <ClInclude Include="Scence.h" />
     <ClInclude Include="SceneGame.h" />

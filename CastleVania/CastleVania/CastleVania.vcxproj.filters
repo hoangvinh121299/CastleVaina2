@@ -264,6 +264,9 @@
     <ClInclude Include="CrystalBall.h">
       <Filter>Object\Item</Filter>
     </ClInclude>
+    <ClInclude Include="PhantomBat.h">
+      <Filter>Object\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSprite.cpp">
@@ -463,6 +466,9 @@
     </ClCompile>
     <ClCompile Include="CrystalBall.cpp">
       <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="PhantomBat.cpp">
+      <Filter>Object\Boss</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
