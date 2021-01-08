@@ -656,6 +656,7 @@ void SceneGame::checkCollisionSimonWithHiddenObject()
 							}
 							case 114: //điểm kích hoạt boss
 							{
+								DebugOut(L"Va cham voi diem kich hoat boss!\n");
 								phantomBat->Start();
 								camera->SetBoundary(camera->getBoundaryRight(), camera->getBoundaryRight());
 								camera->setAllowFollowSimon(false);
