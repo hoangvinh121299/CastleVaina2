@@ -443,6 +443,8 @@ void SceneGame::Update(DWORD dt)
 				listWeaponOfEnemy[i]->Update(dt, &listObject);
 			}
 		}
+		if (phantomBat != NULL)
+			phantomBat->Update(dt, &listObject);
 	}
 	for (UINT i = 0; i < listEffect.size(); i++)
 		if (listEffect[i]->getFinish() == false)
@@ -481,6 +483,8 @@ void SceneGame::Render()
 				listItem[i]->Render(camera);
 		}
 		simon->Render(camera);
+		if (phantomBat != NULL)
+			phantomBat->Render(camera);
 		board1->Render(simon, currentStage, GAME_TIME_MAX - gametime->getTime(), NULL);
 	}
 	else
@@ -542,7 +546,7 @@ void SceneGame::loadMap(objectType mapCurrent)
 		camera->SetBoundary(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
 		camera->setBoundaryBackup(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
 		//simon->setPostion(SIMON_POSITION_DEFAULT);
-		simon->setPostion(2250.0f, 300.0f);
+		simon->setPostion(4250.0f, 300.0f);
 		listEnemy.push_back(new Ghost(50, 300, 1));
 		listEnemy.push_back(new Panther(1398.0f, 225.0f, directionPanther, directionPanther == -1 ? 20.0f : 9.0f, simon));
 		listEnemy.push_back(new Bat(200, 100, 1));
@@ -590,6 +594,7 @@ void SceneGame::checkCollisionSimonWithHiddenObject()
 						{
 							case 77: // id 77: object ẩn -> bắt đầu xuống hồ nước trái
 							{
+								DebugOut(L"Di xuong ho nuoc trai");
 								camera->SetPosition(camera->GetXCam(), CAMERA_POSITION_Y_LAKE);
 								//Giới hạn biên camera để camera không vượt khỏi Hồ 
 								camera->SetBoundary(CAMERA_BOUNDARY_LAKE_LEFT, CAMERA_BOUNDARY_LAKE_RIGHT);
@@ -1254,11 +1259,13 @@ void SceneGame::checkCollisionSimonWithBoss() {
 			LPCollisionEvent e = simon->sweptAABBEx(phantomBat);
 			if (e->t > 0 && e->t <= 1) {
 				simon->setHurt(e);
+				DebugOut(L"Simon va cham Boss");
 				return;
 			}
 			if (simon->checkAABB(phantomBat) == true) {
 				LPCollisionEvent e = new CollisionEvent(1.0f, (float)-simon->getDirection(), 0.0f, NULL);
 				simon->setHurt(e);
+				DebugOut(L"Simon va cham Boss 22");
 				return;
 			}
 		}
