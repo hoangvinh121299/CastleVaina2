@@ -305,7 +305,8 @@ void SceneGame::resetResources()
 	isWaitResetGame = true;
 	TimeWaitedResetGame = 0;
 	if (phantomBat != NULL) {
-		phantomBat->ResetResource();
+		//Khởi tạo các giá trị ban đầu cho boss
+		phantomBat->InitResource();
 	}
 	/*init gameover*/
 	isGameOver = false;

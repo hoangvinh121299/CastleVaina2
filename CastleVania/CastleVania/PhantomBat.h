@@ -25,7 +25,8 @@ public:
 	int StatusProcessing;
 private:
 	float xBefore, yBefore;
-	float xTarget, yTarget;
+	//Toạ độ điểm boss sẽ đi tới
+	float xDestination, yDestination;
 	Simon* simon;
 	/*BezierCurves*/
 	bool isUseBezierCurves;
@@ -62,7 +63,7 @@ public:
 	void Stop();
 	
 	void ProcessSmart();
-	void ResetResource();
+	void InitResource();
 };
 
 #endif
