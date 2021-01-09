@@ -443,6 +443,8 @@ void SceneGame::Update(DWORD dt)
 				listWeaponOfEnemy[i]->Update(dt, &listObject);
 			}
 		}
+		if (phantomBat != NULL)
+			phantomBat->Update(dt, &listObject);
 	}
 	for (UINT i = 0; i < listEffect.size(); i++)
 		if (listEffect[i]->getFinish() == false)
@@ -481,6 +483,8 @@ void SceneGame::Render()
 				listItem[i]->Render(camera);
 		}
 		simon->Render(camera);
+		if (phantomBat != NULL)
+			phantomBat->Render(camera);
 		board1->Render(simon, currentStage, GAME_TIME_MAX - gametime->getTime(), NULL);
 	}
 	else

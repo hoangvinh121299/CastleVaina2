@@ -8,7 +8,7 @@ PhantomBat::PhantomBat(Simon* simon, Camera* camera, vector<Weapon*>* listWeapon
 	ObjectType = objectType::PHANTOMBAT;
 	objectTexture = TextureManager::GetInstance()->GetTexture(ObjectType);
 	objectSprite = new GameSprite(objectTexture, 70);
-
+	ResetResource();
 }
 void PhantomBat::getBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x + 5;
