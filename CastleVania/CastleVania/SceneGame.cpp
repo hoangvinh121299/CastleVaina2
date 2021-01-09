@@ -187,10 +187,11 @@ void SceneGame::OnKeyDown(int keycode)
 			isDebug_RenderBBox = 1;
 		else
 			isDebug_RenderBBox = 0;
-		gridGame->reloadMapGrid();
+		/*gridGame->reloadMapGrid();*/
 		DebugOut(L"OnkeyDown done\n");
 	}
-
+	if (keycode == DIK_Q)
+		gridGame->reloadMapGrid();
 	if (isGameOver)
 	{
 		switch (keycode)
@@ -546,7 +547,7 @@ void SceneGame::loadMap(objectType mapCurrent)
 		camera->SetBoundary(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
 		camera->setBoundaryBackup(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
 		//simon->setPostion(SIMON_POSITION_DEFAULT);
-		simon->setPostion(4250.0f, 300.0f);
+		simon->setPostion(SIMON_POSITION_DEFAULT);
 		listEnemy.push_back(new Ghost(50, 300, 1));
 		listEnemy.push_back(new Panther(1398.0f, 225.0f, directionPanther, directionPanther == -1 ? 20.0f : 9.0f, simon));
 		listEnemy.push_back(new Bat(200, 100, 1));
@@ -633,6 +634,12 @@ void SceneGame::checkCollisionSimonWithHiddenObject()
 								camera->setAllowFollowSimon(true);
 								gridGame->insertObjectToGrid(GRID_INSERT_OBJECT__GETINTOLAKE_RIGHT); // thêm object ẩn để có thể đi xuống sau khi đã lên lại
 							
+								break;
+							}
+							case 115: //id 115: Rớt xuống nước ->chết 
+							{
+								simon->setHealth(0);
+								sound->Play(eSound::soundFallingDownWaterSurface);
 								break;
 							}
 							case 82: // đụng trúng box xác nhận simon đã qua GATE1
