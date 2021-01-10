@@ -141,6 +141,7 @@ private:
 
 
 	/*---------------Xử lí liên quan tới vũ khí phụ-----------------------------*/
+	/*Xử lý liên quan tới thuốc tàng hình*/
 	bool isUseInvisibilityPotion;
 	DWORD TimeWaited_InvisibilityPotion;
 
@@ -154,6 +155,7 @@ private:
 	bool isAllowProcessClearState3;
 	GameSprite* _spriteLagerHeart;
 	int GameOverSelect;
+
 public:
 	SceneGame();
 	~SceneGame();
