@@ -7,7 +7,7 @@
 
 #define PHANTOMBAT_PROCESS_SLEEP 0
 #define PHANTOMBAT_PROCESS_START_1 1 //ban đầu boss di chuyển xuống
-#define PHANTOMBAT_PROCESS_START_2 2
+#define PHANTOMBAT_PROCESS_START_2 2 //di chuyển đến cửa sổ
 #define PHANTOMBAT_PROCESS_CURVES 3 //di chuyển theo vòng cung
 #define PHANTOMBAT_PROCESS_STRAIGHT_1 4 //di chuyển thẳng 1
 #define PHANTOMBAT_PROCESS_STRAIGHT_2 5 //di chuyển thẳng 2
