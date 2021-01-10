@@ -314,7 +314,7 @@ void SceneGame::resetResources()
 
 void SceneGame::Update(DWORD dt)
 {
-	//Hàm Freeze phải đặt trước update của Simon để ngăn Simon Update
+//Hàm Freeze phải đặt trước update của Simon để ngăn Simon Update
 	if (simon->getFreeze() == true)
 	{
 		simon->updateFreeze(dt);
@@ -367,10 +367,10 @@ void SceneGame::Update(DWORD dt)
 	}
 	else
 	{
-		//if (isAllowProcessClearState3 == false) // đang xử lí ClearState thì không đếm time
-		//{
-		//	gameTime->Update(dt);
-		//}
+		if (isAllowProcessClearState3 == false) // đang xử lí ClearState thì không đếm time
+		{
+			gametime->Update(dt);
+		}
 	}
 
 	//Update trạng thái qua cửa của simon
@@ -430,10 +430,14 @@ void SceneGame::Update(DWORD dt)
 		camera->SetPosition(simon->getX() - SCREEN_WIDTH / 2 + 30, camera->GetYCam());
 
 	camera->Update(dt);
+
+
 	for (UINT i = 0; i < listObject.size(); i++)
 	{
 		listObject[i]->Update(dt, &listObject);
 	}
+
+
 	if (!simon->isUsingWeapon(objectType::STOPWATCH))
 	{
 		for (UINT i = 0; i < listEnemy.size(); i++)
@@ -450,9 +454,12 @@ void SceneGame::Update(DWORD dt)
 		if (phantomBat != NULL)
 			phantomBat->Update(dt, &listObject);
 	}
+
 	for (UINT i = 0; i < listEffect.size(); i++)
 		if (listEffect[i]->getFinish() == false)
 			listEffect[i]->Update(dt);
+
+
 	for (UINT i = 0; i < listItem.size(); i++)
 	{
 		if (!listItem[i]->getFinish())
@@ -490,7 +497,6 @@ void SceneGame::Render()
 		//Redner boss
 		if (phantomBat != NULL)
 			phantomBat->Render(camera);
-		board1->Render(simon, currentStage, GAME_TIME_MAX - gametime->getTime(), phantomBat);
 	}
 	else
 	{
@@ -511,6 +517,7 @@ void SceneGame::Render()
 			}
 		}
 	}
+	board1->Render(simon, currentStage, GAME_TIME_MAX - gametime->getTime(), phantomBat);
 }
 
 void SceneGame::LoadResources()
