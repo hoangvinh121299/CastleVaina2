@@ -173,7 +173,7 @@
     <ClCompile Include="HolyWater.cpp" />
     <ClCompile Include="HolyWaterItem.cpp" />
     <ClCompile Include="IntroBat.cpp" />
-    <ClCompile Include="InvisibilityPostionItem.cpp" />
+    <ClCompile Include="InvisibilityPotionItem.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemDagger.cpp" />
     <ClCompile Include="LargeHeart.cpp" />
@@ -242,7 +242,7 @@
     <ClInclude Include="HolyWater.h" />
     <ClInclude Include="HolyWaterItem.h" />
     <ClInclude Include="IntroBat.h" />
-    <ClInclude Include="InvisibilityPostionItem.h" />
+    <ClInclude Include="InvisibilityPotionItem.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemDagger.h" />
     <ClInclude Include="LargeHeart.h" />
