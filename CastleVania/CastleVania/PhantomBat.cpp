@@ -1,5 +1,5 @@
 ﻿#include "PhantomBat.h"
-PhantomBat::PhantomBat(Simon * simon, Camera * camera, vector<Weapon*> * listWeaponOfEnemy)
+PhantomBat::PhantomBat(Simon* simon, Camera* camera, vector<Weapon*>* listWeaponOfEnemy)
 {
 	ObjectType = objectType::PHANTOMBAT;
 	objectTexture = TextureManager::GetInstance()->GetTexture(ObjectType);
@@ -11,7 +11,7 @@ PhantomBat::PhantomBat(Simon * simon, Camera * camera, vector<Weapon*> * listWea
 
 	weapon = new FireBall(camera);
 	listWeaponOfEnemy->push_back(weapon);
-	
+
 	InitResource();
 }
 
@@ -22,15 +22,15 @@ void PhantomBat::getBoundingBox(float& left, float& top, float& right, float& bo
 	bottom = y + objectTexture->GetFrameHeight() - 10;
 }
 
-void PhantomBat::Render(Camera * camera) {
+void PhantomBat::Render(Camera* camera) {
 	if (getHealth() <= 0)
 		return;
 
 	if (StatusProcessing == PHANTOMBAT_PROCESS_SLEEP)
 		objectSprite->SelectFrame(0);
-	else{
+	else {
 		objectSprite->Update(dt);
-		if (objectSprite->getCurrentFrame() == 0) 
+		if (objectSprite->getCurrentFrame() == 0)
 			objectSprite->SelectFrame(1); //frame đang hoạt động
 	}
 
@@ -70,7 +70,7 @@ void PhantomBat::Render(Camera * camera) {
 					rect.bottom, 100);
 			}
 		}
-		
+
 		RECT rect;
 		rect.left = 0;
 		rect.top = 0;
@@ -86,7 +86,7 @@ void PhantomBat::Render(Camera * camera) {
 			rect.top,
 			rect.right,
 			rect.bottom, 100);
-		
+
 	}
 }
 
@@ -147,10 +147,10 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float yy = getPt(ya, yb, perc);
 		vy = (yy - yLastFrame) / dt;
 	}
-		break;
+	break;
 	case PHANTOMBAT_PROCESS_STRAIGHT_1: //Di chuyển thẳng
-		if (abs(x - xBefore) >= abs(xDestination - xBefore) 
-			|| abs(y - yBefore)>=abs(yDestination - yBefore)){
+		if (abs(x - xBefore) >= abs(xDestination - xBefore)
+			|| abs(y - yBefore) >= abs(yDestination - yBefore)) {
 			//Sau khi di chuyển xong thì đi thẳng theo hướng ngẫu nhiên
 			vx = vy = 0;
 			StartStraight();
@@ -210,7 +210,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (x < camera->GetXCam()
 		|| camera->GetXCam() + camera->GetWidth() < x + getWidth()
 		|| y < camera->GetYCam()
-		|| camera->GetYCam() + camera->GetHeight() < y + getHeight()
+		|| camera->GetYCam() + camera->GetHeight() < y + getHeight() - 90
 		) {
 		//DebugOut(L"Boss ra ngoai pham vi camera");
 		switch (StatusProcessing)
@@ -226,7 +226,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			int temp = rand() % 3;
 			switch (temp)
 			{
-			case 0: 
+			case 0:
 				StartAttack();
 				break;
 			default:
@@ -236,7 +236,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			break;
 		}
 	}
-	
+
 	yLastFrame = y; //Lưu giá trị y của frame hiện tại
 }
 
@@ -251,8 +251,8 @@ void PhantomBat::Start() {
 void PhantomBat::ProcessSmart() {
 	//Simon đang nhảy && simon-boss <= 150
 	if (simon->isJumping && sqrt(
-		(simon->getX() - x) * (simon->getX() - x) 
-		+ (simon->getY() - y) * (simon->getY() - y)) 
+		(simon->getX() - x) * (simon->getX() - x)
+		+ (simon->getY() - y) * (simon->getY() - y))
 		<= 150.0f) {
 		int random = rand() % 6;
 		switch (random)
@@ -272,8 +272,8 @@ void PhantomBat::ProcessSmart() {
 		}
 	}
 	//20%
-	if (rand() % 5 == 0){
-		if (health <= 10 && simon->isAttacking){
+	if (rand() % 5 == 0) {
+		if (health <= 10 && simon->isAttacking) {
 			StartCurves();
 		}
 	}
@@ -288,23 +288,27 @@ void PhantomBat::StartCurves() {
 	y2 = simon->getY() + simon->getHeight();
 	//Simon đang ở bên trái của boss
 	if (simon->getX() < x) {
-		xDestination = camera->GetXCam()
+		float temp = simon->getX();
+		/*xDestination = camera->GetXCam()
 			- 100 + rand() % ( (int)(simon->getX()
-				- camera->GetXCam() + 100) );
+				- camera->GetXCam() + 100) );*/
+		xDestination = simon->getX();
 	}
 	//Simon đang ở bên phải của boss
 	else {
-		xDestination = simon->getX() + simon->getWidth()
+		float temp = simon->getX();
+		/*xDestination = simon->getX() + simon->getWidth()
 			+ rand() % ( (int)
 				(camera->GetXCam() + camera->GetWidth()
-				- (simon->getX() + simon->getWidth() + 100)) );
+				- (simon->getX() + simon->getWidth() + 100)) );*/
+		xDestination = simon->getX();
 	}
-	yDestination = simon->getY() + simon->getHeight() - 100;
+	yDestination = simon->getY();
 
 	x3 = xDestination;
 	y3 = yDestination;
 	//1 giây di chuyển được 150 pixel
-	vx = -(x - xDestination) / (abs(xDestination - xBefore) * 1000.0f / 150); 
+	vx = -(x - xDestination) / (abs(xDestination - xBefore) * 1000.0f / 150);
 	vy = 0;
 
 	isUseBezierCurves = true;
@@ -326,10 +330,10 @@ void PhantomBat::StartStraight() {
 	yBefore = y;
 	//Vị trí boss bay đến>mép trái
 	xDestination = (float)PHANTOMBAT_BOUNDARY_START_STRAIGHT_LEFT
-		+ rand() % (PHANTOMBAT_BOUNDARY_START_STRAIGHT_RIGHT 
-		- PHANTOMBAT_BOUNDARY_START_STRAIGHT_LEFT);
+		+ rand() % (PHANTOMBAT_BOUNDARY_START_STRAIGHT_RIGHT
+			- PHANTOMBAT_BOUNDARY_START_STRAIGHT_LEFT);
 	yDestination = 80.0f + rand() % (190 - 80);
-		DebugOut(L"stt = %d, Target (%f, %f) \n", StatusProcessing, xDestination, yDestination);
+	DebugOut(L"stt = %d, Target (%f, %f) \n", StatusProcessing, xDestination, yDestination);
 	vx = (xDestination - xBefore) / 1000;
 	vy = (yDestination - yBefore) / 1000;
 }
@@ -380,7 +384,7 @@ void PhantomBat::InitResource() {
 	y = PHANTOMBAT_DEFAULT_Y;
 	xBefore = x;
 	yBefore = y;
-	
+
 	isWaiting = false; //Khởi tạo với giá trị false
 	yLastFrame = y;
 	vx = vy = 0;
