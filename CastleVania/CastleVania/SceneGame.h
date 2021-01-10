@@ -87,9 +87,6 @@ private:
 	vector<GameObject*>listObject;
 	Simon *simon;
 	PhantomBat* phantomBat;
-	//InvisibilityPotion
-	bool isUseInvisibilityPotion;
-	DWORD TimeWaited_InvisibilityPotion;
 
 	Brick* birck;
 	Sound* sound;
@@ -144,8 +141,6 @@ private:
 
 
 	/*---------------Xử lí liên quan tới vũ khí phụ-----------------------------*/
-
-	/*Xử lí liên quan InvisibilityPotion*/
 	bool isUseInvisibilityPotion;
 	DWORD TimeWaited_InvisibilityPotion;
 
@@ -155,7 +150,8 @@ private:
 	DWORD TimeWaited_UseCross_ChangeColorBackground; // thời gian đã chờ của việc thay đổi màu nền
 	DWORD LimitTimeWait_UseCross_ChangeColorBackground; // thời gian cần chờ để đỏi màu nền
 
-
+	//Clear stage 3
+	bool isAllowProcessClearState3;
 	GameSprite* _spriteLagerHeart;
 	int GameOverSelect;
 public:
