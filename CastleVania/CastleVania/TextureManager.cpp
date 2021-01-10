@@ -31,7 +31,7 @@ void TextureManager::LoadResource()
 	AddTexture(objectType::FONT, new GameTexture("Resources/Font/1.png", 13, 3, 37));
 
 	AddTexture(objectType::BOARD, new GameTexture("Resources/Board/blackboard.png", 1, 1, 1));
-	AddTexture(objectType::BOARD_TRANS, new GameTexture("Resources/blackboard.png", 1, 1, 1, 0, 0, 0));
+	AddTexture(objectType::BOARD_TRANS, new GameTexture("Resources/Board/blackboard.png", 1, 1, 1, 0, 0, 0));
 
 	AddTexture(objectType::BOARDHEALTH, new GameTexture("Resources/Board/heal.png", 3, 1, 3));
 	AddTexture(objectType::RENDERBBOX, new GameTexture("Resources/bbox.png")); // dùng để vẽ BBOX
@@ -85,7 +85,7 @@ void TextureManager::LoadResource()
 
 	//SIMON
 	AddTexture(objectType::SIMON, new GameTexture("Resources/Simon/simon.png", 8, 3, 24));
-	AddTexture(objectType::SIMON_TRANS, new GameTexture("Resources/simon_trans.png", 8, 3, 24));
+	AddTexture(objectType::SIMON_TRANS, new GameTexture("Resources/Simon/simon_trans.png", 8, 3, 24));
 	AddTexture(objectType::SIMON_DEATH, new GameTexture("Resources/Simon/simondeath.png"));
 
 	//effect

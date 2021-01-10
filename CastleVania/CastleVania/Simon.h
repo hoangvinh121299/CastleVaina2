@@ -135,7 +135,7 @@ public:
 	bool isJumping;
 	bool isSitting;
 
-	int directionY; //Hương đi theo trục y của Simon
+	int directionY; //Hướng đi theo trục y của Simon
 	bool isOnStair; //Có đang ở trên cầu thang hay không
 	int isProccessingOnStair; //Có 2 giai đoạn
 	int directionStair; //Hướng của cầu thang đang đi -1 là qua trái, 1 là qua phải
