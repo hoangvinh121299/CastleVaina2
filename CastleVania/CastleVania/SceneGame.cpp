@@ -290,9 +290,9 @@ void SceneGame::resetResources()
 	gridGame->reloadMapGrid(); // nạp lại lưới
 
 	/*listItem.clear();
-	listEffect.clear();
+	listEffect.();
 	listEnemy.clear();
-	listWeaponOfEnemy.clear();*/
+	listWeaponOfEnemy.clear();*/ 
 	camera->setAllowFollowSimon(true);
 
 	isWalkingThroughGate1 = false; // ban đầu chưa cần xử lí qua cửa
@@ -419,7 +419,10 @@ void SceneGame::Update(DWORD dt)
 		}
 	}
 	simon-> Update(dt, &listObject);
-	
+	/*ProcessClearState3(dt);*/ // xử lí sau khi diệt xong boss
+	ProcessInvisibilityPotion(dt);
+	ProcessCross(dt);
+
 	gridGame->getListObjectFromMapGrid(listObject, camera);
 	
 	//Camera chạy theo Simon
@@ -1057,7 +1060,7 @@ Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
 				break;
 
 			case 51:
-				return new MoneyBagExtra(x, y);
+				return new DoubleShotItem(x, y);
 				break;
 
 			case 104: // Double shot
@@ -1209,7 +1212,7 @@ void SceneGame::checkCollionsionSimonWithItem()
 						sound->Stop(eSound::music_PhantomBat);
 					}
 					sound->Play(eSound::musicStateClear);
-					isAllowProcessClearState3 = true;
+					isAllowProcessClearState3 = true; 
 					break;
 				}
 
@@ -1253,7 +1256,6 @@ void SceneGame::checkCollionsionSimonWithItem()
 					isWaitProcessCreateGhost = true;
 					isAllowCheckTimeWaitProcessCreateGhost = true;
 					/*Xóa hết enemy*/
-
 					listItem[i]->setFinish(true);
 					sound->Play(eSound::soundHolyCross);
 					break;
@@ -1263,7 +1265,7 @@ void SceneGame::checkCollionsionSimonWithItem()
 					DebugOut(L"[CheckCollisionSimonWithItem] Khong nhan dang duoc loai Item!\n");
 					break;
 				}
-					isAllowProcessClearState3 = true; //note
+					isAllowProcessClearState3 = true; 
 					break;
 				}
 			}

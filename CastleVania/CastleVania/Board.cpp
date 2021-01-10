@@ -12,7 +12,7 @@ Board::Board(float X, float Y)
 	boardTexture = TextureManager::GetInstance()->GetTexture(objectType::BOARD);
 	boardSprite = new GameSprite(boardTexture, 0);
 
-	/*spriteIconDoubleShot = new GameSprite(TextureManager::GetInstance()->GetTexture(objectType::ITEMDOUBESHOT), 0);*/
+	spriteIconDoubleShot = new GameSprite(TextureManager::GetInstance()->GetTexture(objectType::ITEMDOUBESHOT), 0);
 
 	x = X;
 	y = Y;
@@ -35,14 +35,14 @@ void Board::Render(Simon* simon, int state, int RemainingTime, GameObject* boss)
 	_font.Draw(x + 393, y + 51, fillNumber(std::to_string(simon->getLives()), 2)); // số mạng sông
 
 
-	//int BloodBoss = 16;
-	//if (boss != NULL)
-	//{
-	//	BloodBoss = (int)(boss->GetHealth() * 16 / 24);// HEALTH =24 -> 16 vạch
-	//	if (BloodBoss == 0 && boss->GetHealth() > 0)
-	//		BloodBoss = 1;
-	//}
-	_boardHealth->Draw(simon->getHealth(), 0);
+	int BloodBoss = 16;
+	if (boss != NULL)
+	{
+		BloodBoss = (int)(boss->getHealth() * 16 / 24);// HEALTH =24 -> 16 vạch
+		if (BloodBoss == 0 && boss->getHealth() > 0)
+			BloodBoss = 1;
+	}
+	_boardHealth->Draw(simon->getHealth(), BloodBoss);
 	objectType TypeWeaponCollect = simon->getTypeWeaponCollect();
 	switch (TypeWeaponCollect)
 	{
@@ -65,10 +65,10 @@ void Board::Render(Simon* simon, int state, int RemainingTime, GameObject* boss)
 		break;
 	}
 
-	/*if (simon->getIsUseDoubleShot())
+	if (simon->getIsUseDoubleShot())
 	{
 		spriteIconDoubleShot->Draw(x + 465, y + 35);
-	}*/
+	}
 }
 
 
