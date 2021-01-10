@@ -440,6 +440,7 @@ void SceneGame::Update(DWORD dt)
 	
 	if (mapCurrent == objectType::MAP2)
 	{
+		DWORD now = GetTickCount();
 //Vùng tạo và Update Panther
 		if (REGION_CREATE_PANTHER_LEFT < simon->getX() && simon->getX() < REGION_CREATE_PANTHER_RIGHT)
 		{
@@ -475,6 +476,170 @@ void SceneGame::Update(DWORD dt)
 					listEnemy.push_back(new Bat(camera->GetXCam() - 10, simon->getY() + 40, 1));
 
 				TimeWaitCreateBat = 4000 + (rand() % 3000);
+			}
+		}
+		if (isWaitProcessCreateGhost == false) {
+			//Có 3 vùng tạo ghost
+			//Vùng 1 và 2
+			if ((simon->getX() >= -16.0f && simon->getX() <= 825.0f)
+				|| (simon->getX() > 2200.0f && simon->getX() < 2770.0f)) {
+				if (now - TimeCreateGhost >= TIME_BETWEEN_2_GHOST_SPAWNED) {
+					if (CountEnemyGhost < 3) {
+						//Simon dang di chuyen sang phai
+						if (simon->getVx() > 0) {
+							//Thi ghost di chuyen sang trai (sang phia simon)
+							listEnemy.push_back(new Ghost(camera->GetXCam() + camera->GetWidth(), 316, -1));
+						}
+						else {
+							//Simon dang di chuyen sang trai
+							if (simon->getVx() < 0) {
+								listEnemy.push_back(new Ghost(camera->GetXCam() - 34, 316, 1)); //note -34 = 1frame của Ghost
+							}
+							else {
+								//Khong sang trai/phai = dung yen
+								int random = rand() % 2;
+								//chan hoac le
+								if (random == 0)
+									listEnemy.push_back(new Ghost(camera->GetXCam() - 34, 316, 1));
+								else listEnemy.push_back(new Ghost(camera->GetXCam() + camera->GetWidth(), 316, -1));
+							}
+						}
+						CountEnemyGhost++;
+						if (CountEnemyGhost == 3) {
+							//Sau khi đủ 3 ghost
+							//Chờ đến khi 3 ghost đều bị giết
+							isWaitProcessCreateGhost = true;
+							isAllowCheckTimeWaitProcessCreateGhost = false;
+							//Đặt lại thời điểm tạo ghost
+							TimeCreateGhost = now;
+						}
+					}
+				}
+			}
+			//Vùng 3	
+			if ((simon->getX() >= GHOST_ZONE3_LEFT && simon->getX() <= GHOST_ZONE3_RIGHT)) {
+				if (now - TimeCreateGhost >= TIME_BETWEEN_2_GHOST_SPAWNED) {
+					if (CountEnemyGhost < 3) {
+						int random = rand() % 2;
+						switch (random)
+						{
+						case 0: //case 0 ở cầu thang trước khi vào boss
+							if (simon->getX() <= GHOST_ZONE3_COLUMN1)
+							{
+								listEnemy.push_back(new Ghost(camera->GetXCam() + camera->GetWidth(), 185, -1));// bên phải chạy qua trái
+								break;
+							}
+							else {
+								if (simon->getX() >= GHOST_ZONE3_COLUMN2)
+								{
+									listEnemy.push_back(new Ghost(camera->GetXCam() - 34, 185, 1));// chay nguoc lai
+									break;
+								}
+								else {}
+							}
+						case 1:
+							if (simon->getVx() > 0) {
+								//Thi ghost di chuyen sang trai (sang phia simon)
+								listEnemy.push_back(new Ghost(camera->GetXCam() + camera->GetWidth(), 330, -1));
+							}
+							else {
+								//Simon dang di chuyen sang trai
+								if (simon->getVx() < 0) {
+									listEnemy.push_back(new Ghost(camera->GetXCam() - 34, 330, 1)); //note -34
+								}
+								else {
+									//Khong sang trai/phai = dung yen
+									int temp = rand() % 2;
+									//chan hoac le
+									if (temp == 0)
+										listEnemy.push_back(new Ghost(camera->GetXCam() + camera->GetWidth(), 316, -1));
+									else listEnemy.push_back(new Ghost(camera->GetXCam() - 34, 330, 1));
+								}
+							}
+							break;
+						default:
+							break;
+						}
+						CountEnemyGhost++;
+						if (CountEnemyGhost == 3) {
+							//Sau khi đủ 3 ghost
+							//Chờ đến khi 3 ghost đều bị giết
+							isWaitProcessCreateGhost = true;
+							isAllowCheckTimeWaitProcessCreateGhost = false;
+							//Đặt lại thời điểm tạo ghost
+							TimeCreateGhost = now;
+						}
+					}
+				}
+			}
+		}
+		else {
+			if (isAllowCheckTimeWaitProcessCreateGhost == true) {
+				//Đã đạt lượng thời gian chờ tạo ghost
+				//Chờ hơn 2.5s
+				if (now - TimeWaitProcessCreateGhost >= TIME_PROCESS_SPAWN_GHOST)
+					isWaitProcessCreateGhost = false;
+			}
+		}
+		//Fishmen
+		if (isAllowCreateFishmen && CountEnemyFishmen < 2) {
+			DWORD now = GetTickCount();
+			if (now - TimeCreateFishmen >= TimeWaitCreateFishmen) // đủ thời gian chờ
+			{
+				TimeCreateFishmen = now; // đặt lại thời gian đã tạo
+
+				float vtx = 0;
+
+				if (FISHMEN_ZONE_1_LEFT < simon->getX() && simon->getX() <= FISHMEN_ZONE_1_RIGHT)
+				{
+					vtx = (rand() % 2) ? (FISHMEN_POS_3) : (FISHMEN_POS_4);
+				}
+
+				if (FISHMEN_ZONE_2_LEFT < simon->getX() && simon->getX() <= FISHMEN_ZONE_2_RIGHT)
+				{
+					vtx = (rand() % 2) ? (FISHMEN_POS_1) : ((rand() % 2) ? (FISHMEN_POS_3) : (FISHMEN_POS_4));
+				}
+
+				if (FISHMEN_ZONE_3_LEFT < simon->getX() && simon->getX() <= FISHMEN_ZONE_3_RIGHT)
+				{
+					vtx = (rand() % 2) ? (FISHMEN_POS_4) : (FISHMEN_POS_5);
+				}
+
+				if (FISHMEN_ZONE_4_LEFT < simon->getX() && simon->getX() <= FISHMEN_ZONE_4_RIGHT)
+				{
+					vtx = (rand() % 2) ? (FISHMEN_POS_3) : (FISHMEN_POS_5);
+				}
+
+				if (FISHMEN_ZONE_5_LEFT < simon->getX() && simon->getX() <= FISHMEN_ZONE_5_RIGHT)
+				{
+					vtx = (rand() % 2) ? (FISHMEN_POS_4) : (FISHMEN_POS_6);
+				}
+
+				if (FISHMEN_ZONE_6_LEFT < simon->getX() && simon->getX() <= FISHMEN_ZONE_6_RIGHT)
+				{
+					vtx = (rand() % 2) ? (FISHMEN_POS_5) : ((rand() % 2) ? (FISHMEN_POS_7) : (FISHMEN_POS_8));
+				}
+
+				if (FISHMEN_ZONE_7_LEFT < simon->getX() && simon->getX() <= FISHMEN_ZONE_7_RIGHT)
+				{
+					vtx = (rand() % 2) ? (FISHMEN_POS_6) : (FISHMEN_POS_8);
+				}
+				if (FISHMEN_ZONE_8_LEFT < simon->getX() && simon->getX() <= FISHMEN_ZONE_8_RIGHT)
+				{
+					vtx = (rand() % 2) ? (FISHMEN_POS_6) : (FISHMEN_POS_7);
+				}
+				int directionFishmen = vtx < simon->getX() ? 1 : -1;
+
+
+				float vty = FISHMEN_POS_Y;
+
+				listEnemy.push_back(new Fishmen(vtx, vty, directionFishmen, simon, &listWeaponOfEnemy, camera));
+				CountEnemyFishmen++;
+
+				//STEAM_ADD_EFFECT(listEffect, vtx, vty);
+
+				sound->Play(eSound::soundSplashwater);
+				TimeWaitCreateFishmen = 2000 + (rand() % 2000);
 			}
 		}
 	}

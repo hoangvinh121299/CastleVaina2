@@ -17,6 +17,7 @@
 #include "Effect.h"
 #include "EffectHit.h"
 #include "EffectFire.h"
+#include "SteamEffect.h"
 #include "Item.h"
 #include "LargeHeart.h"
 #include "ItemDagger.h"
@@ -66,6 +67,54 @@
 #define CAMERA_BOUNDARY_BOSS_RIGHT (5648.0f - SCREEN_WIDTH)
 #define DISTANCE_AUTOGO_SIMON_GATE 80.0f //Simon auto 80 sau khi đụng vào gate
 #define CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT (2555.0f) // Biên phải camera trước khi qua cửa 1
+
+#pragma region define GHOST
+
+#define TIME_BETWEEN_2_GHOST_SPAWNED 1000 //1s
+#define TIME_PROCESS_SPAWN_GHOST 2500 //2.5s
+#define GHOST_ZONE3_LEFT 4233.0f // biên trái vùng hoạt động 3
+#define GHOST_ZONE3_RIGHT 4993.0f// biên phải vùng hoạt động 3
+#define GHOST_ZONE3_COLUMN1 4412.0f 
+#define GHOST_ZONE3_COLUMN2 4590.0f
+
+#pragma endregion
+
+#pragma region define FISHMEN
+
+#define FISHMEN_ZONE_1_LEFT 3065.0f
+#define FISHMEN_ZONE_1_RIGHT 3193.0f
+#define FISHMEN_POS_1 3121.0f
+
+#define FISHMEN_ZONE_2_LEFT 3193.0f
+#define FISHMEN_ZONE_2_RIGHT 3326.0f
+#define FISHMEN_POS_2 3254.0f
+
+#define FISHMEN_ZONE_3_LEFT 3326.0f
+#define FISHMEN_ZONE_3_RIGHT 3458.0f
+#define FISHMEN_POS_3 3382.0f
+
+#define FISHMEN_ZONE_4_LEFT 3458
+#define FISHMEN_ZONE_4_RIGHT 3571
+#define FISHMEN_POS_4 3505 
+
+#define FISHMEN_ZONE_5_LEFT 3571.0f
+#define FISHMEN_ZONE_5_RIGHT 3707.0f
+#define FISHMEN_POS_5 3636.0f
+
+#define FISHMEN_ZONE_6_LEFT 3707.0f
+#define FISHMEN_ZONE_6_RIGHT 3829.0f
+#define FISHMEN_POS_6 3760.0f
+
+#define FISHMEN_ZONE_7_LEFT 3829.0f
+#define FISHMEN_ZONE_7_RIGHT 3956.0f
+#define FISHMEN_POS_7 3881.0f
+
+#define FISHMEN_ZONE_8_LEFT 3956.0f
+#define FISHMEN_ZONE_8_RIGHT 4095.0f
+#define FISHMEN_POS_8 4017.0f
+
+#define FISHMEN_POS_Y 805.0f
+#pragma endregion
 
 #define REGION_CREATE_PANTHER_LEFT 1090.0f
 #define REGION_CREATE_PANTHER_RIGHT 2350.0f
