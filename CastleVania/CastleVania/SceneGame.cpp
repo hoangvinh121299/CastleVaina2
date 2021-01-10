@@ -937,29 +937,32 @@ Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
 			case 2:
 				return new MoneyBag(x, y, objectType::MONEY_BAG_WHITE);
 				break;
+
 			case 3:
 				return new MoneyBag(x, y, objectType::MONEY_BAG_RED);
 				break;
+
 			case 4:
 				return new MoneyBag(x, y, objectType::MONEY_BAG_PURPLE);
 				break;
-			case 40: case 71:
+
+			case 41: /*case 82:*/
 				return new HolyWaterItem(x, y);
 				break;
 
-			case 76:
+			case 94:
 				return new StopWatchItem(x, y);
 				break;
 
-			case 109:
+			case 105:
 				return new InvisibilityPotionItem(x, y);
 				break;
 
-			case 111:
+			case 107:
 				return new ThrowingAxeItem(x, y);
 				break;
 
-			case 23: case 98:
+			case 23: case 101:
 				return new CrossItem(x, y);
 				break;
 				default:
@@ -1041,9 +1044,9 @@ Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
 				return new BoomerangItem(x, y);
 				break;
 
-			case 12:
+			/*case 12:
 				return new UpgradeMorningStar(x, y);
-				break;
+				break;*/
 
 			default: // còn lại là SmallHeart
 				return new SmallHeart(x,y);
@@ -1055,15 +1058,15 @@ Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
 		{
 			switch (id)
 			{
-			case 40:
+			case 41:
 				return new PotRoast(x, y);
 				break;
 
 			case 51:
-				return new DoubleShotItem(x, y);
+				return new MoneyBagExtra(x, y);
 				break;
 
-			case 104: // Double shot
+			case 67: // Double shot
 				return new DoubleShotItem(x, y);
 				break;
 
