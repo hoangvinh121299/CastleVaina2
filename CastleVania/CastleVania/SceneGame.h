@@ -17,6 +17,7 @@
 #include "Effect.h"
 #include "EffectHit.h"
 #include "EffectFire.h"
+#include "SteamEffect.h"
 #include "Item.h"
 #include "LargeHeart.h"
 #include "ItemDagger.h"
@@ -48,7 +49,6 @@
 
 #define GAME_TIME_MAX 300
 #include "PhantomBat.h"
-
 #define GAME_TIME_MAX 3000
 #define CAMERA_POSITION_Y_LAKE 400.0f
 
@@ -59,6 +59,50 @@
 #define GRID_INSERT_OBJECT__GETINTOLAKE_RIGHT     79, objectType::OBJECT_HIDDEN, -1, 3850, 423, 25, 10, 0 //Đi xuống hồ bên phải 
 #define GRID_INSERT_OBJECT__GETOUTFROMLAKE_RIGHT  80, objectType::OBJECT_HIDDEN, -1, 3780, 435, 30, 20, 0 //Đi ra khỏi hồ bên phải
 
+#pragma region define GHOST
+#define TIME_BETWEEN_2_GHOST_SPAWNED 1000 //1s
+#define TIME_PROCESS_SPAWN_GHOST 2500 //2.5s
+#define GHOST_ZONE3_LEFT 4233.0f // biên trái vùng hoạt động 3
+#define GHOST_ZONE3_RIGHT 4993.0f// biên phải vùng hoạt động 3
+#define GHOST_ZONE3_COLUMN1 4412.0f 
+#define GHOST_ZONE3_COLUMN2 4590.0f
+#pragma endregion
+#pragma region define FISHMEN
+
+#define FISHMEN_ZONE_1_LEFT 3065.0f
+#define FISHMEN_ZONE_1_RIGHT 3193.0f
+#define FISHMEN_POS_1 3121.0f
+
+#define FISHMEN_ZONE_2_LEFT 3193.0f
+#define FISHMEN_ZONE_2_RIGHT 3326.0f
+#define FISHMEN_POS_2 3254.0f
+
+#define FISHMEN_ZONE_3_LEFT 3326.0f
+#define FISHMEN_ZONE_3_RIGHT 3458.0f
+#define FISHMEN_POS_3 3382.0f
+
+#define FISHMEN_ZONE_4_LEFT 3458
+#define FISHMEN_ZONE_4_RIGHT 3571
+#define FISHMEN_POS_4 3505 
+
+#define FISHMEN_ZONE_5_LEFT 3571.0f
+#define FISHMEN_ZONE_5_RIGHT 3707.0f
+#define FISHMEN_POS_5 3636.0f
+
+#define FISHMEN_ZONE_6_LEFT 3707.0f
+#define FISHMEN_ZONE_6_RIGHT 3829.0f
+#define FISHMEN_POS_6 3760.0f
+
+#define FISHMEN_ZONE_7_LEFT 3829.0f
+#define FISHMEN_ZONE_7_RIGHT 3956.0f
+#define FISHMEN_POS_7 3881.0f
+
+#define FISHMEN_ZONE_8_LEFT 3956.0f
+#define FISHMEN_ZONE_8_RIGHT 4095.0f
+#define FISHMEN_POS_8 4017.0f
+
+#define FISHMEN_POS_Y 805.0f
+#pragma endregion
 #define GATE1_POSTION_CAM_BEFORE_GO 2809.0f
 #define GATE1_POSITION_CAM_AFTER_GO 3073.0f
 

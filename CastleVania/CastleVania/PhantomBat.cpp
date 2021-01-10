@@ -147,7 +147,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float yy = getPt(ya, yb, perc);
 		vy = (yy - yLastFrame) / dt;
 	}
-	break;
+		break;
 	case PHANTOMBAT_PROCESS_STRAIGHT_1: //Di chuyển thẳng
 		if (abs(x - xBefore) >= abs(xDestination - xBefore)
 			|| abs(y - yBefore) >= abs(yDestination - yBefore)) {
