@@ -770,6 +770,20 @@ void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 								runEffectHit = true;
 								break;
 							}
+							case objectType::PHANTOMBAT:
+							{
+								if (objWeapon.second->getType() == objectType::MORNINGSTAR) {
+									MorningStar* morningStar = dynamic_cast<MorningStar*>(objWeapon.second);
+									if (morningStar->getLevel() > 0) {
+										//Đánh 8 hit
+										tempObject->subHealth(24 / 8);
+									}
+									else {
+										//Đánh 12 hit
+										tempObject->subHealth(24 / 12);
+									}
+								}
+							}
 							case objectType::BRICK:
 							{
 								if (objWeapon.second->getType() != objectType::MORNINGSTAR) // chỉ xét MorningStar

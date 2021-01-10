@@ -11,7 +11,6 @@ PhantomBat::PhantomBat(Simon * simon, Camera * camera, vector<Weapon*> * listWea
 
 	weapon = new FireBall(camera);
 	listWeaponOfEnemy->push_back(weapon);
-	int res = rand();
 	
 	InitResource();
 }
@@ -32,7 +31,7 @@ void PhantomBat::Render(Camera * camera) {
 	else{
 		objectSprite->Update(dt);
 		if (objectSprite->getCurrentFrame() == 0) 
-			objectSprite->SelectFrame(1);
+			objectSprite->SelectFrame(1); //frame đang hoạt động
 	}
 
 	D3DXVECTOR2 pos = camera->TransForm(x, y);
@@ -99,7 +98,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 	case PHANTOMBAT_PROCESS_SLEEP:
 		break;
-	case PHANTOMBAT_PROCESS_START_1: //Đi từ vị trí ban đầu sang cửa sổ
+	case PHANTOMBAT_PROCESS_START_1: //Từ vị trí sinh boss đi xuống 1 đoạn
 		if (y >= yDestination) {
 			vy = 0;
 			StatusProcessing = PHANTOMBAT_PROCESS_START_2;
@@ -107,14 +106,14 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			yBefore = y;
 			//Vị trí ô cửa sổ boss cần đi tới
 			xDestination = 5480;
-			yDestination = 200;
+			yDestination = 201;
 			vx = ((xDestination - xBefore) / (1500.0f));
 			vy = 0.12f; //độ cong khi đi xuống
 		}
 		break;
-	case PHANTOMBAT_PROCESS_START_2: //
+	case PHANTOMBAT_PROCESS_START_2: //Từ start1 đi đến khung cửa sổ
 		if (isWaiting == false) {
-			vy = -0.0010f * dt;
+			vy = -0.0001f * dt; //note
 			if (vy < 0) vy = 0;
 			//Boss đã di chuyển đến điểm 2
 			if (x >= xDestination) {
@@ -128,6 +127,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			timeWaited += dt;
 			if (timeWaited >= (UINT)(2000 + rand() % 1500)) {
 				isWaiting = false;
+				//Sau khi đển cửa sổ và chờ 1 tgian thì đi vòng cung
 				StartCurves();
 			}
 		}
@@ -166,6 +166,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		else {
 			timeWaited += dt;
+			//Sau khi chờ hơn 3000
 			if (timeWaited >= 3000) {
 				isWaiting = false; //ngừng chờ
 				int random = rand() % 3;
@@ -286,13 +287,13 @@ void PhantomBat::StartCurves() {
 	y1 = y;
 	x2 = simon->getX();
 	y2 = simon->getY() + simon->getHeight();
-	//Nếu simon đang ở bên trái của boss
+	//Simon đang ở bên trái của boss
 	if (simon->getX() < x) {
 		xDestination = camera->GetXCam()
 			- 100 + rand() % ( (int)(simon->getX()
 				- camera->GetXCam() + 100) );
 	}
-	//Nêu simon đang ở bên phải của boss
+	//Simon đang ở bên phải của boss
 	else {
 		xDestination = simon->getX() + simon->getWidth()
 			+ rand() % ( (int)
@@ -300,6 +301,7 @@ void PhantomBat::StartCurves() {
 				- (simon->getX() + simon->getWidth() + 100)) );
 	}
 	yDestination = simon->getY() + simon->getHeight() - 100;
+
 	x3 = xDestination;
 	y3 = yDestination;
 	//1 giây di chuyển được 150 pixel
@@ -311,7 +313,7 @@ void PhantomBat::StartCurves() {
 }
 
 void PhantomBat::StartStraight() {
-	DebugOut(L"Start going straight\n");
+	DebugOut(L"STRAIGHT\n");
 	switch (StatusProcessing)
 	{
 	case PHANTOMBAT_PROCESS_STRAIGHT_1:
@@ -323,6 +325,7 @@ void PhantomBat::StartStraight() {
 	}
 	xBefore = x;
 	yBefore = y;
+	//Vị trí boss bay đến>mép trái
 	xDestination = (float)PHANTOMBAT_BOUNDARY_START_STRAIGHT_LEFT
 		+ rand() % (PHANTOMBAT_BOUNDARY_START_STRAIGHT_RIGHT 
 		- PHANTOMBAT_BOUNDARY_START_STRAIGHT_LEFT);
@@ -335,21 +338,29 @@ void PhantomBat::StartStraight() {
 void PhantomBat::StartAttack() {
 	DebugOut(L"Boss is attacking\n");
 	int fireBallDirection = 0;
+	//Tính điểm boss bắn ra fireball (miệng)
 	float xAttack = x + getWidth() / 2;
 	float yAttack = y + getHeight() / 2;
+
+	//Simon nằm bên phải boss -> đạn từ boss bắn sang phải
 	if (xAttack < simon->getX())
 		fireBallDirection = 1;
 	else fireBallDirection = -1;
-	//Khoảng cách đạn bay từ boss đến Simon
+	//Khoảng cách đạn bay từ điểm bắn đến Simon
 	float distance = sqrt(
 		((xAttack - simon->getX()) * (xAttack - simon->getX()))
 		+
 		((yAttack - simon->getY()) * (yAttack - simon->getY())));
 	//Thời gian đạn bay từ boss đến simon
 	float time = distance / FIREBALL_SPEED;
+
+	//v=distance/time
 	weapon->setSpeed(fireBallDirection * abs(xAttack - simon->getX()) / time,
 		abs(yAttack - simon->getY()) / time);
-	Sound::GetInstance()->Play(eSound::soundHit);
+	StatusProcessing = PHANTOMBAT_PROCESS_ATTACK;
+
+	Sound::GetInstance()->Play(eSound::soundHit); //fireball 
+	//Đặt lại thời gian đã chờ
 	timeWaited = 0;
 	isWaiting = true;
 }
@@ -363,12 +374,14 @@ float PhantomBat::getPt(float n1, float n2, float perc) {
 	return n1 + (different * perc);
 }
 void PhantomBat::InitResource() {
+	StatusProcessing = PHANTOMBAT_PROCESS_SLEEP;
+	health = PHANTOMBAT_DEFAULT_HEALTH;
 	//Đặt vị trí ban đầu của boss
 	x = PHANTOMBAT_DEFAULT_X;
 	y = PHANTOMBAT_DEFAULT_Y;
 	xBefore = x;
 	yBefore = y;
-
+	
 	isWaiting = false; //Khởi tạo với giá trị false
 	yLastFrame = y;
 	vx = vy = 0;
