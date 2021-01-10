@@ -41,7 +41,11 @@
 #include "ThrowingAxe.h"
 #include "HolyWaterItem.h"
 #include "HolyWater.h"
+#include "InvisibilityPostionItem.h"
+#include "CrossItem.h"
+#include "DoubleShotItem.h"
 #include "CrystalBall.h"
+
 #define GAME_TIME_MAX 300
 #include "PhantomBat.h"
 
@@ -64,6 +68,16 @@
 #define CAMERA_BOUNDARY_BOSS_RIGHT (5648.0f - SCREEN_WIDTH)
 #define DISTANCE_AUTOGO_SIMON_GATE 80.0f //Simon auto 80 sau khi đụng vào gate
 #define CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT (2555.0f) // Biên phải camera trước khi qua cửa 1
+
+#pragma endregion
+
+#pragma region define InvisibilityPotion
+
+#define INVISIBILITYPOTION_LIMITTIMEWAIT 4000 // thời gian chờ sử dụng InvisibilityPotion
+
+#pragma endregion
+
+#define CROSS_LIMITTIME 1000 // thời gian tối đa khi dùng Cross
 class SceneGame:public Scene
 {
 private:
@@ -102,6 +116,46 @@ private:
 	bool isGameOver;
 	Font Text;
 
+
+	/*--------------------------------Xử lí liên quan tới quái-----------------------------*/
+
+	/*Xử lí liên quan tạo Bat*/
+	DWORD TimeCreateBat; // thời điểm đã tạo BAT
+	DWORD TimeWaitCreateBat; // thời gian phải chờ để tạo bot
+	bool isAllowCreateBat; // cho phép tạo Bat
+	int CountEnemyBat;
+
+	/*Xử lí liên quan tạo Ghost*/
+	int CountEnemyGhost; // số lượng ghost hiện tại
+	DWORD TimeCreateGhost; // thời điểm bắt đầu tạo ghost
+	DWORD TimeWaitProcessCreateGhost; // Thời điểm bắt đầu chờ xử lí việc tạo ghost
+	bool isWaitProcessCreateGhost; // chờ xử lí việc tạo ghost
+	bool isAllowCheckTimeWaitProcessCreateGhost = false; // cho phép kt thời gian chờ xử lí tạo ghost
+
+	/*Xử lí liên quan tạo Panther*/
+	bool isAllowRenewPanther;
+	int CountEnemyPanther;
+
+	/*Xử lí liên quan tạo Fishmen*/
+	bool isAllowCreateFishmen;
+	int CountEnemyFishmen;
+	DWORD TimeCreateFishmen; // thời điểm đã tạo fishmen
+	DWORD TimeWaitCreateFishmen; // thời gian cần chờ để tạo fishmen
+
+
+	/*---------------Xử lí liên quan tới vũ khí phụ-----------------------------*/
+
+	/*Xử lí liên quan InvisibilityPotion*/
+	bool isUseInvisibilityPotion;
+	DWORD TimeWaited_InvisibilityPotion;
+
+	/*Xử lý liên quan tới Cross*/
+	bool isUseCross;
+	DWORD TimeWaited_UseCross;// thời gian đã chờ xử lí Cross
+	DWORD TimeWaited_UseCross_ChangeColorBackground; // thời gian đã chờ của việc thay đổi màu nền
+	DWORD LimitTimeWait_UseCross_ChangeColorBackground; // thời gian cần chờ để đỏi màu nền
+
+
 	GameSprite* _spriteLagerHeart;
 	int GameOverSelect;
 public:
@@ -130,6 +184,10 @@ public:
 	void checkCollisionSimonWithBoss();
 	Item* getNewItem(int id, objectType ObjectType, float x, float y);
 	void replayMusic();
+
+
+	void ProcessInvisibilityPotion(DWORD dt);
+	void ProcessCross(DWORD dt);
 };
 
 #endif

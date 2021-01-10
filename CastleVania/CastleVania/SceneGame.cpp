@@ -940,6 +940,25 @@ Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
 			case 4:
 				return new MoneyBag(x, y, objectType::MONEY_BAG_PURPLE);
 				break;
+			case 40: case 71:
+				return new HolyWaterItem(x, y);
+				break;
+
+			case 76:
+				return new StopWatchItem(x, y);
+				break;
+
+			case 109:
+				return new InvisibilityPotionItem(x, y);
+				break;
+
+			case 111:
+				return new ThrowingAxeItem(x, y);
+				break;
+
+			case 23: case 98:
+				return new CrossItem(x, y);
+				break;
 				default:
 			{
 				int random = rand() % 15;
@@ -948,9 +967,11 @@ Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
 					case 0:
 						return new MoneyBag(x, y, objectType::MONEY_BAG_RED);
 						break;
+
 					case 1:
 						return new MoneyBag(x, y, objectType::MONEY_BAG_WHITE);
 						break;
+
 					case 2:
 						return new MoneyBag(x, y, objectType::MONEY_BAG_PURPLE);
 						break;
@@ -972,27 +993,59 @@ Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
 			case 0:
 				return new LargeHeart(x, y);
 				break;
+
 			case 1:
 				return new SmallHeart(x, y);
 				break;
+
 			case 2:
 				return new ItemDagger(x, y);
 				break;
+
 			case 3:
 				return new MoneyBagExtra(x, y);
 				break;
+
 			case 4:
 				return new MoneyBag(x, y, objectType::MONEY_BAG_RED);
 				break;
+
 			case 5:
 				return new MoneyBag(x, y, objectType::MONEY_BAG_WHITE);
 				break;
+
 			case 6:
 				return new MoneyBag(x, y, objectType::MONEY_BAG_PURPLE);
 				break;
+
+			case 7:
+				return new HolyWaterItem(x, y);
+				break;
+
+			case 8:
+				return new StopWatchItem(x, y);
+				break;
+
+			case 9:
+				return new ThrowingAxeItem(x, y);
+				break;
+
+			case 10:
+				return new InvisibilityPotionItem(x, y);
+				break;
+
+			case 11:
+				return new BoomerangItem(x, y);
+				break;
+
+			case 12:
+				return new UpgradeMorningStar(x, y);
+				break;
+
 			default: // còn lại là SmallHeart
 				return new SmallHeart(x,y);
 				break;
+
 			}
 		}
 		if (ObjectType == objectType::BRICK)
@@ -1002,14 +1055,14 @@ Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
 			case 40:
 				return new PotRoast(x, y);
 				break;
+
 			case 51:
 				return new MoneyBagExtra(x, y);
 				break;
 
-			//case 104: // Double shot
-			//	return new ItemDoubleShot(X, Y);
-			//	break;
-
+			case 104: // Double shot
+				return new DoubleShotItem(x, y);
+				break;
 
 			default:
 				return new SmallHeart(x,y);
@@ -1107,6 +1160,13 @@ void SceneGame::checkCollionsionSimonWithItem()
 					simon->setHealth(min(simon->getHealth() + 6, SIMON_DEFAULT_HEALTH)); // tăng 6 đơn vị máu
 					break;
 				}
+				case objectType::ITEMDOUBESHOT:
+				{
+					simon->setIsUseDoubleShot(true);
+					listItem[i]->setFinish(true);
+					sound->Play(eSound::soundCollectItem);
+					break;
+				}
 				//Vũ khí phụ của Simon
 				case objectType::ITEMDAGGER:
 				{
@@ -1149,9 +1209,61 @@ void SceneGame::checkCollionsionSimonWithItem()
 						sound->Stop(eSound::music_PhantomBat);
 					}
 					sound->Play(eSound::musicStateClear);
+					isAllowProcessClearState3 = true;
+					break;
+				}*/
 
+				case objectType::INVINSIBILTYPOTION:
+				{
+					sound->Play(eSound::soundInvisibilityPotion_Begin);
+					isUseInvisibilityPotion = true;
+					simon->setTexture(TextureManager::GetInstance()->GetTexture(objectType::SIMON_TRANS));
+					listItem[i]->setFinish(true);
+					break;
+				}
+
+				case objectType::CROSS:
+				{
+					isUseCross = true;
+					TimeWaited_UseCross = 0;
+					TimeWaited_UseCross_ChangeColorBackground = 0;
+
+					board1->SetTexture(TextureManager::GetInstance()->GetTexture(objectType::BOARD_TRANS)); // đổi thành Board màu nền trong suốt
+					/*Xóa hết enemy*/
+					for (UINT k = 0; k < listEnemy.size(); k++)
+					{
+						GameObject* enemy = listEnemy[k];
+						if (enemy->getHealth() > 0) // còn máu
+						{
+							enemy->setHealth(0);
+							listEffect.push_back(new EffectFire(enemy->getX() - 5, enemy->getY() + 8)); // hiệu ứng lửa
+						}
+					}
+					CountEnemyBat = 0;
+					TimeWaitProcessCreateGhost = GetTickCount(); // set thời điểm hiện tại
+					isWaitProcessCreateGhost = true;
+					isAllowCheckTimeWaitProcessCreateGhost = true;
+
+					CountEnemyFishmen = 0;
+
+					CountEnemyPanther = 0;
+
+					CountEnemyGhost = 0;
+					TimeWaitProcessCreateGhost = GetTickCount(); // set thời điểm hiện tại
+					isWaitProcessCreateGhost = true;
+					isAllowCheckTimeWaitProcessCreateGhost = true;
+					/*Xóa hết enemy*/
+
+					listItem[i]->setFinish(true);
+					sound->Play(eSound::soundHolyCross);
+					break;
+				}
+
+				default:
+					DebugOut(L"[CheckCollisionSimonWithItem] Khong nhan dang duoc loai Item!\n");
+					break;
+				}
 					//isAllowProcessClearState3 = true; //note
-
 					break;
 				}
 			}
@@ -1336,6 +1448,57 @@ void SceneGame::checkCollisionSimonWithBoss() {
 		}
 	}
 }
+
+void SceneGame::ProcessInvisibilityPotion(DWORD dt)
+{
+	if (isUseInvisibilityPotion)
+	{
+		TimeWaited_InvisibilityPotion += dt;
+		if (TimeWaited_InvisibilityPotion >= INVISIBILITYPOTION_LIMITTIMEWAIT)
+		{
+			isUseInvisibilityPotion = false; // kết thúc
+			TimeWaited_InvisibilityPotion = 0;
+			sound->Play(eSound::soundInvisibilityPotion_End);
+
+			simon->setTexture(TextureManager::GetInstance()->GetTexture(objectType::SIMON));
+		}
+	}
+}
+
+void SceneGame::ProcessCross(DWORD dt)
+{
+	if (isUseCross)
+	{
+		/* xử lí thời gian hoạt động*/
+		TimeWaited_UseCross += dt;
+		if (TimeWaited_UseCross >= CROSS_LIMITTIME)
+		{
+			isUseCross = false;
+			D3DCOLOR_BACKGROUND = COLOR_BACKGROUND_DEFAULT; // trả về màu nền mặc định
+			board1->SetTexture(TextureManager::GetInstance()->GetTexture(objectType::BOARD)); // đổi thành Board màu bt
+		}
+		else
+		{
+			/*Xử lí đổi màu nền*/
+			TimeWaited_UseCross_ChangeColorBackground += dt;
+			if (TimeWaited_UseCross_ChangeColorBackground >= LimitTimeWait_UseCross_ChangeColorBackground)
+			{
+				TimeWaited_UseCross_ChangeColorBackground = 0;
+				LimitTimeWait_UseCross_ChangeColorBackground = rand() % 100;
+				/*Đổi màu nền*/
+				if (D3DCOLOR_BACKGROUND == COLOR_BACKGROUND_DEFAULT)
+				{
+					D3DCOLOR_BACKGROUND = CROSS_COLOR_BACKGROUND;
+				}
+				else
+				{
+					D3DCOLOR_BACKGROUND = COLOR_BACKGROUND_DEFAULT;
+				}
+			}
+		}
+	}
+}
+
 void SceneGame::replayMusic()
 {
 	sound->StopAll(); //Tắt hết nhạc

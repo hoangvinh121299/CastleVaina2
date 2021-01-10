@@ -243,9 +243,6 @@
     <ClInclude Include="HolyWaterItem.h">
       <Filter>Object\Item</Filter>
     </ClInclude>
-    <ClInclude Include="InvisibilityPostionItem.h">
-      <Filter>Object\Item</Filter>
-    </ClInclude>
     <ClInclude Include="SteamEffect.h">
       <Filter>Object\Effect</Filter>
     </ClInclude>
@@ -266,6 +263,9 @@
     </ClInclude>
     <ClInclude Include="PhantomBat.h">
       <Filter>Object\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="InvisibilityPotionItem.h">
+      <Filter>Object\Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -446,9 +446,6 @@
     <ClCompile Include="HolyWaterItem.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
-    <ClCompile Include="InvisibilityPostionItem.cpp">
-      <Filter>Object\Item</Filter>
-    </ClCompile>
     <ClCompile Include="SteamEffect.cpp">
       <Filter>Object\Effect</Filter>
     </ClCompile>
@@ -469,6 +466,9 @@
     </ClCompile>
     <ClCompile Include="PhantomBat.cpp">
       <Filter>Object\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="InvisibilityPotionItem.cpp">
+      <Filter>Object\Item</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
