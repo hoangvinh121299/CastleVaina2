@@ -548,7 +548,7 @@ void SceneGame::loadMap(objectType mapCurrent)
 		camera->SetBoundary(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
 		camera->setBoundaryBackup(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
 		//simon->setPostion(SIMON_POSITION_DEFAULT);
-		simon->setPostion(SIMON_POSITION_DEFAULT);
+		simon->setPostion(2560.0f, 256.0f);
 		listEnemy.push_back(new Ghost(50, 300, 1));
 		listEnemy.push_back(new Panther(1398.0f, 225.0f, directionPanther, directionPanther == -1 ? 20.0f : 9.0f, simon));
 		listEnemy.push_back(new Bat(200, 100, 1));

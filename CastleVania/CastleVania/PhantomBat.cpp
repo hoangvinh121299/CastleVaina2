@@ -1,7 +1,4 @@
 ﻿#include "PhantomBat.h"
-
-
-
 PhantomBat::PhantomBat(Simon * simon, Camera * camera, vector<Weapon*> * listWeaponOfEnemy)
 {
 	ObjectType = objectType::PHANTOMBAT;
@@ -96,12 +93,13 @@ void PhantomBat::Render(Camera * camera) {
 
 void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (getHealth() < 0) return;
+	if (getHealth() <= 0) return;
+
 	switch (StatusProcessing)
 	{
 	case PHANTOMBAT_PROCESS_SLEEP:
 		break;
-	case PHANTOMBAT_PROCESS_START_1: //start 1 đi qua cửa sổ
+	case PHANTOMBAT_PROCESS_START_1: //Đi từ vị trí ban đầu sang cửa sổ
 		if (y >= yDestination) {
 			vy = 0;
 			StatusProcessing = PHANTOMBAT_PROCESS_START_2;
@@ -109,14 +107,14 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			yBefore = y;
 			//Vị trí ô cửa sổ boss cần đi tới
 			xDestination = 5480;
-			yDestination = 191;
+			yDestination = 200;
 			vx = ((xDestination - xBefore) / (1500.0f));
 			vy = 0.12f; //độ cong khi đi xuống
 		}
 		break;
 	case PHANTOMBAT_PROCESS_START_2: //
 		if (isWaiting == false) {
-			vy = -0.001f * dt;
+			vy = -0.0010f * dt;
 			if (vy < 0) vy = 0;
 			//Boss đã di chuyển đến điểm 2
 			if (x >= xDestination) {
@@ -134,6 +132,21 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 		break;
+	case PHANTOMBAT_PROCESS_CURVES:
+	{
+		if (abs(x - xBefore) >= abs(xDestination - xBefore)) {
+			vx = vy = 0;
+			isUseBezierCurves = false;
+			StartStraight();
+			break;
+		}
+		float perc = (x - xBefore) / (xDestination - xBefore);
+		float ya = getPt(y1, y2, perc);
+		float yb = getPt(y2, y3, perc);
+		float yy = getPt(ya, yb, perc);
+		vy = (yy - yLastFrame) / dt;
+	}
+	break;
 	case PHANTOMBAT_PROCESS_STRAIGHT_1: //Di chuyển thẳng
 		if (abs(x - xBefore) >= abs(xDestination - xBefore) 
 			|| abs(y - yBefore)>=abs(yDestination - yBefore)){
@@ -172,21 +185,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			break;
 		}
 		break;
-	case PHANTOMBAT_PROCESS_CURVES:
-	{
-		if (abs(x - xBefore) >= abs(xDestination - xBefore)) {
-		vx = vy = 0;
-		isUseBezierCurves = false;
-		StartStraight();
-		break;
-	}
-	float perc = (x - xBefore) / (xDestination - xBefore);
-	float ya = getPt(y1, y2, perc);
-	float yb = getPt(y2, y3, perc);
-	float yy = getPt(ya, yb, perc);
-	vy = (yy - yLastFrame) / dt;
-	}
-		break;
+	
 	case PHANTOMBAT_PROCESS_ATTACK:
 		if (isWaiting == true) {
 			timeWaited += dt;
@@ -246,15 +245,15 @@ void PhantomBat::Start() {
 	yBefore = y;
 	vy = 0.05f;
 	vx = 0.0f;
-	yDestination += 40; //di chuyển xuống 40
+	yDestination = y + 40; //di chuyển xuống 40 pixel
 
 }
 void PhantomBat::ProcessSmart() {
 	//Simon đang nhảy && simon-boss <= 150
-	if (simon->isJumping && sqrt((simon->getX() - x)
-		* (simon->getX() - x) 
-		+ (simon->getY() - y) 
-		* (simon->getY() - y)) <= 150.0f) {
+	if (simon->isJumping && sqrt(
+		(simon->getX() - x) * (simon->getX() - x) 
+		+ (simon->getY() - y) * (simon->getY() - y)) 
+		<= 150.0f) {
 		int random = rand() % 6;
 		switch (random)
 		{
@@ -274,8 +273,7 @@ void PhantomBat::ProcessSmart() {
 	}
 	//20%
 	if (rand() % 5 == 0){
-		if (health <= 10 && simon->isAttacking)
-		{
+		if (health <= 10 && simon->isAttacking){
 			StartCurves();
 		}
 	}
@@ -301,10 +299,11 @@ void PhantomBat::StartCurves() {
 				(camera->GetXCam() + camera->GetWidth()
 				- (simon->getX() + simon->getWidth() + 100)) );
 	}
-	yDestination = simon->getY() + simon->getHeight();
+	yDestination = simon->getY() + simon->getHeight() - 100;
 	x3 = xDestination;
 	y3 = yDestination;
-	vx = -(x - xDestination) / (abs(xDestination - xBefore) * 1000.0f / 50);
+	//1 giây di chuyển được 150 pixel
+	vx = -(x - xDestination) / (abs(xDestination - xBefore) * 1000.0f / 150); 
 	vy = 0;
 
 	isUseBezierCurves = true;
@@ -364,6 +363,7 @@ float PhantomBat::getPt(float n1, float n2, float perc) {
 	return n1 + (different * perc);
 }
 void PhantomBat::InitResource() {
+	//Đặt vị trí ban đầu của boss
 	x = PHANTOMBAT_DEFAULT_X;
 	y = PHANTOMBAT_DEFAULT_Y;
 	xBefore = x;
