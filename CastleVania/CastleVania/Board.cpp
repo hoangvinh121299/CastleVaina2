@@ -12,7 +12,7 @@ Board::Board(float X, float Y)
 	boardTexture = TextureManager::GetInstance()->GetTexture(objectType::BOARD);
 	boardSprite = new GameSprite(boardTexture, 0);
 
-	/*spriteIconDoubleShot = new GameSprite(TextureManager::GetInstance()->GetTexture(objectType::ITEMDOUBESHOT), 0);*/
+	spriteIconDoubleShot = new GameSprite(TextureManager::GetInstance()->GetTexture(objectType::ITEMDOUBESHOT), 0);
 
 	x = X;
 	y = Y;
@@ -65,10 +65,10 @@ void Board::Render(Simon* simon, int state, int RemainingTime, GameObject* boss)
 		break;
 	}
 
-	/*if (simon->getIsUseDoubleShot())
+	if (simon->getIsUseDoubleShot())
 	{
 		spriteIconDoubleShot->Draw(x + 465, y + 35);
-	}*/
+	}
 }
 
 

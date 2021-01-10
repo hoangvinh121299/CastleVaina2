@@ -1060,7 +1060,7 @@ Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
 				break;
 
 			case 51:
-				return new MoneyBagExtra(x, y);
+				return new DoubleShotItem(x, y);
 				break;
 
 			case 104: // Double shot
