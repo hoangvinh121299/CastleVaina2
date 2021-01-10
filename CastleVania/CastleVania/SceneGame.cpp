@@ -1211,7 +1211,7 @@ void SceneGame::checkCollionsionSimonWithItem()
 					sound->Play(eSound::musicStateClear);
 					isAllowProcessClearState3 = true;
 					break;
-				}*/
+				}
 
 				case objectType::INVINSIBILTYPOTION:
 				{
@@ -1263,12 +1263,11 @@ void SceneGame::checkCollionsionSimonWithItem()
 					DebugOut(L"[CheckCollisionSimonWithItem] Khong nhan dang duoc loai Item!\n");
 					break;
 				}
-					//isAllowProcessClearState3 = true; //note
+					isAllowProcessClearState3 = true; //note
 					break;
 				}
 			}
-			}
-		}
+			
 	}
 }
 void SceneGame::checkCollsionWithEnemy()
@@ -1370,6 +1369,7 @@ void SceneGame::checkCollisionSimonWithGate()
 							//Dừng simon lại
 							simon->setSpeed(0, simon->getVy());
 							simon->isWalking = 0;
+							
 							if (simon->isSitting)
 							{
 								simon->isSitting = 0; //Huỷ trạng thái ngồi 
