@@ -280,7 +280,6 @@ void SceneGame::InitGame()
 {
 	loadMap(objectType::MAP2);
 	simon->Init();
-	//phantomBat->Start();
 	gametime->setTime(0);
 	replayMusic();
 	DebugOut(L"InitGame done\n");
@@ -485,9 +484,10 @@ void SceneGame::Render()
 				listItem[i]->Render(camera);
 		}
 		simon->Render(camera);
+		//Redner boss
 		if (phantomBat != NULL)
 			phantomBat->Render(camera);
-		board1->Render(simon, currentStage, GAME_TIME_MAX - gametime->getTime(), NULL);
+		board1->Render(simon, currentStage, GAME_TIME_MAX - gametime->getTime(), phantomBat);
 	}
 	else
 	{
@@ -548,7 +548,7 @@ void SceneGame::loadMap(objectType mapCurrent)
 		camera->SetBoundary(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
 		camera->setBoundaryBackup(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
 		//simon->setPostion(SIMON_POSITION_DEFAULT);
-		simon->setPostion(SIMON_POSITION_DEFAULT);
+		simon->setPostion(2560.0f, 256.0f);
 		listEnemy.push_back(new Ghost(50, 300, 1));
 		listEnemy.push_back(new Panther(1398.0f, 225.0f, directionPanther, directionPanther == -1 ? 20.0f : 9.0f, simon));
 		listEnemy.push_back(new Bat(200, 100, 1));
@@ -669,10 +669,13 @@ void SceneGame::checkCollisionSimonWithHiddenObject()
 							}
 							case 114: //điểm kích hoạt boss
 							{
-								DebugOut(L"Va cham voi diem kich hoat boss!\n");
+								DebugOut(L"Da kich hoat Boss!\n");
 								phantomBat->Start();
+								//Đặt vị trí camera cố định trong khu vực boss
 								camera->SetBoundary(camera->getBoundaryRight(), camera->getBoundaryRight());
 								camera->setAllowFollowSimon(false);
+								if (sound->isPlaying(eSound::musicState1)) sound->Stop(eSound::musicState1);
+								sound->Play(eSound::music_PhantomBat);
 								objectTemp->setHealth(0);
 							}
 							break;
@@ -768,6 +771,38 @@ void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 									tempObject->getX() + 5, tempObject->getY()));
 								// hiệu ứng hit
 								runEffectHit = true;
+								break;
+							}
+							case objectType::PHANTOMBAT:
+							{
+								if (objWeapon.second->getType() == objectType::MORNINGSTAR) {
+									MorningStar* morningStar = dynamic_cast<MorningStar*>(objWeapon.second);
+									if (morningStar->getLevel() > 0) {
+										//Đánh 8 hit
+										tempObject->subHealth(24 / 8);
+									}
+									else {
+										//Đánh 12 hit
+										tempObject->subHealth(24 / 12);
+									}
+								}
+								else {
+									tempObject->subHealth(24 / 12);
+								}
+
+								if (tempObject->getHealth() == 0) {
+									for (int u = 0; u < 2; u++) {
+										for (int v = 0; v < 3; v++) {
+											listEffect.push_back(new EffectFire(tempObject->getX() + v * FIRE_WIDTH, tempObject->getY() + u * FIRE_HEIGHT - 10, 3));
+											runEffectHit = false;
+										}
+									}
+									runEffectHit = false;
+									sound->Play(eSound::soundHit);
+									listItem.push_back(new CrystalBall(CRYSTALBALL_DEFAULT_POSITION_X, CRYSTALBALL_DEFAULT_POSITION_y));
+								}
+								else
+									runEffectHit = true;
 								break;
 							}
 							case objectType::BRICK:
@@ -1166,7 +1201,7 @@ void SceneGame::checkCollionsionSimonWithItem()
 					listItem[i]->setFinish(true);
 					break;
 				}
-				/*case objectType::CRYSTALBALL:
+				case objectType::CRYSTALBALL:
 				{
 					listItem[i]->setFinish(true);
 					if (sound->isPlaying(eSound::music_PhantomBat))
@@ -1174,11 +1209,9 @@ void SceneGame::checkCollionsionSimonWithItem()
 						sound->Stop(eSound::music_PhantomBat);
 					}
 					sound->Play(eSound::musicStateClear);
-
 					isAllowProcessClearState3 = true;
-
 					break;
-				}*/
+				}
 
 				case objectType::INVINSIBILTYPOTION:
 				{
@@ -1230,8 +1263,11 @@ void SceneGame::checkCollionsionSimonWithItem()
 					DebugOut(L"[CheckCollisionSimonWithItem] Khong nhan dang duoc loai Item!\n");
 					break;
 				}
+					isAllowProcessClearState3 = true; //note
+					break;
+				}
 			}
-		}
+			
 	}
 }
 void SceneGame::checkCollsionWithEnemy()
@@ -1333,6 +1369,7 @@ void SceneGame::checkCollisionSimonWithGate()
 							//Dừng simon lại
 							simon->setSpeed(0, simon->getVy());
 							simon->isWalking = 0;
+							
 							if (simon->isSitting)
 							{
 								simon->isSitting = 0; //Huỷ trạng thái ngồi 
@@ -1362,6 +1399,8 @@ void SceneGame::checkCollisionSimonWithGate()
 							isWalkingThroughGate2 = true;
 							doneWalkingThroughGate2 = false;
 							objectGate->Start(); //Bắt đầu trạng thái đóng mở cửa
+
+							//Khời tạo boss khi Simon vào gate 2
 							if (phantomBat == NULL) {
 								phantomBat = new PhantomBat(simon, camera, &listWeaponOfEnemy);
 							}
@@ -1380,12 +1419,19 @@ void SceneGame::checkCollisionSimonWithBoss() {
 	if (phantomBat == NULL) return;
 	if (phantomBat->getHealth() <= 0) return;
 	vector<GameObject*> listObject{ phantomBat };
+
 	checkCollisionWeaponWithObject(listObject);
+	//Nếu không sử dụng thuốc tàng hình mới xét va chạm simon - boss
+	if (isUseInvisibilityPotion==true)
+	{
+		return;
+	}
 	if (GetTickCount() - simon->untouchable_Start > SIMON_UNTOUCHABLE_TIME) {
 		simon->untouchable_Start = 0;
 		simon->untouchable = false;
 	}
 	if (simon->untouchable == false) {
+		//Nếu boss còn sống
 		if (phantomBat->getHealth() > 0) {
 			LPCollisionEvent e = simon->sweptAABBEx(phantomBat);
 			if (e->t > 0 && e->t <= 1) {
@@ -1396,7 +1442,7 @@ void SceneGame::checkCollisionSimonWithBoss() {
 			if (simon->checkAABB(phantomBat) == true) {
 				LPCollisionEvent e = new CollisionEvent(1.0f, (float)-simon->getDirection(), 0.0f, NULL);
 				simon->setHurt(e);
-				DebugOut(L"Simon va cham Boss 22");
+				DebugOut(L"Simon va cham Boss 2");
 				return;
 			}
 		}

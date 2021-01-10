@@ -44,6 +44,8 @@
 #include "InvisibilityPostionItem.h"
 #include "CrossItem.h"
 #include "DoubleShotItem.h"
+#include "CrystalBall.h"
+
 #define GAME_TIME_MAX 300
 #include "PhantomBat.h"
 
@@ -85,6 +87,7 @@ private:
 	vector<GameObject*>listObject;
 	Simon *simon;
 	PhantomBat* phantomBat;
+
 	Brick* birck;
 	Sound* sound;
 	Map* tileMap;
@@ -138,8 +141,6 @@ private:
 
 
 	/*---------------Xử lí liên quan tới vũ khí phụ-----------------------------*/
-
-	/*Xử lí liên quan InvisibilityPotion*/
 	bool isUseInvisibilityPotion;
 	DWORD TimeWaited_InvisibilityPotion;
 
@@ -149,7 +150,8 @@ private:
 	DWORD TimeWaited_UseCross_ChangeColorBackground; // thời gian đã chờ của việc thay đổi màu nền
 	DWORD LimitTimeWait_UseCross_ChangeColorBackground; // thời gian cần chờ để đỏi màu nền
 
-
+	//Clear stage 3
+	bool isAllowProcessClearState3;
 	GameSprite* _spriteLagerHeart;
 	int GameOverSelect;
 public:
