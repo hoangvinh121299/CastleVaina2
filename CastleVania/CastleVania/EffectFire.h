@@ -3,6 +3,8 @@
 #define __EFFECT_FIRE_
 
 #include "Effect.h"
+#define FIRE_WIDTH 32
+#define FIRE_HEIGHT 28
 class EffectFire:public Effect
 {
 private:

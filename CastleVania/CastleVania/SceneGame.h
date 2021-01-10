@@ -41,6 +41,7 @@
 #include "ThrowingAxe.h"
 #include "HolyWaterItem.h"
 #include "HolyWater.h"
+#include "CrystalBall.h"
 #define GAME_TIME_MAX 300
 #include "PhantomBat.h"
 
@@ -72,6 +73,10 @@ private:
 	vector<GameObject*>listObject;
 	Simon *simon;
 	PhantomBat* phantomBat;
+	//InvisibilityPotion
+	bool isUseInvisibilityPotion;
+	DWORD TimeWaited_InvisibilityPotion;
+
 	Brick* birck;
 	Sound* sound;
 	Map* tileMap;

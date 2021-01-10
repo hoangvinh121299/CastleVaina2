@@ -70,23 +70,23 @@ void PhantomBat::Render(Camera * camera) {
 					rect.bottom, 100);
 			}
 		}
-		else {
-			RECT rect;
-			rect.left = 0;
-			rect.top = 0;
-			rect.right = 15;
-			rect.bottom = 15;
-			D3DXVECTOR2 pos1 = camera->TransForm(xDestination, yDestination);
-			Game::GetInstance()->Draw(
-				pos.x,
-				pos.y,
-				TextureManager::GetInstance()->GetTexture(
-					objectType::RENDERBBOX)->Texture,
-				rect.left,
-				rect.top,
-				rect.right,
-				rect.bottom, 100);
-		}
+		
+		RECT rect;
+		rect.left = 0;
+		rect.top = 0;
+		rect.right = 15;
+		rect.bottom = 15;
+		D3DXVECTOR2 pos1 = camera->TransForm(xDestination, yDestination);
+		Game::GetInstance()->Draw(
+			pos.x,
+			pos.y,
+			TextureManager::GetInstance()->GetTexture(
+				objectType::RENDERBBOX)->Texture,
+			rect.left,
+			rect.top,
+			rect.right,
+			rect.bottom, 100);
+		
 	}
 }
 
@@ -125,9 +125,10 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		else {
 			timeWaited += dt;
-			if (timeWaited >= (UINT)(2000 + rand() % 1500)) {
-				isWaiting = false;
-				//Sau khi đển cửa sổ và chờ 1 tgian thì đi vòng cung
+			if (timeWaited >= (UINT)(2000 + rand() % 1500))
+			{
+				isWaiting = false; // ngừng chờ
+
 				StartCurves();
 			}
 		}
@@ -146,7 +147,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float yy = getPt(ya, yb, perc);
 		vy = (yy - yLastFrame) / dt;
 	}
-	break;
+		break;
 	case PHANTOMBAT_PROCESS_STRAIGHT_1: //Di chuyển thẳng
 		if (abs(x - xBefore) >= abs(xDestination - xBefore) 
 			|| abs(y - yBefore)>=abs(yDestination - yBefore)){
@@ -186,7 +187,6 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			break;
 		}
 		break;
-	
 	case PHANTOMBAT_PROCESS_ATTACK:
 		if (isWaiting == true) {
 			timeWaited += dt;
@@ -197,10 +197,9 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		break;
 	default:
-		DebugOut(L"\n Trang thai %d", StatusProcessing);
+		//DebugOut(L"\n Trang thai %d", StatusProcessing);
 		break;
 	}
-	//DebugOut(L"BOSS vs SIMON = %f\n", sqrt((simon->getX() - x)*(simon->getX() - x) + (simon->getY() - y)*(simon->getY() - y)));
 	GameObject::Update(dt);
 	x += dx;
 	y += dy;
@@ -330,9 +329,9 @@ void PhantomBat::StartStraight() {
 		+ rand() % (PHANTOMBAT_BOUNDARY_START_STRAIGHT_RIGHT 
 		- PHANTOMBAT_BOUNDARY_START_STRAIGHT_LEFT);
 	yDestination = 80.0f + rand() % (190 - 80);
-		DebugOut(L"StatusProcessing = %d, Target (%f, %f) \n", StatusProcessing, xDestination, yDestination);
+		DebugOut(L"stt = %d, Target (%f, %f) \n", StatusProcessing, xDestination, yDestination);
 	vx = (xDestination - xBefore) / 1000;
-	vy = (xDestination - xBefore) / 1000;
+	vy = (yDestination - yBefore) / 1000;
 }
 
 void PhantomBat::StartAttack() {
