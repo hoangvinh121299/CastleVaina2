@@ -113,7 +113,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		break;
 	case PHANTOMBAT_PROCESS_START_2: //Từ start1 đi đến khung cửa sổ
 		if (isWaiting == false) {
-			vy = -0.0001f * dt; //note
+			vy -= 0.0001f * dt;
 			if (vy < 0) vy = 0;
 			//Boss đã di chuyển đến điểm 2
 			if (x >= xDestination) {
@@ -360,6 +360,7 @@ void PhantomBat::StartAttack() {
 	//v=distance/time
 	weapon->setSpeed(fireBallDirection * abs(xAttack - simon->getX()) / time,
 		abs(yAttack - simon->getY()) / time);
+	weapon->attack(xAttack, yAttack, 1);
 	StatusProcessing = PHANTOMBAT_PROCESS_ATTACK;
 
 	Sound::GetInstance()->Play(eSound::soundHit); //fireball 

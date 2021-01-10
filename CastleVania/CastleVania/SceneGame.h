@@ -45,11 +45,9 @@
 #include "CrossItem.h"
 #include "DoubleShotItem.h"
 #include "CrystalBall.h"
-
-#define GAME_TIME_MAX 300
 #include "PhantomBat.h"
 
-#define GAME_TIME_MAX 3000
+#define GAME_TIME_MAX 200
 #define CAMERA_POSITION_Y_LAKE 400.0f
 
 #define CAMERA_BOUNDARY_LAKE_LEFT 3075.0f
@@ -69,8 +67,23 @@
 #define DISTANCE_AUTOGO_SIMON_GATE 80.0f //Simon auto 80 sau khi đụng vào gate
 #define CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT (2555.0f) // Biên phải camera trước khi qua cửa 1
 
-#pragma endregion
+#define REGION_CREATE_PANTHER_LEFT 1090.0f
+#define REGION_CREATE_PANTHER_RIGHT 2350.0f
 
+#define CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_X 3590.0f // Biên chia đôi vùng, bên trái thì Bat bay hướng -1, phải thì 1
+#define CREATE_BAT_BOUNDARY_DIVISION_DIRECTION_Y 207.0f // Biên chia đôi vùng, trên thì bay hướng 1, dưới thì -1
+
+#pragma endregion
+//Define xử lý sau khi đánh boss
+#define CLEARSTATE3_PROCESS_HEALTH 0 // xử lí làm đầy máu
+#define CLEARSTATE3_PROCESS_GETSCORE_TIME 1 // xử lí quy đổi thời gian dư ra điểm
+#define CLEARSTATE3_PROCESS_GETSCORE_HEART 2 // xử lí quy đổi thời gian dư ra điểm
+#define CLEARSTATE3_PROCESS_DONE 3 // xử lí xong
+
+#define CLEARSTATE3_LIMITTIMEWAIT_PROCESS_HEALTH 200 // thời gian chờ tăng mỗi đơn vị máu
+#define CLEARSTATE3_LIMITTIMEWAIT_PROCESS_GETSCORE_TIME 10 // thời gian chờ mỗi lượt update time
+#define CLEARSTATE3_LIMITTIMEWAIT_PROCESS_GETSCORE_HEART 50 // thời gian chờ mỗi lượt update tim
+#define CLEARSTATE3_LIMITTIMEWAIT_PROCESS_OPENGAMEOVER 2000 // thời gian chờ mở gameover sau khi clearstate xong
 #pragma region define InvisibilityPotion
 
 #define INVISIBILITYPOTION_LIMITTIMEWAIT 4000 // thời gian chờ sử dụng InvisibilityPotion
@@ -138,7 +151,12 @@ private:
 	int CountEnemyFishmen;
 	DWORD TimeCreateFishmen; // thời điểm đã tạo fishmen
 	DWORD TimeWaitCreateFishmen; // thời gian cần chờ để tạo fishmen
-
+	
+	/* Xử lí liên quan Clear State 3 */
+	bool isAllowProcessClearState3 = false;
+	int StatusProcessClearState3;
+	DWORD TimeWaited_ClearState3;
+	DWORD LimitTimeWait_ClearState3;
 
 	/*---------------Xử lí liên quan tới vũ khí phụ-----------------------------*/
 	/*Xử lý liên quan tới thuốc tàng hình*/
@@ -152,7 +170,7 @@ private:
 	DWORD LimitTimeWait_UseCross_ChangeColorBackground; // thời gian cần chờ để đỏi màu nền
 
 	//Clear stage 3
-	bool isAllowProcessClearState3;
+
 	GameSprite* _spriteLagerHeart;
 	int GameOverSelect;
 
@@ -186,6 +204,7 @@ public:
 
 	void ProcessInvisibilityPotion(DWORD dt);
 	void ProcessCross(DWORD dt);
+	void processWhenDefeatBoss(DWORD dt);
 };
 
 #endif
