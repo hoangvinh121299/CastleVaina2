@@ -183,22 +183,6 @@ void SceneGame::KeyState(BYTE *state)
 
 void SceneGame::OnKeyDown(int keycode)
 {
-	if (simon->getIsAutoGoX())
-		return;
-	if (camera->getIsAutoX())
-		return;
-	if (keycode == DIK_R) //Render bounding box
-
-	{
-		if (isDebug_RenderBBox == 0)
-			isDebug_RenderBBox = 1;
-		else
-			isDebug_RenderBBox = 0;
-		/*gridGame->reloadMapGrid();*/
-		DebugOut(L"OnkeyDown done\n");
-	}
-	if (keycode == DIK_Q)
-		gridGame->reloadMapGrid();
 	if (isGameOver)
 	{
 		switch (keycode)
@@ -228,9 +212,24 @@ void SceneGame::OnKeyDown(int keycode)
 			break;
 		}
 		}
-
 		return;
 	}
+	if (simon->getIsAutoGoX())
+		return;
+	if (camera->getIsAutoX())
+		return;
+	if (keycode == DIK_R) //Render bounding box
+
+	{
+		if (isDebug_RenderBBox == 0)
+			isDebug_RenderBBox = 1;
+		else
+			isDebug_RenderBBox = 0;
+		/*gridGame->reloadMapGrid();*/
+		DebugOut(L"OnkeyDown done\n");
+	}
+	if (keycode == DIK_Q)
+		gridGame->reloadMapGrid();
 
 	if (simon->getFreeze() == true) // Đang bóng băng thì không quan tâm phím
 	{
@@ -293,31 +292,56 @@ void SceneGame::resetResources()
 {
 	gridGame->reloadMapGrid(); // nạp lại lưới
 
-	/*listItem.clear();
-	listEffect.();
+	listItem.clear();
+	listEffect.clear();
 	listEnemy.clear();
-	listWeaponOfEnemy.clear();*/ 
+	listWeaponOfEnemy.clear();
+
+	CountEnemyGhost = 0;
+	TimeCreateGhost = 0;
+	isWaitProcessCreateGhost = false; // lúc đầu thì không cần chờ
+
+	isAllowRenewPanther = true;
+	CountEnemyPanther = 0;
+
+	isAllowCreateFishmen = false;
+	TimeCreateFishmen = 0;
+	TimeWaitCreateFishmen = 0;
+	CountEnemyFishmen = 0;
+
+	TimeCreateBat = 0;
+	TimeWaitCreateBat = 0;
+	isAllowCreateBat = 0;
+
 	camera->setAllowFollowSimon(true);
 
 	isWalkingThroughGate1 = false; // ban đầu chưa cần xử lí qua cửa
-	doneWalkingThroughGate1 = false;
+	isWalkingThroughGate2 = false;
 
-	isWalkingThroughGate2 = false; // ban đầu chưa cần xử lí qua cửa
+	doneWalkingThroughGate1 = false; // ban đầu chưa cần xử lí qua cửa
 	doneWalkingThroughGate2 = false;
+
+	if (phantomBat != NULL)
+	{
+		phantomBat->InitResource();
+	}
+
+	isUseInvisibilityPotion = false;
+	isUseCross = false;
+
 	/* Set Chờ hiển thị màn đen */
 	isWaitResetGame = true;
 	TimeWaitedResetGame = 0;
-	if (phantomBat != NULL) {
-		//Khởi tạo các giá trị ban đầu cho boss
-		phantomBat->InitResource();
-	}
+
 	/*init gameover*/
 	isGameOver = false;
-	GameOverSelect = GAMEOVER_SELECT_CONTINUE;
 }
 
 void SceneGame::Update(DWORD dt)
 {
+	if (isGameOver)
+		return;
+
 //Hàm Freeze phải đặt trước update của Simon để ngăn Simon Update
 	if (simon->getFreeze() == true)
 	{
@@ -371,15 +395,23 @@ void SceneGame::Update(DWORD dt)
 			}
 
 		}
-	}
-	else
-	{
-		if (isAllowProcessClearState3 == false) // đang xử lí ClearState thì không đếm time
+		else
 		{
-			gametime->Update(dt);
+			if (isAllowProcessClearState3 == false) // đang xử lí ClearState thì không đếm time
+			{
+				gametime->Update(dt);
+			}
+		}
+
+
+		if (GAME_TIME_MAX - gametime->getTime() <= 30) // đúng còn lại 30 giây thì bật sound loop
+		{
+			if (gametime->checkIsTimeChanged() == true) // Kiểm tra _time vừa thay đổi thì mới play nhạc. Nếu chỉ kt <=30s thì cứ mỗi deltatime nó sẽ Play nhạc -> thừa, ko đều
+			{
+				sound->Play(eSound::soundStopTimer);
+			}
 		}
 	}
-
 	//Update trạng thái qua cửa của simon
 	//Gate 1
 	if (isWalkingThroughGate1)
@@ -478,6 +510,7 @@ void SceneGame::Update(DWORD dt)
 				TimeWaitCreateBat = 4000 + (rand() % 3000);
 			}
 		}
+//Vùng tạo Ghost
 		if (isWaitProcessCreateGhost == false) {
 			//Có 3 vùng tạo ghost
 			//Vùng 1 và 2
@@ -501,7 +534,8 @@ void SceneGame::Update(DWORD dt)
 								//chan hoac le
 								if (random == 0)
 									listEnemy.push_back(new Ghost(camera->GetXCam() - 34, 316, 1));
-								else listEnemy.push_back(new Ghost(camera->GetXCam() + camera->GetWidth(), 316, -1));
+								else
+									listEnemy.push_back(new Ghost(camera->GetXCam() + camera->GetWidth(), 316, -1));
 							}
 						}
 						CountEnemyGhost++;
@@ -510,9 +544,9 @@ void SceneGame::Update(DWORD dt)
 							//Chờ đến khi 3 ghost đều bị giết
 							isWaitProcessCreateGhost = true;
 							isAllowCheckTimeWaitProcessCreateGhost = false;
-							//Đặt lại thời điểm tạo ghost
-							TimeCreateGhost = now;
 						}
+						//Đặt lại thời điểm tạo ghost
+						TimeCreateGhost = now;
 					}
 				}
 			}
@@ -566,22 +600,21 @@ void SceneGame::Update(DWORD dt)
 							//Chờ đến khi 3 ghost đều bị giết
 							isWaitProcessCreateGhost = true;
 							isAllowCheckTimeWaitProcessCreateGhost = false;
-							//Đặt lại thời điểm tạo ghost
-							TimeCreateGhost = now;
 						}
+						//Đặt lại thời điểm tạo ghost
+						TimeCreateGhost = now;
 					}
 				}
 			}
 		}
 		else {
 			if (isAllowCheckTimeWaitProcessCreateGhost == true) {
-				//Đã đạt lượng thời gian chờ tạo ghost
-				//Chờ hơn 2.5s
+				
 				if (now - TimeWaitProcessCreateGhost >= TIME_PROCESS_SPAWN_GHOST)
 					isWaitProcessCreateGhost = false;
 			}
 		}
-		//Fishmen
+//Vùng tạo Fishmen
 		if (isAllowCreateFishmen && CountEnemyFishmen < 2) {
 			DWORD now = GetTickCount();
 			if (now - TimeCreateFishmen >= TimeWaitCreateFishmen) // đủ thời gian chờ
@@ -636,7 +669,7 @@ void SceneGame::Update(DWORD dt)
 				listEnemy.push_back(new Fishmen(vtx, vty, directionFishmen, simon, &listWeaponOfEnemy, camera));
 				CountEnemyFishmen++;
 
-				//STEAM_ADD_EFFECT(listEffect, vtx, vty);
+				STEAM_ADD_EFFECT(listEffect, vtx, vty);
 
 				sound->Play(eSound::soundSplashwater);
 				TimeWaitCreateFishmen = 2000 + (rand() % 2000);
@@ -753,9 +786,10 @@ void SceneGame::Update(DWORD dt)
 			listItem[i]->Update(dt, &listObject);//Chỉ kiểm tra va chạm với GROUND
 	}
 
-	checkCollision();
-	if(!simon->getIsDead())
-	gametime->Update(dt);
+	if (!simon->getIsDead())
+	{
+		checkCollision();
+	}
 }
 
 void SceneGame::Render()
@@ -844,8 +878,8 @@ void SceneGame::loadMap(objectType mapCurrent)
 		camera->SetPosition(0, 0);
 		camera->SetBoundary(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
 		camera->setBoundaryBackup(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
-		
-		simon->setPostion(SIMON_POSITION_DEFAULT);
+		simon->setPostion(5000,0);
+		/*simon->setPostion(SIMON_POSITION_DEFAULT);*/
 		currentStage = 2;
 		break;
 	}
@@ -896,7 +930,7 @@ void SceneGame::checkCollisionSimonWithHiddenObject()
 								isAllowCreateBat = false; //Không tạo bat nữa 
 								gridGame->insertObjectToGrid(GRID_INSERT_OBJECT__GETOUTFROMLAKE_LEFT);
 								gridGame->insertObjectToGrid(GRID_INSERT_OBJECT__GETOUTFROMLAKE_RIGHT);
-
+								isAllowCreateFishmen = true;
 								objectTemp->setHealth(0);
 								break;
 							}
@@ -907,6 +941,7 @@ void SceneGame::checkCollisionSimonWithHiddenObject()
 								simon->setPostion(3152, 345);
 								isAllowCreateBat = true;
 								TimeWaitCreateBat = 3000 + rand() % 1000;
+								isAllowCreateFishmen = false;
 								gridGame->insertObjectToGrid(GRID_INSERT_OBJECT__GETINTOLAKE_LEFT);
 								objectTemp->setHealth(0);
 								break;
@@ -919,6 +954,7 @@ void SceneGame::checkCollisionSimonWithHiddenObject()
 								objectTemp->setHealth(0);
 								gridGame->insertObjectToGrid(GRID_INSERT_OBJECT__GETOUTFROMLAKE_RIGHT); // thêm object ẩn để có thể đi xuống sau khi đã lên lại
 								gridGame->insertObjectToGrid(GRID_INSERT_OBJECT__GETOUTFROMLAKE_LEFT);
+								isAllowCreateFishmen = true;
 								break;
 							}
 							case 80: // id 80:object ẩn -> bắt đầu ra khỏi hồ nước phải
@@ -930,7 +966,7 @@ void SceneGame::checkCollisionSimonWithHiddenObject()
 								objectTemp->setHealth(0);
 								camera->setAllowFollowSimon(true);
 								gridGame->insertObjectToGrid(GRID_INSERT_OBJECT__GETINTOLAKE_RIGHT); // thêm object ẩn để có thể đi xuống sau khi đã lên lại
-							
+								isAllowCreateFishmen = false;
 								break;
 							}
 							case 115: //id 115: Rớt xuống nước ->chết 
@@ -1034,6 +1070,14 @@ void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 									tempObject->getID(), tempObject->getType(),
 									tempObject->getX() + 5, tempObject->getY()));
 								runEffectHit = true;
+								simon->setScore(simon->getScore() + 100);
+								CountEnemyGhost--; // giảm số lượng Ghost đang hoạt động
+								if (CountEnemyGhost == 0)
+								{
+									TimeWaitProcessCreateGhost = GetTickCount(); // set thời điểm hiện tại
+									isWaitProcessCreateGhost = true;
+									isAllowCheckTimeWaitProcessCreateGhost = true;
+								}
 								break;
 							}
 							case objectType::FISHMEN:
@@ -1043,6 +1087,7 @@ void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 									tempObject->getID(), tempObject->getType(),
 									tempObject->getX() + 5, tempObject->getY()));
 								runEffectHit = true;
+								CountEnemyFishmen--; // giảm số lượng Fishmen đang hoạt động
 								break;
 							}
 							case objectType::BAT:
@@ -1061,6 +1106,8 @@ void SceneGame::checkCollisionWeaponWithObject(vector<GameObject*> listObj)
 									tempObject->getID(), tempObject->getType(),
 									tempObject->getX() + 5, tempObject->getY()));
 								runEffectHit = true;
+								simon->setScore(simon->getScore() + 200);
+								CountEnemyPanther--; // giảm số lượng Panther đang hoạt động
 								break;
 							}
 							case objectType::CANDLE:
@@ -1197,24 +1244,15 @@ Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
 	{
 		if (ObjectType == objectType::TORCH)
 		{
-			if (id == 3 /*|| id == 6*/) //Nếu id của Torch là 1 hoặc 4 thì là LargeHeart
+			if (id == 3 || id == 6) //Nếu id của Torch là 1 hoặc 4 thì là LargeHeart
 			{
-				/*return new LargeHeart(x, y);*/
-				return new  BoomerangItem(x, y);
-			}
-			if (id == 6)
-			{
-				return new HolyWaterItem(x, y);
-			}
-			if (id == 4 /*|| id == 5*/)
-			{
-				/*return new UpgradeMorningStar(x, y);*/
-				return new ThrowingAxeItem(x, y);
+				return new LargeHeart(x, y);
 				
 			}
-			if (id == 5)
+			if (id == 4 || id == 5)
 			{
-				return new StopWatchItem(x, y);
+				return new UpgradeMorningStar(x, y);
+		
 			}
 			if (id == 7)
 				return new ItemDagger(x, y);
@@ -1289,7 +1327,7 @@ Item* SceneGame::getNewItem(int id, objectType ObjectType, float x, float y)
 		}
 		if (ObjectType == objectType::GHOST || ObjectType == objectType::PANTHER || ObjectType == objectType::BAT || ObjectType == objectType::FISHMEN)
 		{
-			int random = rand() % 15;
+			int random = rand() % 12;
 
 			switch (random)
 			{

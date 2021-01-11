@@ -9,16 +9,17 @@ Fishmen::Fishmen(float x, float y, int direction, Simon* simon, vector<Weapon*>*
 	this->x = x;
 	this->y = y;
 	this->direction = direction;
+	this->health = 1;
 	vx = 0;
 	vy = -FISHMEN_SPEED_Y_UP;
 
-	y_start = this->y;
-	x_start = this->x;
+	x_start = x;
+	y_start = y;
 	xAccumulationtoAttack = 0;
 
 	objectSprite->SelectFrame(FISHMEN_ANI_JUMP);
 
-	isRunning = 1;
+	isRunning = 0;
 	isAttacking = 0;
 
 	this->simon = simon;
@@ -40,7 +41,7 @@ void Fishmen::getBoundingBox(float& left, float& top, float& right, float& botto
 void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 {
 	//Khoảng cách nhảy từ dưới nước lên
-	if (y <= y_start - FISHMEN_Y_JUMP);
+	if (y <= y_start - FISHMEN_Y_JUMP)
 	{
 		vy = FISHMEN_SPEED_Y_DOWN;
 	}
@@ -70,23 +71,58 @@ void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 		vy += FISHMEN_GRAVITY;
 	}
 	GameObject::Update(dt);
-	/*if (vx < 0 && x < 0)
-	{
+	
+	//Xử lý va chạm với gạch
+	vector<LPCollisionEvent> coEvents;
+	vector<LPCollisionEvent> coEventsResult;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> list_Brick;
+	list_Brick.clear();
 
-		this->direction = 1;
-		x = 0;
-		vx = FISHMEN_SPEED_X;
-	}
-	if (vx > 0 && x > 500)
+	for (UINT i = 0; i < listObject->size(); i++)
+		if (listObject->at(i)->getType() == objectType::BRICK)
+			list_Brick.push_back(listObject->at(i));
+
+	calcPotentialCollisions(&list_Brick, coEvents);
+
+	float min_tx, min_ty, nx = 0, ny;
+	filterCollisionEvents(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+	
+	if (ny == -1)
 	{
-		this->direction = -1;
-		x = 500;
-		vx = -FISHMEN_SPEED_X;
-	}*/
+		vy = 0;
+		y += min_ty * dy + ny * 0.4f;
+		isRunning = true;
+	}
+	else
+	{
+		y += dy;
+	}
 	if (!isAttacking)
 	{
-		x += dx;
+		bool isCollisionDirectionX = false;
+		for (UINT i = 0; i < coEventsResult.size(); i++) // không cho fishmen vượt qua gạch loại nhỏ theo trục x
+		{
+			if (coEventsResult[i]->nx != 0)
+			{
+				Brick* brick = dynamic_cast<Brick*>(coEventsResult[i]->obj);
+				if (brick->getModel() == BRICK_MODEL_3)
+				{
+					x += min_tx * dx + nx * 0.4f;
+					direction *= -1; // quay ngược hướng đi 
+					isCollisionDirectionX = true;
+				}
+			}
+		}
+
+		if (!isCollisionDirectionX) // ko va chạm với trục x 
+			x += dx;
 	}
+	
+	for (UINT i = 0; i < coEvents.size(); i++)
+		delete coEvents[i];
+
+
 	/*y += dy;*/
 	if(isAttacking)
 	{
@@ -121,32 +157,6 @@ void Fishmen::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 			}
 		}
 	}
-	//Xử lý va chạm với gạch
-	vector<LPCollisionEvent> coEvents;
-	vector<LPCollisionEvent> coEventsResult;
-	coEvents.clear();
-	vector<LPGAMEOBJECT> list_Brick;
-	list_Brick.clear();
-
-	for (UINT i = 0; i <listObject ->size(); i++)
-		if (listObject->at(i)->getType() == objectType::BRICK)
-			list_Brick.push_back(listObject->at(i));
-
-	calcPotentialCollisions(&list_Brick, coEvents);
-
-	float min_tx, min_ty, nx = 0, ny;
-	filterCollisionEvents(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-
-	if (ny == -1)
-	{
-		vy = 0;
-		y += min_ty * dy + ny * 0.4f;
-		isRunning = true;
-	}
-	else
-	{
-		y += dy;
-	}
 
 }
 void Fishmen::Render(Camera* camera)
@@ -165,8 +175,6 @@ void Fishmen::Render(Camera* camera)
 
 void Fishmen::attack()
 {
-	if (health <= 0)
-		return;
 	if (isAttacking)
 		return;
 

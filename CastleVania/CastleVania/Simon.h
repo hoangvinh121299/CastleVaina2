@@ -87,7 +87,7 @@
 #define SIMON_ANI_STAIR_GO_DOWN_BEGIN 10// Bắt đầu đi xuống
 #define SIMON_ANI_STAIR_GO_DOWN_END 11//Kết thúc quá trình đi xuống
 //Thông số mặc định của SIMON
-#define SIMON_DEFAULT_HEALTH 10
+#define SIMON_DEFAULT_HEALTH 16
 #define SIMON_DEFAULT_HERTCOLLECT 5 //SỐ MÁU BAN ĐẦU CỦA SIMON
 #define SIMON_DEFAULT_SCORE 0
 #define SIMON_DEFAULT_LIVES 5 //SỐ MẠNG BAN ĐẦU CỦA SIMON

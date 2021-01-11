@@ -47,7 +47,6 @@
 #include "DoubleShotItem.h"
 #include "CrystalBall.h"
 #include "PhantomBat.h"
-
 #define GAME_TIME_MAX 200
 #define CAMERA_POSITION_Y_LAKE 400.0f
 
@@ -202,7 +201,7 @@ private:
 	DWORD TimeWaitCreateFishmen; // thời gian cần chờ để tạo fishmen
 	
 	/* Xử lí liên quan Clear State 3 */
-	bool isAllowProcessClearState3 = false;
+	bool isAllowProcessClearState3;
 	int StatusProcessClearState3;
 	DWORD TimeWaited_ClearState3;
 	DWORD LimitTimeWait_ClearState3;

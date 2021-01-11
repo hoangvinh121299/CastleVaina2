@@ -32,9 +32,9 @@ public:
 #endif
 
 #ifndef STEAM_ADD_EFFECT
-#define STEAM_ADD_EFFECT(listEffect, vtx, vty); \
-listEffect.push_back(new Steam(vtx, vty, STEAM_MODEL_1));\
-listEffect.push_back(new Steam(vtx, vty, STEAM_MODEL_2));\
-listEffect.push_back(new Steam(vtx, vty, STEAM_MODEL_3));\
+#define STEAM_ADD_EFFECT(listEffect, vtx, vty) \
+listEffect.push_back(new SteamEffect(vtx, vty, STEAM_MODEL_1));\
+listEffect.push_back(new SteamEffect(vtx, vty, STEAM_MODEL_2));\
+listEffect.push_back(new SteamEffect(vtx, vty, STEAM_MODEL_3));\
 
 #endif
