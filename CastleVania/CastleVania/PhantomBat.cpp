@@ -113,7 +113,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		break;
 	case PHANTOMBAT_PROCESS_START_2: //Từ start1 đi đến khung cửa sổ
 		if (isWaiting == false) {
-			vy -= 0.0001f * dt;
+			vy = vy - 0.0001f * dt;
 			if (vy < 0) vy = 0;
 			//Boss đã di chuyển đến điểm 2
 			if (x >= xDestination) {
@@ -136,7 +136,8 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	case PHANTOMBAT_PROCESS_CURVES:
 	{
 		if (abs(x - xBefore) >= abs(xDestination - xBefore)) {
-			vx = vy = 0;
+			vx = 0;
+			vy = 0;
 			isUseBezierCurves = false;
 			StartStraight();
 			break;
@@ -145,6 +146,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float ya = getPt(y1, y2, perc);
 		float yb = getPt(y2, y3, perc);
 		float yy = getPt(ya, yb, perc);
+		//Khoang cach giua y frame truoc va y frame sap di toi
 		vy = (yy - yLastFrame) / dt;
 	}
 	break;
@@ -289,21 +291,21 @@ void PhantomBat::StartCurves() {
 	//Simon đang ở bên trái của boss
 	if (simon->getX() < x) {
 		float temp = simon->getX();
-		/*xDestination = camera->GetXCam()
+		xDestination = camera->GetXCam()
 			- 100 + rand() % ( (int)(simon->getX()
-				- camera->GetXCam() + 100) );*/
-		xDestination = simon->getX();
+				- camera->GetXCam() + 100) );
+		//xDestination = simon->getX();
 	}
 	//Simon đang ở bên phải của boss
 	else {
 		float temp = simon->getX();
-		/*xDestination = simon->getX() + simon->getWidth()
+ 		xDestination = simon->getX() + simon->getWidth()
 			+ rand() % ( (int)
 				(camera->GetXCam() + camera->GetWidth()
-				- (simon->getX() + simon->getWidth() + 100)) );*/
-		xDestination = simon->getX();
+				- (simon->getX() + simon->getWidth() + 100)) );
+		//xDestination = simon->getX();
 	}
-	yDestination = simon->getY();
+	yDestination = simon->getY() + simon->getHeight() - 100;
 
 	x3 = xDestination;
 	y3 = yDestination;
@@ -332,10 +334,10 @@ void PhantomBat::StartStraight() {
 	xDestination = (float)PHANTOMBAT_BOUNDARY_START_STRAIGHT_LEFT
 		+ rand() % (PHANTOMBAT_BOUNDARY_START_STRAIGHT_RIGHT
 			- PHANTOMBAT_BOUNDARY_START_STRAIGHT_LEFT);
-	yDestination = 80.0f + rand() % (190 - 80);
-	DebugOut(L"stt = %d, Target (%f, %f) \n", StatusProcessing, xDestination, yDestination);
-	vx = (xDestination - xBefore) / 1000;
-	vy = (yDestination - yBefore) / 1000;
+	yDestination = 80.0f + rand() % 90;
+	DebugOut(L"Status = %d, Target (%f, %f) \n", StatusProcessing, xDestination, yDestination);
+	vx = (xDestination - xBefore) / (1000);
+	vy = (yDestination - yBefore) / (1000);
 }
 
 void PhantomBat::StartAttack() {

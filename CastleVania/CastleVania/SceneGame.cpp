@@ -281,7 +281,7 @@ void SceneGame::OnKeyUp(int keycode)
 
 void SceneGame::InitGame()
 {
-	loadMap(objectType::MAP2);
+	loadMap(objectType::MAP1);
 	simon->Init();
 	gametime->setTime(0);
 	replayMusic();
@@ -878,8 +878,8 @@ void SceneGame::loadMap(objectType mapCurrent)
 		camera->SetPosition(0, 0);
 		camera->SetBoundary(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
 		camera->setBoundaryBackup(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
-		simon->setPostion(5000,0);
-		/*simon->setPostion(SIMON_POSITION_DEFAULT);*/
+		
+		simon->setPostion(SIMON_POSITION_DEFAULT);
 		currentStage = 2;
 		break;
 	}
@@ -1620,6 +1620,10 @@ void SceneGame::checkCollisionSimonWithEnemy()
 	{
 		simon->untouchable_Start = 0;
 		simon->untouchable = false;
+	}
+	if (isUseInvisibilityPotion) // ko sử dụng thuốc tàng hình mới xét va chạm
+	{
+		return;
 	}
 	//Va chạm với Enemy
 	//Khi Simon không ở trạng thái bất tử thì có thể va chạm với Enemy hoặc Weapon của Enemy

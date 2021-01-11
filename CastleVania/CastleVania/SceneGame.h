@@ -134,7 +134,7 @@
 #define CLEARSTATE3_LIMITTIMEWAIT_PROCESS_OPENGAMEOVER 2000 // thời gian chờ mở gameover sau khi clearstate xong
 #pragma region define InvisibilityPotion
 
-#define INVISIBILITYPOTION_LIMITTIMEWAIT 4000 // thời gian chờ sử dụng InvisibilityPotion
+#define INVISIBILITYPOTION_LIMITTIMEWAIT 6000 // thời gian chờ sử dụng InvisibilityPotion
 
 #pragma endregion
 
